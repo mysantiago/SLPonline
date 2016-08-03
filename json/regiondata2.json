@@ -1,0 +1,21 @@
+{
+  "CAR": "Abra,Apayao,Benguet,Ifugao,Kalinga,Mountain Province",
+  "NCR": "First District: Capital District (Manila),Second District: Eastern Manila District,Third District: CAMANAVA District,Fourth District: Southern Manila District",
+  "I": "Ilocos Norte,Ilocos Sur,La Union,Pangasinan",
+  "II": "Batanes,Cagayan,Isabela,Nueva Vizcaya,Quirino",
+  "III": "Aurora,Bataan,Bulacan,Nueva Ecija,Pampanga,Tarlac,Zambales",
+  "IVA": "Batangas,Cavite,Laguna,Quezon,Rizal",
+  "IVB": "Marinduque,Occidental Mindoro,Oriental Mindoro,Palawan,Romblon",
+  "V": "Albay,Camarines Norte,Camarines Sur,Catanduanes,Masbate,Sorsogon",
+  "VI": "Aklan,Antique,Capiz,Iloilo,Guimaras",
+  "VII": "Bohol,Cebu,Siquijor",
+  "VIII": "Biliran,Eastern Samar,Leyte,Northern Samar,Samar (Western Samar),Southern Leyte",
+  "IX": "Zamboanga del Norte,Zamboanga del Sur,Zamboanga Sibugay,Basilan_",
+  "X": "Bukidnon,Camiguin,Lanao del Norte,Misamis Occidental,Misamis Oriental",
+  "XI": "Davao del Norte,Davao del Sur,Davao Oriental,Compostela Valley,Davao Occidental",
+  "XII": "Cotabato (North Cotabato),South Cotabato,Sultan Kudarat,Sarangani,Maguindanao_",
+  "CARAGA": "Agusan del Norte,Agusan del Sur,Surigao del Norte,Surigao del Sur,Dinagat Islands",
+  "ARMM": "Basilan,Lanao del Sur,Maguindanao,Sulu,Tawi-Tawi",
+  "NIR": "NEGROS OCCIDENTAL,NEGROS ORIENTAL"
+}
+
