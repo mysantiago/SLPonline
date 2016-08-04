@@ -1,7 +1,5 @@
 <?php
 require "zxcd9.php";
-//lolztest
-//asdfasdf
 byteMe($_SESSION['id'],'main',0.10);
 $stmt = $db->prepare("SELECT COUNT(id) as total FROM PRTemployers UNION SELECT SUM(numopenings) FROM PRTdemand UNION SELECT COUNT(id) FROM PRTsupply UNION SELECT COUNT(id) FROM HRDB UNION SELECT COUNT(id) FROM HRDB WHERE CONFIRMED = 1 UNION SELECT SUM(logincount) FROM HRDB UNION SELECT COUNT(id) FROM DOCDB UNION SELECT COUNT(id) FROM monicadb UNION (SELECT SUM(amt) FROM bytez m WHERE m.hrdbid='".$_SESSION['id']."')");
 $stmt->execute();
