@@ -66,7 +66,7 @@ $query = "
     <style>
 
 body {
-    background-color: #000;
+    background-color: #f7f9fb;
     background-size: cover;
     font-family: "Lato";
 }
