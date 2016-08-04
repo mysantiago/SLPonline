@@ -317,7 +317,7 @@ function parseStatus(str) {
     "aProcessing": true,
     "aServerSide": true,
     "orderCellsTop": true,
-    "ajax": "dt_supply.php",
+    "ajax": "dt_supply_2.php",
     "dom": '<"top">rtp<"bottom"f><"clear">',
     "fnRowCallback":
       function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
@@ -333,24 +333,8 @@ function parseStatus(str) {
                     $(nTd).css('width', '60');
                 },
             },
-            { 
-               "aTargets":[2],
-               "fnCreatedCell": function(nTd, sData, oData, iRow, iCol)
-                {
-                    $(nTd).css('text-align', 'left');
-                    $(nTd).css('width', '160');
-                },
-                "mData": null,
-                "mRender": function( data, type, full) {
-                    if (data[2]) {
-                      return '<td>'+toTitleCase(data[2])+'</td>';  
-                    } else {
-                      return '<td> - </td>';  
-                    }
-                }
-            },
 
-            { "bVisible": false, "aTargets":[3] }
+            { "bVisible": false, "aTargets":[2] }
             ]
 } );
   oTable = $('#viewdata').dataTable();
@@ -780,8 +764,7 @@ function changeValue2(){
                     <thead>
                       <tr>
                       <th>Sectors</th>
-                      <th>PP</th>
-                      <th>Province(s)</th>
+                      <th style="padding-right:1em">Supply</th>
                       <th>Region</th>
                       </tr>
                     </thead>
