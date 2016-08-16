@@ -292,9 +292,6 @@ tbody tr {
           <br>
           <?php   
 
-echo "permission level".$_SESSION['permlvl']."<br>";
-echo "session id".$_SESSION['id']."<br>";
-echo "page id".$_SESSION['pageid']."<br>";
 
 if ($_SESSION['permlvl']>0 && $_SESSION['id']==$_SESSION['pageid'])
 { 
