@@ -4,6 +4,7 @@ require "../zxcd9.php";
 
   $_GET   = filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
   $_SESSION['uid'] = $_GET['id'];
+    $_SESSION['pageid'] = $_GET['id'];
   $query = "SELECT firstname, middlename, lastname, nickname, sex, birthdate, emailaddress, contactnumber, designation, position, employstatus, employdate, fundsource, region, province, municipality, comptype, compyear, compstatus, compnotes, inactive, feeling FROM HRDB WHERE id = :id";
   $query_params = array(':id' => $_GET['id']);
         try 
@@ -259,16 +260,26 @@ tbody tr {
 <div class="row" style="margin:0;padding:0;margin-left:1em;margin-right:1em;border:solid 1px #c5d6de;background:#fff;text-align:center;padding:0">
         <div class="col-md-3 wellz" style="padding:1em">
           <?php
-          if ($row['sex'] == 0) {
+    /*      if ($row['sex'] == 0) {
             echo '<img src="../imgs/partner.png" style="margin-bottom:1em">';
           } else {
             echo '<img src="../imgs/female.png" style="margin-bottom:1em">';
-          }
+          }*/
+            try {
+        $prof = $db->prepare("SELECT * FROM hr_profilepics WHERE hrdbid=:hrdbida");
+        $prof->bindParam(':hrdbida', $_SESSION['pageid']);
+        $prof->execute();
+        $p=$prof->fetch();
+        echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5"/>';
+         } catch(PDOException $e) {
+      echo "Error: " . $e->getMessage();
+      }//endtry
           $byte = $db->prepare("SELECT SUM(amt) as total FROM bytez m WHERE m.hrdbid='".$_GET['id']."' ");
           $byte->execute();
           $bytez = $byte->fetch();
-          ?>
+          ?> 
           <br>
+          
           <span style="font-size:18px;font-weight:200;">
           <?php
           $fullnamez = $row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
@@ -279,6 +290,39 @@ tbody tr {
           } ?>
           </span>
           <br>
+          <?php   
+
+echo "permission level".$_SESSION['permlvl']."<br>";
+echo "session id".$_SESSION['id']."<br>";
+echo "page id".$_SESSION['pageid']."<br>";
+
+if ($_SESSION['permlvl']>0 && $_SESSION['id']==$_SESSION['pageid'])
+{ 
+?>
+                  <b>&nbsp;<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#uploadprofile" ><img src="imgs/cam.png" width="18" height="18" style="cursor:pointer" onmouseover="this.src='imgs/cam.png'" onmouseout="this.src='imgs/cam.png'" alt="Upload" style="float:right;margin:7px" /></button> &nbsp;</b>
+<?php
+}
+          if($_SESSION['permlvl']<1 && $_SESSION['id']==$_SESSION['pageid'])
+          {
+?>
+                  <b>&nbsp;<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#uploadprofile" ><img src="imgs/cam.png" width="18" height="18" style="cursor:pointer" onmouseover="this.src='imgs/cam.png'" onmouseout="this.src='imgs/cam.png'" alt="Upload" style="float:right;margin:7px" /></button> &nbsp;</b>
+<?php
+          }
+         if($_SESSION['permlvl']>0 && $_SESSION['id']!=$_SESSION['pageid'])
+          {
+ ?>    
+            <b>&nbsp;<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#uploadprofile" ><img src="imgs/cam.png" width="18" height="18" style="cursor:pointer" onmouseover="this.src='imgs/cam.png'" onmouseout="this.src='imgs/cam.png'" alt="Upload" style="float:right;margin:7px" /></button> &nbsp;</b>
+<?php
+          }  
+          if ($_SESSION['permlvl']<1 && $_SESSION['id']!=$_SESSION['pageid'])
+          {
+?>
+          <b>&nbsp;<img src="imgs/cam.png" width="18" height="18" style="cursor:pointer" onmouseover="this.src='imgs/cam.png'" onmouseout="this.src='imgs/cam.png'" alt="Upload" style="float:right;margin:7px" hidden/>&nbsp;</b>
+<?php
+}
+?>
+
+	<br>
           <span style="font-size:14px;color:#888"><?php echo $row['designation'];?><br>
           <?php if ($row['region'] == "NPMO") { echo $row['region']; } else { echo $row['region'].' - '.$row['province'].' - '.$row['municipality']; }?>
           </span><br><br>
@@ -642,8 +686,8 @@ $(function () {
         <div class="modal-dialog modal-sm">
 
           <div class="modal-content" style="padding:1em;padding-top:0.5em;">
-                  <h3 style="color:#5cb85c;margin-bottom:6px">Success!</h3>
-                  <span style="font-size:13px" id="sucsubtext">Boom</span><br><br>
+                  <h3 style="color:#5cb85c;margin-bottom:6px">>Successfully Uploaded!</h3>
+                  <span style="font-size:13px" id="sucsubtext">Profile picture has been changed.</span><br><br>
                   <button type="button" class="btn btn-primary pull-right" style="background:#5cb85c;border:0;margin-top:0;padding:5px 10px 5px 10px" id="okaybtn" data-dismiss="modal">Okay</button>
                   <div class="clearfix"></div>
           </div>
@@ -679,6 +723,94 @@ $(function () {
       
     </div>
   </div>
+    <!-- Modal -->
+  <div class="modal fade" id="uploadprofile" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content" style="padding:1em" id="upprof">
+        <div class="modal-body">
+              <div class="form-group" style="margin-bottom:0">
+
+            <form id="myForm" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="dt" value="<?php echo date("m-d-Y h:i:sa"); ?>" />
+                  <div class="input-group" style="margin-bottom:0;margin-top:1em">
+                      <input id="uploadfilename" class="form-control" placeholder="Choose image.." disabled="disabled">
+                      <div class="input-group-btn">
+                        <div class="fileUpload btn btn-primary">
+                            <span><span class="glyphicon glyphicon-camera"></span> &nbsp; Choose Image</span>
+                            <input type="file" id="userfile" name="userfile" class="upload" required/>
+                        </div>
+                      </div>
+                    </div><!-- /input-group -->
+                    <span style="font-size:12px;margin-bottom:1em">Supported file types: PNG, JPG, JPEG, TIFF, BMP</span>
+                    <span style="font-size:12px;margin-bottom:1em" class="pull-right">Maximum file size:10MB</span><br>
+<?php
+             try {
+                    $at = $db->prepare("SELECT * FROM hr_profilepics WHERE hrdbid=:id");
+                    $at->bindParam(':id', $_SESSION['pageid']);
+                    $at->execute();
+                    $rows=$at->fetch();
+            
+                 } catch(PDOException $e) {
+                  echo "Error: " . $e->getMessage();
+                  }//endtry
+if ($_SESSION['permlvl']>0 && $_SESSION['id']==$_SESSION['pageid'] && $rows['hrdbid']==$_SESSION['pageid'])
+{ 
+// reupload 
+  ?>
+            <button type="button" id="profileBtnRe" class="btn btn-primary btn-xs pull-left" style="padding:6margin-top:0.8empx 10px 6px 10px;">
+            <span class="glyphicon glyphicon-cloud-upload"></span> ReUpload</button>
+ <?php
+ }
+if ($_SESSION['permlvl']>0 && $_SESSION['id']!=$_SESSION['pageid'] && $rows['hrdbid']!=$_SESSION['pageid'])
+{ 
+// upload 
+?>      
+            <button type="button" id="profileBtn" class="btn btn-primary btn-xs pull-left" style="padding:6margin-top:0.8empx 10px 6px 10px;">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Upload</button>
+<?php 
+}
+ if ($_SESSION['permlvl']>0 && $_SESSION['id']!=$_SESSION['pageid'] && $rows['hrdbid']==$_SESSION['pageid'])
+ { //reupload
+?>   
+             <button type="button" id="profileBtnRe" class="btn btn-primary btn-xs pull-left" style="padding:6margin-top:0.8empx 10px 6px 10px;">
+             <span class="glyphicon glyphicon-cloud-upload"></span> ReUpload</button>
+<?php
+}
+ if ($_SESSION['permlvl']>0 && $_SESSION['id']==$_SESSION['pageid'] && $rows['hrdbid']!=$_SESSION['pageid'])
+{ //upload 
+  ?>
+            <button type="button" id="profileBtn" class="btn btn-primary btn-xs pull-left" style="padding:6margin-top:0.8empx 10px 6px 10px;">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Upload</button>
+<?php 
+}
+
+if ($_SESSION['permlvl']<1 && $rows['hrdbid']==$_SESSION['pageid'])
+{ 
+// reupload 
+?>
+             <button type="button" id="profileBtnRe" class="btn btn-primary btn-xs pull-left" style="padding:6margin-top:0.8empx 10px 6px 10px;">
+             <span class="glyphicon glyphicon-cloud-upload"></span> ReUpload</button>
+ <?php 
+}
+ if ($_SESSION['permlvl']<1 && $rows['hrdbid']!=$_SESSION['pageid'])
+{ 
+// upload 
+?>
+            <button type="button" id="profileBtn" class="btn btn-primary btn-xs pull-left" style="padding:6margin-top:0.8empx 10px 6px 10px;">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Upload</button>
+ <?php 
+}
+?>
+  </form>
+						</body>
+						</html>  
+			  </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal -->
   <div class="modal fade" id="twgmodal" role="dialog">
     <div class="modal-dialog">
@@ -983,6 +1115,69 @@ $("#saveTWG").click(function(event) {
            }
         });//endAjax
   });
+  // UPLOAD BUTTON
+$("#profileBtn").click(function(event) {
+     $("#loadoverlay").show();
+     var fd = new FormData;                  
+     file1 = $('#userfile').prop('files')[0];
+     fd.append('action', 'uploadpics');
+     fd.append('file', file1);
+      //fd.append('dt', $('input[name=dt]').val());
+         console.log("hello world");
+     $.ajax({
+                url: 'user2upload.php',
+                dataType: 'text',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: fd,                         
+                type: 'POST',
+                success: function(data){
+                    $("#loadoverlay").hide();
+
+                    if (data=="Success") {
+                      $('#myModal').modal();
+                       $("#uploadprofile").hide()
+                      $('#myModal').on('hidden.bs.modal', function () {
+                          location.href = "user2.php?id=<?php echo $_SESSION['pageid']; ?>";
+                      })
+                     ;
+                    } else {
+                      alert(data);
+                    }
+                }
+      });
+}); 
+// REUPLOAD BUTTON 
+$("#profileBtnRe").click(function(event) {
+     $("#loadoverlay").show();
+     var fd1 = new FormData;                  
+     file2 = $('#userfile').prop('files')[0];
+     fd1.append('action', 'reuploadpics');
+     fd1.append('file', file2);
+     $.ajax({
+                url: 'user2upload.php',
+                dataType: 'text',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: fd1,                         
+                type: 'post',
+                success: function(data){
+                    $("#loadoverlay").hide();
+                    if (data=="Success") {
+                      $('#myModal').modal();
+                       $("#uploadprofile").hide()
+                      $('#myModal').on('hidden.bs.modal', function () {
+                          location.href = "user2.php?id=<?php echo $_SESSION['pageid']; ?>";
+                      })
+                    } else {
+                      alert(data);
+                    }
+                }
+          });
+    });
+/////////////////////////////////////////////////////////
   $("#comment").keyup(function (e) {
     if (e.keyCode == 13) {
       if ($("#comment").val() == "") {
@@ -1067,5 +1262,12 @@ if ($("#comment").val() == "") {
 <script type="text/javascript" src="../js/feedback.js"></script>
 <script type="text/javascript" src="../js/jquery.autocomplete.min.js"></script>
 <script src="http://slp.ph/js/pikaday.min.js"></script>
+<script>
+$(document).ready(function() {
+  document.getElementById("userfile").onchange = function () {
+    document.getElementById("uploadfilename").value = this.value;
+  };
+});
+</script>
 </body>
 </html>
