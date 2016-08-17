@@ -236,21 +236,27 @@ function typeChange(){
                       <select class="form-control" onchange="typeChange()" id="doctypeselector" required>
                         <option><?php echo $rowe['doctype']; ?></option>
                         <option>Select Document Type</option>
-                        <option value="Internal Memorandum">Internal Memorandum (within CO)</option>
-                        <option value="External Memorandum">External Memorandum (to regions)</option>
-                        <option>Project Proposal</option>
-                        <option>Policy Document</option>
-                        <option>Guide / Manual</option>
-                        <option>Template / Form</option>
-                        <option>Accomplishment Report</option>
-                        <option>Financial Report</option>
-                        <option>Feedback Report</option>
-                        <option>Program Flow</option>
-                        <option>Supporting Document</option>
-                        <option>IEC materials</option>
-                        <option>Notes</option>
-                        <option>Knowledge Product</option>
-                      </select>
+                     <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM libhr_doctype order by hrdocname");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
+                              $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
+                        
+                        while($hrdocname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value=" <?php echo $hrdocname['hrdocname']; ?>"> <?php echo $hrdocname['hrdocname']; ?> </option>
+                    
+                      <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                   
+                        ?>
+                      </select>   
                   </div>
                   <div class="form-group" style="margin-top:1em;" id="docsubject">
                       <input class="form-control" placeholder="Document Title / Subject" style="" id="dsubject" name="dsubject" value="<?php echo $rowe['title']; ?>" required/><center>
