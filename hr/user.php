@@ -591,17 +591,28 @@ $('#viewdata').on( 'click', 'tbody tr', function () {
                           <div class="form-group">
                               <select class="form-control cleanselect" name="event" id="event" required>
                                 <option value="" selected>Select Event</option>
-                                <option>Official CDO</option>
-                                <option>Internal CDO</option>
-                                <option>Meeting outside Metro Manila</option>
-                                <option>Meeting within Metro Manila</option>
-                                <option>Meeting within Central Office</option>
-                                <option>Field Monitoring</option>
-                                <option value="Leave">Leave (Vacation, Sick, Forced, etc)</option>
-                                <option>Workshop</option>
-                                <option>Training</option>
-                                <option>DSWD Event</option>
-                              </select>
+                                      <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM libhr_event order by hreventname");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
+                              $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
+                        
+                        while($hreventname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value=" <?php echo $hreventname['hreventname']; ?>"> <?php echo $hreventname['hreventname']; ?> </option>
+                    
+                      <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                   
+                        ?>
+                      </select>
+                    <!-- upto this -->  
                           </div>
                           <div class="form-group">
                               <input type="text" class="form-control" placeholder="Venue" id="venue" name="venue">
