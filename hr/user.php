@@ -1122,7 +1122,7 @@ $("#profileBtn").click(function(event) {
       //fd.append('dt', $('input[name=dt]').val());
          console.log("hello world");
      $.ajax({
-                url: 'user2upload.php',
+                url: 'uploadprofilepic.php',
                 dataType: 'text',
                 cache: false,
                 contentType: false,
@@ -1136,7 +1136,7 @@ $("#profileBtn").click(function(event) {
                       $('#myModal').modal();
                        $("#uploadprofile").hide()
                       $('#myModal').on('hidden.bs.modal', function () {
-                          location.href = "user2.php?id=<?php echo $_SESSION['pageid']; ?>";
+                          location.href = "user.php?id=<?php echo $_SESSION['pageid']; ?>";
                       })
                      ;
                     } else {
@@ -1153,7 +1153,7 @@ $("#profileBtnRe").click(function(event) {
      fd1.append('action', 'reuploadpics');
      fd1.append('file', file2);
      $.ajax({
-                url: 'user2upload.php',
+                url: 'uploadprofilepic.php',
                 dataType: 'text',
                 cache: false,
                 contentType: false,
