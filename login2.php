@@ -1,8 +1,8 @@
 <?php
-$username = "slpuser"; 
-$password = "turtles9"; 
+$username = "jmigdela_slpmain"; 
+$password = "turtles98"; 
 $host = "localhost"; 
-$dbname = "slponline"; 
+$dbname = "jmigdela_slponline";
 
 $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'); 
 try 
@@ -39,7 +39,8 @@ global $db;
             $stmt->bindParam(':hrdbid', $recipient);
             $stmt->bindParam(':pagename', $page);
             $stmt->bindParam(':amt', $amt);
-            $stmt->bindParam(':added', date("Y-m-d H:i:s"));
+            $date2 = date("Y-m-d H:i:s");
+            $stmt->bindParam(':added', $date2);
             $stmt->execute();
         } catch(PDOException $e) {
             echo "Error: " . $e->getMessage();

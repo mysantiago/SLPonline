@@ -1,8 +1,8 @@
 <?php
-$username = "slpuser"; 
-$password = "turtles9"; 
+$username = "jmigdela_slpmain"; 
+$password = "turtles98"; 
 $host = "localhost"; 
-$dbname = "slponline"; 
+$dbname = "jmigdela_slponline";
 
 $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'); 
 try 
@@ -26,7 +26,7 @@ if (isset($_SESSION['discard_after']) && $now > $_SESSION['discard_after']) {
 }
 $_SESSION['discard_after'] = $now + 1800;
 if(!empty($_SESSION['emailaddress'])) { 
-    header("Location: http://slp.ph/main.php"); 
+    header("Location: http://slp.ph"); 
 }
 ?>
 <!DOCTYPE html>
@@ -36,9 +36,6 @@ if(!empty($_SESSION['emailaddress'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>SLP Online</title>
-    <link rel="stylesheet" href="css/flatbootstrap.min.css">
-    <script src="js/jquery-1.10.2.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
     
 <style>
 body {
@@ -301,8 +298,25 @@ echo $_COOKIE['rememberme']; ?>"/>
         </div>
       </div>
       <!-- Modal -->
-
+<noscript id="deferred-styles">
+<link rel="stylesheet" href="css/flatbootstrap.min.css">
+</noscript>
+<script>
+      var loadDeferredStyles = function() {
+        var addStylesNode = document.getElementById("deferred-styles");
+        var replacement = document.createElement("div");
+        replacement.innerHTML = addStylesNode.textContent;
+        document.body.appendChild(replacement)
+        addStylesNode.parentElement.removeChild(addStylesNode);
+      };
+      var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+          webkitRequestAnimationFrame || msRequestAnimationFrame;
+      if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+      else window.addEventListener('load', loadDeferredStyles);
+    </script>
 </body>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script>
 //------page
 bgnum = 0;
@@ -357,6 +371,7 @@ var formData = {
             window.location.href = "main.php";
 
           } else {
+            alert(data);
             $("#loadicon").hide();
             $("#statusdisp").html('Incorrect login.');
             document.getElementById("statusdisp").classList.add("bad");

@@ -10,28 +10,7 @@ class TableData {
  
  	private $_db;
 	public function __construct() {
-		try {
-			$user = "slpuser"; 
-			$passwd = "turtles9"; 
-			$host = "localhost"; 
-			$database = "slponline";
-		
-		    $this->_db = new PDO('mysql:host='.$host.';dbname='.$database, $user, $passwd, array(PDO::ATTR_PERSISTENT => true));
-		} catch (PDOException $e) {
-		    error_log("Failed to connect to database: ".$e->getMessage());
-		}		
-		session_start(); 
-$now = time();
-if (isset($_SESSION['discard_after']) && $now > $_SESSION['discard_after']) {
-    session_unset();
-    session_destroy();
-    session_start();
-}
-$_SESSION['discard_after'] = $now + 1800;
-if(empty($_SESSION['emailaddress'])) { 
-    header("Location: http://slp.ph/"); 
-    die("Redirecting to login.."); 
-}
+		require("../l33tz9.php");
 	}
 	public function get($table, $index_column, $columns) {
 		// Paging

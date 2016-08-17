@@ -55,7 +55,7 @@ while ($row2 = $stmt2->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="http://slp.ph/main.php" style="font-weight:900"><img src="http://slp.ph/hr/imgs/slpsmall.png" style="display:inline;margin-right:0.5em;margin-top:-0.17em">SLP</a>
+      <a class="navbar-brand" href="http://slp.ph/main.php" style="font-weight:900"><img src="http://slp.ph/imgs/slpsmall.png" style="display:inline;margin-right:0.5em;margin-top:-0.17em">SLP</a>
     </div>
    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -92,7 +92,7 @@ while ($row2 = $stmt2->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             Reports <span class="caret"></span></a>
           <ul class="dropdown-menu slpdropsub">
-            <!--<li><a href="http://slp.ph/opsdashboard.php">Operations Dashboard</a></li>-->
+            <li><a href="#" style="color:#888">Operations Dashboard</a></li>
             <li><a href="http://slp.ph/hbdashboard.php">HanapBuhay Dashboard</a></li>
             <li><a href="http://slp.ph/monicadb">Historical Data</a></li>
           </ul>
@@ -103,6 +103,7 @@ while ($row2 = $stmt2->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
           <ul class="dropdown-menu slpdropsub">
             <li><a href="http://slp.ph/rpmodirectory.php">RPMO directory</a></li>
             <li><a href="http://slp.ph/dev.php">System Development</a></li>
+            <li><a href="http://slp.ph/faqs.php">FAQs</a></li>
           </ul>
         </li>
       </ul>
