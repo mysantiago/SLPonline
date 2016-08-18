@@ -178,6 +178,13 @@ global $db;
             
         } else {
             $submitted_emailaddress = htmlentities($_POST['emailaddress'], ENT_QUOTES, 'UTF-8'); 
+            $sql = "UPDATE HRDB SET loginfail = (loginfail + 1) WHERE emailaddress = :emailaddress";
+                $query_params = array( 
+                ':emailaddress' => $_POST['emailaddress'] 
+                );
+                $rowfailed = $db->prepare($sql); 
+                $result = $rowfailed->execute($query_params);
+                    echo "login failed";  
         }		
           
     } else {
