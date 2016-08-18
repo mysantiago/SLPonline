@@ -734,18 +734,28 @@ if( $stmt->rowCount() <= 0)
                             
                               <select class="form-control cleanselect" name="event" id="event" required>
                                 <option selected><?php echo $row["event"]; ?></option>
-                                <option>Official CDO</option>
-                                <option>Internal CDO</option>
-                                <option>Meeting outside Metro Manila</option>
-                                <option>Meeting within Metro Manila</option>
-                                <option>Meeting within Central Office</option>
-                                <option value="Leave">Leave (Vacation, Sick, Forced, etc)</option>
-                                <option>Leave</option>
-                                <option>Workshop</option>
-                                <option>Training</option>
-                                <option>DSWD Event</option>
-                              </select>
-                          
+                 <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM libhr_event order by hreventname");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
+                              $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
+                        
+                        while($hreventname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value=" <?php echo $hreventname['hreventname']; ?>"> <?php echo $hreventname['hreventname']; ?> </option>
+                    
+                      <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                   
+                        ?>
+                      </select>
+                    <!-- upto this -->                    
                           </div>
                           <div class="form-group" style="margin-left:1em;margin-right:1em;margin-bottom:0">
                               <input type="text" class="form-control" value="<?php echo $row['venue'];?>" id="venue" name="venue">
@@ -785,20 +795,30 @@ if( $stmt->rowCount() <= 0)
                     <div class="form-group" style="margin-right:1em;margin-left:1em;margin-bottom:0;margin-top:1em">
                         <select class="form-control cleanselect" name="fileclass" id="fileclass" required>
                           <option value="">Select Document Type</option>
-                          <option value="Internal Memorandum">Internal Memorandum (within CO)</option>
-                          <option value="External Memorandum">External Memorandum (to regions)</option>
-                          <option>Project Proposal</option>
-                          <option>Policy Document</option>
-                          <option>Guide / Manual</option>
-                          <option>Template / Form</option>
-                          <option>Accomplishment Report</option>
-                          <option>Financial Report</option>
-                          <option>Feedback Report</option>
-                          <option>Program Flow</option>
-                          <option>Supporting Documents</option>
-                          <option>IEC materials</option>
-                          <option>Notes</option>
-                        </select>
+                     <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM libhr_doctype order by hrdocname");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
+                              $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
+                        while($hrdocname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value=" <?php echo $hrdocname['hrdocname']; ?>"> <?php echo $hrdocname['hrdocname']; ?> </option>
+                      <?php
+                        }
+                       if ($_SESSION['permlvl']>0) { 
+                        ?>
+                        <option>Blast</option>
+                        <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                    ?>
+                      </select>
+                   <!--   upto this      -->     
                     </div>
                     <div class="form-group" style="margin-top:1em;margin-left:1em;margin-right:1em;" id="docsubject">
                       <input class="form-control" placeholder="Document Title / Subject" style="" id="dsubject" name="dsubject" required/><center>
