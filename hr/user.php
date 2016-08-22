@@ -80,6 +80,8 @@ function timeago($ptime)
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../js/tag-it.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" src="http://momentjs.com/downloads/moment.min.js"></script>
+      <script src="https://code.highcharts.com/highcharts.js"></script>
+
     <style>
 
 body {
@@ -350,7 +352,7 @@ if ($_SESSION['permlvl']>0 && $_SESSION['id']==$_SESSION['pageid'])
         </div>
 
 
-        <div class="col-md-5 wellz" style="padding:1em;text-align:left;border-right:1px solid #ccc">
+        <div class="col-md-3 wellz" style="padding:1em;text-align:left;border-right:1px solid #ccc">
             <span style="color:#ccc;font-size:18px">
               <span id="feelingstat"><?php if ($row['feeling']!="") { echo $row['feeling']."<br><br>"; } else { if ($_SESSION['id']==$_GET['id']) { echo "How are you feeling, ".$row['firstname']."? &nbsp;"; } } ?></span>
             <?php if ($_SESSION['id']==$_GET['id']) { ?>
@@ -399,6 +401,20 @@ try {
 ?>
             </table>
         </div>
+
+
+
+      <!-- get this inserted div -->
+
+      <div class="col-md-2 " style="padding:1em";>
+      <h6>LOGIN ATTEMPTS</h6>
+      <div id="container" style="min-width: 200px; height: 200px; max-width: 200px; margin: 0 auto"></div>
+
+      </div>
+      <!-- upto this -->
+
+
+
 
         <div class="col-md-4 wellz" style="padding:1em;">
           <b style="font-size:20px">
@@ -1277,5 +1293,108 @@ $(document).ready(function() {
   };
 });
 </script>
+<?php
+//$filter = $_SESSION['filter'];
+        /*if ($filter == "NPMO") {*/
+//$stmt = $db->prepare("SELECT count(id) as total, count(case when confirmed = '1' then 1 else null end) as confirmed FROM HRDB"); 
+$stmt = $db ->prepare("SELECT logincount + loginfail as total,logincount as logincount, loginfail as loginfail from HRDB where id = :hrdbid");
+$stmt->bindParam(':hrdbid', $_SESSION['id']);
+        /*} else {
+$stmt = $db->prepare("SELECT count(id) as total, count(case when isnew = '1' then 1 else null end) as confirmed FROM HRDB WHERE region = '".$filter."'");           
+        }*/
+$stmt->execute();
+$row = $stmt->fetch();
+?>
+<script>
+$(function () {
+
+    $(document).ready(function () {
+      var colors = Highcharts.getOptions().colors,
+        logincount = '<?php echo $row["logincount"]; ?>',
+        loginfail = '<?php echo $row["loginfail"]; ?>';
+        total = <?php echo $row['total']; ?>
+        // Build the chart
+        $('#container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+                backgroundColor: null
+            },
+            title: {
+                   text: total,
+                   verticalAlign: 'middle',
+                   y: -12,
+                   style: {
+                        fontFamily: 'Lato', 
+                        fontSize: '30px',
+                        fontWeight: 'bold',
+                    }
+            },
+            subtitle: {
+                text: 'Total',
+                verticalAlign: 'middle',
+                y: 3,
+                style: {
+                        fontFamily: 'Lato', 
+                        fontSize: '14px',
+                    }
+            },
+            tooltip: {
+                formatter: function() {
+                    var point = this.point,
+                        s = point.name+': <b>'+point.y.toFixed(0)+'</b>';
+                    return s;
+                },
+                hideDelay: 0
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            legend: {
+              layout: 'horizontal',
+              align: 'center',
+              verticalAlign: 'bottom',
+              floating: false,
+              backgroundColor: '',
+              itemStyle: {
+                 font: 'Lato, sans-serif',
+              },
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Users',
+                colorByPoint: true,
+                innerSize: '75%',
+                data: [{
+                    name: 'SUCCESS',
+                    y: parseInt(logincount),
+                    color: '#2c3e50'
+                    
+                }, {
+                    name: 'FAILED',
+                    y: parseInt(loginfail),
+                    color: '#d8d8d8'
+                }]
+            }]
+        });
+    });
+});
+</script>
+
+
+
+
+
 </body>
 </html>
