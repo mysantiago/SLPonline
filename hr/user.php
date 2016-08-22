@@ -69,7 +69,7 @@ function timeago($ptime)
     <link rel="shortcut icon" href="../imgs/favicon.ico" type="image/x-icon">
     <link rel="icon" href="../imgs/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/flatbootstrap.css"/>
-    <link rel="stylesheet" href="http://slp.ph/css/pikaday.css"/>
+    <link rel="stylesheet" href="../../css/pikaday.css"/>
     <link rel="stylesheet" type="text/css" href="../css/DTbootstrap.css">
     <link href="../css/jquery.tagit.css" rel="stylesheet" type="text/css">
     <link href="../css/tagit.ui-zendesk.css" rel="stylesheet" type="text/css">
@@ -272,36 +272,23 @@ tbody tr {
         $prof->bindParam(':hrdbida', $_SESSION['pageid']);
         $prof->execute();
         $p=$prof->fetch();
-            if ($row['sex'] == 0) {
-            
-                       if($_SESSION['id']==$_SESSION['pageid']) 
-                       {
-                          echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" />';
-           
-                            echo '<img src="../imgs/partner.png" style="margin-bottom:1em" hidden>';
-                                    } 
-                         else
-                         {
-                          echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" hidden/>';
 
-                        echo '<img src="../imgs/partner.png" style="margin-bottom:1em">';
-                         }
-          } else {
-            
-                       if($_SESSION['id']==$_SESSION['pageid']) 
-                       {
-                          echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" />';
-           
-                            echo '<img src="../imgs/female.png" style="margin-bottom:1em" hidden>';
-                                    } 
-                         else
-                         {
-                          echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" hidden/>';
+        
 
-                        echo '<img src="../imgs/female.png" style="margin-bottom:1em">';
-                         }
-   
-          }
+if($p['hrdbid']=="")
+{
+        if ($row['sex'] == 0) {
+          echo '<img src="../imgs/partner.png" style="margin-bottom:1em">';
+        } else {
+          echo '<img src="../imgs/female.png" style="margin-bottom:1em">';
+        }
+       
+}
+else
+{
+echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" style="border-radius:50%" />';
+}
+
    
          } catch(PDOException $e) {
       echo "Error: " . $e->getMessage();
@@ -325,33 +312,13 @@ tbody tr {
           <?php   
 
 
-if ($_SESSION['permlvl']>0 && $_SESSION['id']==$_SESSION['pageid'])
-{ 
+if ($_SESSION['permlvl']>0 || ($_SESSION['permlvl']<1 && $_SESSION['id']==$_SESSION['pageid'])  ) { 
 ?>
-                  <b>&nbsp;<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#uploadprofile" ><img src="imgs/cam.png" width="18" height="18" style="cursor:pointer" onmouseover="this.src='imgs/cam.png'" onmouseout="this.src='imgs/cam.png'" alt="Upload" style="float:right;margin:7px" /></button> &nbsp;</b>
-<?php
-}
-          if($_SESSION['permlvl']<1 && $_SESSION['id']==$_SESSION['pageid'])
-          {
-?>
-                  <b>&nbsp;<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#uploadprofile" ><img src="imgs/cam.png" width="18" height="18" style="cursor:pointer" onmouseover="this.src='imgs/cam.png'" onmouseout="this.src='imgs/cam.png'" alt="Upload" style="float:right;margin:7px" /></button> &nbsp;</b>
-<?php
-          }
-         if($_SESSION['permlvl']>0 && $_SESSION['id']!=$_SESSION['pageid'])
-          {
- ?>    
-            <b>&nbsp;<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#uploadprofile" ><img src="imgs/cam.png" width="18" height="18" style="cursor:pointer" onmouseover="this.src='imgs/cam.png'" onmouseout="this.src='imgs/cam.png'" alt="Upload" style="float:right;margin:7px" /></button> &nbsp;</b>
-<?php
-          }  
-          if ($_SESSION['permlvl']<1 && $_SESSION['id']!=$_SESSION['pageid'])
-          {
-?>
-          <b>&nbsp;<img src="imgs/cam.png" width="18" height="18" style="cursor:pointer" onmouseover="this.src='imgs/cam.png'" onmouseout="this.src='imgs/cam.png'" alt="Upload" style="float:right;margin:7px" hidden/>&nbsp;</b>
+      <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#uploadprofile" ><img src="imgs/cam.png" width="18" height="18" style="cursor:pointer" onmouseover="this.src='imgs/cam.png'" onmouseout="this.src='imgs/cam.png'" alt="Upload" style="float:right;margin:7px" /></button>
 <?php
 }
 ?>
-
-	<br>
+  <br>
           <span style="font-size:14px;color:#888"><?php echo $row['designation'];?><br>
           <?php if ($row['region'] == "NPMO") { echo $row['region']; } else { echo $row['region'].' - '.$row['province'].' - '.$row['municipality']; }?>
           </span><br><br>
@@ -740,8 +707,8 @@ $(function () {
         <div class="modal-dialog modal-sm">
 
           <div class="modal-content" style="padding:1em;padding-top:0.5em;">
-                  <h3 style="color:#5cb85c;margin-bottom:6px">>Successfully Uploaded!</h3>
-                  <span style="font-size:13px" id="sucsubtext">Profile picture has been changed.</span><br><br>
+                  <h3 style="color:#5cb85c;margin-bottom:6px">Success!</h3>
+                  <span style="font-size:13px" id="sucsubtext">Profile picture uploaded.</span><br><br>
                   <button type="button" class="btn btn-primary pull-right" style="background:#5cb85c;border:0;margin-top:0;padding:5px 10px 5px 10px" id="okaybtn" data-dismiss="modal">Okay</button>
                   <div class="clearfix"></div>
           </div>
@@ -857,9 +824,9 @@ if ($_SESSION['permlvl']<1 && $rows['hrdbid']==$_SESSION['pageid'])
 }
 ?>
   </form>
-						</body>
-						</html>  
-			  </div>
+            </body>
+            </html>  
+        </div>
         </div>
       </div>
     </div>
@@ -1315,7 +1282,7 @@ if ($("#comment").val() == "") {
 </script>
 <script type="text/javascript" src="../js/feedback.js"></script>
 <script type="text/javascript" src="../js/jquery.autocomplete.min.js"></script>
-<script src="http://slp.ph/js/pikaday.min.js"></script>
+<script src="../../js/pikaday.min.js"></script>
 <script>
 $(document).ready(function() {
   document.getElementById("userfile").onchange = function () {
