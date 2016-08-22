@@ -272,7 +272,37 @@ tbody tr {
         $prof->bindParam(':hrdbida', $_SESSION['pageid']);
         $prof->execute();
         $p=$prof->fetch();
-        echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5"/>';
+            if ($row['sex'] == 0) {
+            
+                       if($_SESSION['id']==$_SESSION['pageid']) 
+                       {
+                          echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" />';
+           
+                            echo '<img src="../imgs/partner.png" style="margin-bottom:1em" hidden>';
+                                    } 
+                         else
+                         {
+                          echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" hidden/>';
+
+                        echo '<img src="../imgs/partner.png" style="margin-bottom:1em">';
+                         }
+          } else {
+            
+                       if($_SESSION['id']==$_SESSION['pageid']) 
+                       {
+                          echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" />';
+           
+                            echo '<img src="../imgs/female.png" style="margin-bottom:1em" hidden>';
+                                    } 
+                         else
+                         {
+                          echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" hidden/>';
+
+                        echo '<img src="../imgs/female.png" style="margin-bottom:1em">';
+                         }
+   
+          }
+   
          } catch(PDOException $e) {
       echo "Error: " . $e->getMessage();
       }//endtry
@@ -1298,7 +1328,7 @@ $(document).ready(function() {
         /*if ($filter == "NPMO") {*/
 //$stmt = $db->prepare("SELECT count(id) as total, count(case when confirmed = '1' then 1 else null end) as confirmed FROM HRDB"); 
 $stmt = $db ->prepare("SELECT logincount + loginfail as total,logincount as logincount, loginfail as loginfail from HRDB where id = :hrdbid");
-$stmt->bindParam(':hrdbid', $_SESSION['id']);
+$stmt->bindParam(':hrdbid', $_SESSION['pageid']);
         /*} else {
 $stmt = $db->prepare("SELECT count(id) as total, count(case when isnew = '1' then 1 else null end) as confirmed FROM HRDB WHERE region = '".$filter."'");           
         }*/
