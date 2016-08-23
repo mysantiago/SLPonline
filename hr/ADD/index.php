@@ -269,34 +269,28 @@ function isfemale() {
                                   <div class="col-sm-8">
                                         <select class="form-control cleanselect" name="designation" id="designation">
                                           <option value="" selected>Select Designation</option>
-                                          <option>Assistant Regional Director for Operations</option>
-                                          <option>Director</option>
-                                          <option>Executive Assistant</option>
-                                          <option>Deputy Program Manager</option>
-                                          <option>Cluster Coordinator</option>
-                                          <option>Regional Monitor</option>
-                                          <option>Admin Officer</option>
-                                          <option>Senior Admin Assistant</option>
-                                          <option>Admin Assistant</option>
-                                          <option>Grievance</option>
-                                          <option>Information Technology Officer</option>
-                                          <option>Information Officer</option>
-                                          <option>Regional Program Coordinator</option>
-                                          <option>CDED Officer</option>
-                                          <option>External Relations Officer</option>
-                                          <option>M&E Officer for Finance</option>
-                                          <option>M&E Officer for Operations</option>
-                                          <option>Training Officer</option>
-                                          <option>Special Project Focal</option>
-                                          <option>Specialist</option>
-                                          <option>Provincial Coordinator</option>
-                                          <option>Field PDO</option>
-                                          <option>Project Development Officer</option>
-                                          <option>Community Facilitator</option>
-                                          <option>Community Organizer</option>
-                                          <option>Book keeper</option>
-                                          <option>Encoder</option>
-                                        </select>
+                                         <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM libhr_designation order by hrdesignationname");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
+                              $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
+                        
+                        while($hrdesignationname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value=" <?php echo $hrdesignationname['hrdesignationname']; ?>"> <?php echo $hrdesignationname['hrdesignationname']; ?> </option>
+                    
+                      <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                   
+                        ?>
+                      </select>
+                    <!-- upto this -->      
                                   </div>
                                 </div>
                               </div>
@@ -306,25 +300,28 @@ function isfemale() {
                                   <div class="col-sm-8">
                                         <select class="form-control cleanselect" id="position" name="position" id="position">
                                           <option value="" selected>Select Position</option>
-                                          <option>Administrative Aide IV</option>
-                                          <option>Administrative Assistant II</option>
-                                          <option>Administrative Assistant III</option>
-                                          <option>Assistant Regional Director</option>
-                                          <option>Community Organizer</option>
-                                          <option>Senior Administrative Assistant III</option>
-                                          <option>Administrative Officer V</option>
-                                          <option>Administrative Officer II</option>
-                                          <option>Consultant</option>
-                                          <option>Deputy Program Manager</option>
-                                          <option>Director</option>
-                                          <option>Information Officer IV</option>
-                                          <option>Information Technology Officer II</option>
-                                          <option>Information Technology Officer I</option>
-                                          <option>Project Development Officer IV</option>
-                                          <option>Project Development Officer III</option>
-                                          <option>Project Development Officer II</option>
-                                          <option>Regional Director</option>
-                                        </select>
+                                          <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM libhr_position order by hrpositionname");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
+                              $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
+                        
+                        while($hrpositionname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value=" <?php echo $hrpositionname['hrpositionname']; ?>"> <?php echo $hrpositionname['hrpositionname']; ?> </option>
+                    
+                      <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                   
+                        ?>
+                      </select>
+                    <!-- upto this --> 
                                   </div>
                                 </div>
                               </div>
@@ -350,15 +347,29 @@ function isfemale() {
                                 <div class="col-sm-8">
                                       <select class="form-control cleanselect" name="fundsource" id="fundsource">
                                         <option value="" selected>Select Source</option>
-                                        <option>SLP GAA</option>
-                                        <option>PAMANA Regular</option>
-                                        <option>PAMANA Closure</option>
-                                        <option>Normalization</option>
-                                        <option>JSDF</option>
-                                        <option>OBBSB</option>
-                                        <option>Regular</option>
-                                        <option>RRP</option>
-                                      </select>
+                                 
+ <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM libhr_funsource order by hrfundsourcename");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
+                              $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
+                        
+                        while($hrfundsourcename=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value=" <?php echo $hrfundsourcename['hrfundsourcename']; ?>"> <?php echo $hrfundsourcename['hrfundsourcename']; ?> </option>
+                    
+                      <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                        ?>
+                      </select>
+
+<!-- up to this -->   
                                 </div>
                               </div>
                             </div>

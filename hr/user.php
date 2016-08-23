@@ -276,6 +276,7 @@ tbody tr {
 <?php require "nav.php"; ?>
 <div class="row" style="margin:0;padding:0;margin-left:1em;margin-right:1em;border:solid 1px #c5d6de;background:#fff;text-align:center;padding:0">
         <div class="col-md-3 wellz" style="padding:1em">
+<<<<<<< HEAD
 
           <div id="box" style="margin-bottom:1em">
 <?php
@@ -290,10 +291,20 @@ if ($_SESSION['permlvl']>0 || ($_SESSION['permlvl']<1 && $_SESSION['id']==$_SESS
 }
 
       try {
+=======
+          <?php
+    /*      if ($row['sex'] == 0) {
+            echo '<img src="../imgs/partner.png" style="margin-bottom:1em">';
+          } else {
+            echo '<img src="../imgs/female.png" style="margin-bottom:1em">';
+          }*/
+            try {
+>>>>>>> ff7366157b8cfe7194f3f9238fc5677e2691e3a7
         $prof = $db->prepare("SELECT * FROM hr_profilepics WHERE hrdbid=:hrdbida");
         $prof->bindParam(':hrdbida', $_SESSION['pageid']);
         $prof->execute();
         $p=$prof->fetch();
+<<<<<<< HEAD
               if($p['hrdbid']=="") {
                       if ($row['sex'] == 0) {
                         echo '<img src="../imgs/partner.png" style="margin-bottom:1em">';
@@ -306,13 +317,42 @@ if ($_SESSION['permlvl']>0 || ($_SESSION['permlvl']<1 && $_SESSION['id']==$_SESS
 } catch(PDOException $e) {
       echo "Error: " . $e->getMessage();
 }
+=======
+
+        
+
+if($p['hrdbid']=="")
+{
+        if ($row['sex'] == 0) {
+          echo '<img src="../imgs/partner.png" style="margin-bottom:1em">';
+        } else {
+          echo '<img src="../imgs/female.png" style="margin-bottom:1em">';
+        }
+       
+}
+else
+{
+echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" style="border-radius:50%" />';
+}
+
+   
+         } catch(PDOException $e) {
+      echo "Error: " . $e->getMessage();
+      }//endtry
+>>>>>>> ff7366157b8cfe7194f3f9238fc5677e2691e3a7
           $byte = $db->prepare("SELECT SUM(amt) as total FROM bytez m WHERE m.hrdbid='".$_GET['id']."' ");
           $byte->execute();
           $bytez = $byte->fetch();
           ?> 
+<<<<<<< HEAD
 </div>
           
           <span style="font-size:18px;font-weight:200;margin-top:1em">
+=======
+          <br>
+          
+          <span style="font-size:18px;font-weight:200;">
+>>>>>>> ff7366157b8cfe7194f3f9238fc5677e2691e3a7
           <?php
           $fullnamez = $row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
           if ($row['nickname'] != "") {
@@ -322,6 +362,16 @@ if ($_SESSION['permlvl']>0 || ($_SESSION['permlvl']<1 && $_SESSION['id']==$_SESS
           } ?>
           </span>
           <br>
+          <?php   
+
+
+if ($_SESSION['permlvl']>0 || ($_SESSION['permlvl']<1 && $_SESSION['id']==$_SESSION['pageid'])  ) { 
+?>
+      <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#uploadprofile" ><img src="imgs/cam.png" width="18" height="18" style="cursor:pointer" onmouseover="this.src='imgs/cam.png'" onmouseout="this.src='imgs/cam.png'" alt="Upload" style="float:right;margin:7px" /></button>
+<?php
+}
+?>
+  <br>
           <span style="font-size:14px;color:#888"><?php echo $row['designation'];?><br>
           <?php if ($row['region'] == "NPMO") { echo $row['region']; } else { echo $row['region'].' - '.$row['province'].' - '.$row['municipality']; }?>
           </span><br><br>
@@ -351,7 +401,17 @@ if ($_SESSION['permlvl']>0 || ($_SESSION['permlvl']<1 && $_SESSION['id']==$_SESS
           </div>
         </div>
 
+<<<<<<< HEAD
 <div class="col-md-6" style="padding:1em;text-align:left;border-right:2px solid #ccc">
+=======
+
+        <div class="col-md-3 wellz" style="padding:1em;text-align:left;border-right:1px solid #ccc">
+            <span style="color:#ccc;font-size:18px">
+              <span id="feelingstat"><?php if ($row['feeling']!="") { echo $row['feeling']."<br><br>"; } else { if ($_SESSION['id']==$_GET['id']) { echo "How are you feeling, ".$row['firstname']."? &nbsp;"; } } ?></span>
+            <?php if ($_SESSION['id']==$_GET['id']) { ?>
+              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#feelModal" style="margin-top:-3px;border:0;font-size:12px;background:#18bc9c;padding:2px;padding-right:7px;padding-left:7px"><span class="glyphicon glyphicon-pencil"></span></button><br><br>
+            <?php } ?>
+>>>>>>> ff7366157b8cfe7194f3f9238fc5677e2691e3a7
             
             <div class="row"> 
             <div class="col-md-7">
@@ -416,7 +476,23 @@ if ($_SESSION['permlvl']>0 || ($_SESSION['permlvl']<1 && $_SESSION['id']==$_SESS
 
 
 
+<<<<<<< HEAD
         <div class="col-md-3 wellz" style="padding:1em;">
+=======
+      <!-- get this inserted div -->
+
+      <div class="col-md-2 " style="padding:1em";>
+      <h6>LOGIN ATTEMPTS</h6>
+      <div id="container" style="min-width: 200px; height: 200px; max-width: 200px; margin: 0 auto"></div>
+
+      </div>
+      <!-- upto this -->
+
+
+
+
+        <div class="col-md-4 wellz" style="padding:1em;">
+>>>>>>> ff7366157b8cfe7194f3f9238fc5677e2691e3a7
           <b style="font-size:20px">
 <?php if ($row['nickname'] != "") {
             echo $row['nickname'];
@@ -754,7 +830,11 @@ $(function () {
       <div class="modal-content" style="padding:1em" id="upprof">
         <div class="modal-body">
               <div class="form-group" style="margin-bottom:0">
+<<<<<<< HEAD
 <h3 style="margin-top:0">Profile Picture</h3>
+=======
+
+>>>>>>> ff7366157b8cfe7194f3f9238fc5677e2691e3a7
             <form id="myForm" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="dt" value="<?php echo date("m-d-Y h:i:sa"); ?>" />
                   <div class="input-group" style="margin-bottom:0;margin-top:1em">
@@ -767,7 +847,11 @@ $(function () {
                       </div>
                     </div><!-- /input-group -->
                     <span style="font-size:12px;margin-bottom:1em">Supported file types: PNG, JPG, JPEG, TIFF, BMP</span>
+<<<<<<< HEAD
                     <span style="font-size:12px;margin-bottom:2em" class="pull-right">Maximum file size:10MB</span><br>
+=======
+                    <span style="font-size:12px;margin-bottom:1em" class="pull-right">Maximum file size:10MB</span><br>
+>>>>>>> ff7366157b8cfe7194f3f9238fc5677e2691e3a7
 <?php
              try {
                     $at = $db->prepare("SELECT * FROM hr_profilepics WHERE hrdbid=:id");
@@ -778,6 +862,7 @@ $(function () {
                  } catch(PDOException $e) {
                   echo "Error: " . $e->getMessage();
                   }//endtry
+<<<<<<< HEAD
 if ( ($_SESSION['permlvl']>0 && $rows['hrdbid']==$_SESSION['pageid']) || ($_SESSION['permlvl']<1 && $rows['hrdbid']==$_SESSION['pageid']) ) { 
 // reupload 
   ?>        
@@ -796,6 +881,55 @@ if ( ($_SESSION['permlvl']>0 && $rows['hrdbid']!=$_SESSION['pageid']) || ($_SESS
 <?php 
 }
 
+=======
+if ($_SESSION['permlvl']>0 && $_SESSION['id']==$_SESSION['pageid'] && $rows['hrdbid']==$_SESSION['pageid'])
+{ 
+// reupload 
+  ?>
+            <button type="button" id="profileBtnRe" class="btn btn-primary btn-xs pull-left" style="padding:6margin-top:0.8empx 10px 6px 10px;">
+            <span class="glyphicon glyphicon-cloud-upload"></span> ReUpload</button>
+ <?php
+ }
+if ($_SESSION['permlvl']>0 && $_SESSION['id']!=$_SESSION['pageid'] && $rows['hrdbid']!=$_SESSION['pageid'])
+{ 
+// upload 
+?>      
+            <button type="button" id="profileBtn" class="btn btn-primary btn-xs pull-left" style="padding:6margin-top:0.8empx 10px 6px 10px;">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Upload</button>
+<?php 
+}
+ if ($_SESSION['permlvl']>0 && $_SESSION['id']!=$_SESSION['pageid'] && $rows['hrdbid']==$_SESSION['pageid'])
+ { //reupload
+?>   
+             <button type="button" id="profileBtnRe" class="btn btn-primary btn-xs pull-left" style="padding:6margin-top:0.8empx 10px 6px 10px;">
+             <span class="glyphicon glyphicon-cloud-upload"></span> ReUpload</button>
+<?php
+}
+ if ($_SESSION['permlvl']>0 && $_SESSION['id']==$_SESSION['pageid'] && $rows['hrdbid']!=$_SESSION['pageid'])
+{ //upload 
+  ?>
+            <button type="button" id="profileBtn" class="btn btn-primary btn-xs pull-left" style="padding:6margin-top:0.8empx 10px 6px 10px;">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Upload</button>
+<?php 
+}
+
+if ($_SESSION['permlvl']<1 && $rows['hrdbid']==$_SESSION['pageid'])
+{ 
+// reupload 
+?>
+             <button type="button" id="profileBtnRe" class="btn btn-primary btn-xs pull-left" style="padding:6margin-top:0.8empx 10px 6px 10px;">
+             <span class="glyphicon glyphicon-cloud-upload"></span> ReUpload</button>
+ <?php 
+}
+ if ($_SESSION['permlvl']<1 && $rows['hrdbid']!=$_SESSION['pageid'])
+{ 
+// upload 
+?>
+            <button type="button" id="profileBtn" class="btn btn-primary btn-xs pull-left" style="padding:6margin-top:0.8empx 10px 6px 10px;">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Upload</button>
+ <?php 
+}
+>>>>>>> ff7366157b8cfe7194f3f9238fc5677e2691e3a7
 ?>
   </form>
             </body>
@@ -1164,7 +1298,11 @@ $("#profileBtnRe").click(function(event) {
                       $('#myModal').modal();
                        $("#uploadprofile").hide()
                       $('#myModal').on('hidden.bs.modal', function () {
+<<<<<<< HEAD
                           location.href = "user.php?id=<?php echo $_SESSION['pageid']; ?>";
+=======
+                          location.href = "user2.php?id=<?php echo $_SESSION['pageid']; ?>";
+>>>>>>> ff7366157b8cfe7194f3f9238fc5677e2691e3a7
                       })
                     } else {
                       alert(data);
@@ -1306,7 +1444,11 @@ $(function () {
             subtitle: {
                 text: 'Total',
                 verticalAlign: 'middle',
+<<<<<<< HEAD
                 y: 2,
+=======
+                y: 3,
+>>>>>>> ff7366157b8cfe7194f3f9238fc5677e2691e3a7
                 style: {
                         fontFamily: 'Lato', 
                         fontSize: '14px',
@@ -1353,7 +1495,11 @@ $(function () {
                     color: '#2c3e50'
                     
                 }, {
+<<<<<<< HEAD
                     name: 'FAIL',
+=======
+                    name: 'FAILED',
+>>>>>>> ff7366157b8cfe7194f3f9238fc5677e2691e3a7
                     y: parseInt(loginfail),
                     color: '#d8d8d8'
                 }]
