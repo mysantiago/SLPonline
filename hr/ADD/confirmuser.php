@@ -378,13 +378,15 @@ ob_start();
         
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = 'ssl';
-        $mail->Host = "gator4192.hostgator.com";
+        $mail->Host = "smtp.gmail.com";
         $mail->Port = 465;
-        $mail->IsHTML(true);
-        $mail->Username = "noreply@slp.ph";
+        $mail->Username = "info@slp.ph";
         $mail->Password = "turtles98!!";
-        $mail->From = "SLP Online <noreply@slp.ph>";
-        $mail->SetFrom($from,$fromname);
+        $mail->From = "info@slp.ph";
+        $mail->FromName = "SLP";
+        
+        $mail->IsHTML(true);
+
         $mail->Subject = "SLP Online Account Information";
         $mail->Body = $myvar;
         $mail->AddAddress($_POST['emailaddress']);

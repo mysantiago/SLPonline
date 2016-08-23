@@ -98,13 +98,16 @@ ob_start();
               $mail->IsSMTP();
               
               $mail->SMTPAuth = true;
-              $mail->SMTPSecure = 'ssl';
-              $mail->Host = "gator4192.hostgator.com";
-                $mail->Port = 465;
+        $mail->SMTPSecure = 'ssl';
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 465;
+        $mail->Username = "info@slp.ph";
+        $mail->Password = "turtles98!!";
+        $mail->From = "info@slp.ph";
+        $mail->FromName = "SLP";
+
                 $mail->IsHTML(true);
-                $mail->Username = "noreply@slp.ph";
-                $mail->Password = "turtles98!!";
-              $mail->SetFrom($from,$fromname);
+
               $mail->Subject = $_POST['docsubject'];
               $mail->Body = $myvar;
 

@@ -301,7 +301,7 @@ if ($_SESSION['permlvl']>0 || ($_SESSION['permlvl']<1 && $_SESSION['id']==$_SESS
                         echo '<img src="../imgs/female.png" style="margin-bottom:1em">';
                       }     
               } else {
-              echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" style="border-radius:50%" />';
+              echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" width="200" height="200" vspace="5" style="border-radius:50%" />';
               }   
 } catch(PDOException $e) {
       echo "Error: " . $e->getMessage();
@@ -1113,6 +1113,7 @@ $("#saveTWG").click(function(event) {
   // UPLOAD BUTTON
 $("#profileBtn").click(function(event) {
      $("#loadoverlay").show();
+     document.getElementById("profileBtn").disabled = true;
      var fd = new FormData;                  
      file1 = $('#userfile').prop('files')[0];
      fd.append('action', 'uploadpics');
@@ -1145,6 +1146,8 @@ $("#profileBtn").click(function(event) {
 // REUPLOAD BUTTON 
 $("#profileBtnRe").click(function(event) {
      $("#loadoverlay").show();
+     document.getElementById("profileBtnRe").disabled = true;
+     $("#profileBtnRe").disabled = true;
      var fd1 = new FormData;                  
      file2 = $('#userfile').prop('files')[0];
      fd1.append('action', 'reuploadpics');
@@ -1160,6 +1163,8 @@ $("#profileBtnRe").click(function(event) {
                 success: function(data){
                     $("#loadoverlay").hide();
                     if (data=="Success") {
+                      $("#profileBtnRe").disabled = false;
+                      document.getElementById("profileBtnRe").disabled = false;
                       $('#myModal').modal();
                        $("#uploadprofile").hide()
                       $('#myModal').on('hidden.bs.modal', function () {
@@ -1167,6 +1172,8 @@ $("#profileBtnRe").click(function(event) {
                       })
                     } else {
                       alert(data);
+                      document.getElementById("profileBtnRe").disabled = false;
+                      $("#profileBtnRe").disabled = false;
                     }
                 }
           });

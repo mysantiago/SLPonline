@@ -353,7 +353,7 @@ ob_start();
     <td style="vertical-align:top;padding-bottom:10px;padding-left:70px;padding-right:70px;padding-top:28px">
       <table width="100%" style="border-spacing:0" border=0>
       <td style="text-align:center"><center>
-        <img src="http://slp.ph/hr/imgs/slphr_diagram.png" width="300px"></center>
+        <img src="http://slp.ph/imgs/slphr_diagram.png" width="300px"></center>
       </td>
       </table>
     </td>
@@ -441,20 +441,21 @@ ob_start();
           $subjectname = $_POST['nickname'];
         }
 
-        $message = 'hallo';
         $mail = new PHPMailer();
         $mail->IsSMTP();
         
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = 'ssl';
-        $mail->Host = "gator4192.hostgator.com";
+        $mail->Host = "smtp.gmail.com";
         $mail->Port = 465;
-        $mail->IsHTML(true);
-        $mail->Username = "noreply@slp.ph";
+        $mail->Username = "info@slp.ph";
         $mail->Password = "turtles98!!";
-        $mail->From = "SLP Online <noreply@slp.ph>";
-        $mail->SetFrom($from,$fromname);
-        $mail->Subject = "BOOM! We've started it for you, ".$subjectname.".";
+        $mail->From = "info@slp.ph";
+        $mail->FromName = "SLP";
+
+
+        $mail->Subject = "[SLP] BOOM! We've started it for you, ".$subjectname.".";
+        $mail->IsHTML(true);
         $mail->Body = $myvar;
         $mail->AddAddress($_POST['emailaddress']);
         

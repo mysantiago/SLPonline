@@ -79,7 +79,7 @@ body {
 </head>
 <body>
 <?php include "nav.php"; ?>
-<script type="text/javascript" src="js/editForm.js"></script>
+<script type="text/javascript" src="../js/editForm.js"></script>
 <div class="container-fluid">
 <?php
 if(!empty($_GET)) 
