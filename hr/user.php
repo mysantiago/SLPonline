@@ -4,6 +4,7 @@ require "../zxcd9.php";
 
   $_GET   = filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
   $_SESSION['uid'] = $_GET['id'];
+    $_SESSION['pageid'] = $_GET['id'];
   $query = "SELECT firstname, middlename, lastname, nickname, sex, birthdate, emailaddress, contactnumber, designation, position, employstatus, employdate, fundsource, region, province, municipality, comptype, compyear, compstatus, compnotes, inactive, feeling FROM HRDB WHERE id = :id";
   $query_params = array(':id' => $_GET['id']);
         try 
@@ -68,7 +69,7 @@ function timeago($ptime)
     <link rel="shortcut icon" href="../imgs/favicon.ico" type="image/x-icon">
     <link rel="icon" href="../imgs/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/flatbootstrap.css"/>
-    <link rel="stylesheet" href="http://slp.ph/css/pikaday.css"/>
+    <link rel="stylesheet" href="../../css/pikaday.css"/>
     <link rel="stylesheet" type="text/css" href="../css/DTbootstrap.css">
     <link href="../css/jquery.tagit.css" rel="stylesheet" type="text/css">
     <link href="../css/tagit.ui-zendesk.css" rel="stylesheet" type="text/css">
@@ -79,6 +80,8 @@ function timeago($ptime)
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../js/tag-it.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" src="http://momentjs.com/downloads/moment.min.js"></script>
+      <script src="https://code.highcharts.com/highcharts.js"></script>
+
     <style>
 
 body {
@@ -252,24 +255,64 @@ tbody tr {
 #userdetails table tr td {
   cursor: default;
 }
+#box {
+
+}
+#overlay {  
+  position: absolute;
+  top: 1.5em;
+  left: 2.5em;
+  text-align:center;
+  opacity:0;
+    -webkit-transition: opacity .25s ease;
+    -moz-transition: opacity .25s ease;
+}
+#box:hover #overlay {
+  opacity:1;
+}
 </style>
 </head>
 <body>
-<?php require "../nav.php"; ?>
+<?php require "nav.php"; ?>
 <div class="row" style="margin:0;padding:0;margin-left:1em;margin-right:1em;border:solid 1px #c5d6de;background:#fff;text-align:center;padding:0">
         <div class="col-md-3 wellz" style="padding:1em">
-          <?php
-          if ($row['sex'] == 0) {
-            echo '<img src="../imgs/partner.png" style="margin-bottom:1em">';
-          } else {
-            echo '<img src="../imgs/female.png" style="margin-bottom:1em">';
-          }
+
+          <div id="box" style="margin-bottom:1em">
+<?php
+if ($_SESSION['permlvl']>0 || ($_SESSION['permlvl']<1 && $_SESSION['id']==$_SESSION['pageid'])  ) { 
+?>
+    <div id="overlay">
+        <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#uploadprofile">
+          <span class="glyphicon glyphicon-picture"></span> Upload Picture
+        </button>      
+    </div>
+<?php
+}
+
+      try {
+        $prof = $db->prepare("SELECT * FROM hr_profilepics WHERE hrdbid=:hrdbida");
+        $prof->bindParam(':hrdbida', $_SESSION['pageid']);
+        $prof->execute();
+        $p=$prof->fetch();
+              if($p['hrdbid']=="") {
+                      if ($row['sex'] == 0) {
+                        echo '<img src="../imgs/partner.png" style="margin-bottom:1em">';
+                      } else {
+                        echo '<img src="../imgs/female.png" style="margin-bottom:1em">';
+                      }     
+              } else {
+              echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" style="border-radius:50%" />';
+              }   
+} catch(PDOException $e) {
+      echo "Error: " . $e->getMessage();
+}
           $byte = $db->prepare("SELECT SUM(amt) as total FROM bytez m WHERE m.hrdbid='".$_GET['id']."' ");
           $byte->execute();
           $bytez = $byte->fetch();
-          ?>
-          <br>
-          <span style="font-size:18px;font-weight:200;">
+          ?> 
+</div>
+          
+          <span style="font-size:18px;font-weight:200;margin-top:1em">
           <?php
           $fullnamez = $row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
           if ($row['nickname'] != "") {
@@ -308,58 +351,72 @@ tbody tr {
           </div>
         </div>
 
-
-        <div class="col-md-5 wellz" style="padding:1em;text-align:left;border-right:1px solid #ccc">
-            <span style="color:#ccc;font-size:18px">
-              <span id="feelingstat"><?php if ($row['feeling']!="") { echo $row['feeling']."<br><br>"; } else { if ($_SESSION['id']==$_GET['id']) { echo "How are you feeling, ".$row['firstname']."? &nbsp;"; } } ?></span>
-            <?php if ($_SESSION['id']==$_GET['id']) { ?>
-              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#feelModal" style="margin-top:-3px;border:0;font-size:12px;background:#18bc9c;padding:2px;padding-right:7px;padding-left:7px"><span class="glyphicon glyphicon-pencil"></span></button><br><br>
-            <?php } ?>
+<div class="col-md-6" style="padding:1em;text-align:left;border-right:2px solid #ccc">
             
-          </span>
-            <table style="width:100%" id="userdetails">
-              <tr><td style="width:65%;"><b>Email Address:</b> </td><td><?php echo $row['emailaddress'];?></td></tr>
-              <tr><td><b>Contact Number:</b> </td><td><?php echo $row['contactnumber'];?></td></tr>
-              <tr><td><b>Employment Date:</b> </td><td><?php echo $row['employdate'];?></td></tr>
+            <div class="row"> 
+            <div class="col-md-7">
+       
+            <table style="width:100%" id="userdetails" style="border:2px solid red">
+               <br/>
+              <tr style=""><td style="font-size:14px"><b>Email Address:</b></td><td><?php echo $row['emailaddress'];?></td></tr>
+              <tr><td style="font-size:14px"><b>Contact Number:</b></td><td><?php echo $row['contactnumber'];?></td></tr>
+              <tr><td style="font-size:14px"><b>Employment Date:</b></td><td><?php echo $row['employdate'];?></td></tr>
+               
               <?php if ($_SESSION['permlvl']>0) { ?>
-              <tr style="color:#d9534f"><td><b>Employment Status:</b> </td><td><?php echo $row['employstatus'];?> (Hidden)</td></tr>
-              <tr style="color:#d9534f"><td><b>Fund Source:</b> </td><td><?php echo $row['fundsource'];?> (Hidden)</td></tr>
-              <tr style="color:#d9534f"><td><b>Birthdate:</b> </td><td><?php echo $row['birthdate'];?> (Hidden)</td></tr>
+              <tr style="color:#d9534f;font-size:14px"><td><b>Employment Status:</b></td><td> <?php echo $row['employstatus'];?> (Hidden)</td></tr>
+              <tr style="color:#d9534f;font-size:14px"><td><b>Fund Source:</b></td><td> <?php echo $row['fundsource'];?> (Hidden)</td></tr>
+              <tr style="color:#d9534f;font-size:14px"><td><b>Birthdate:</b></td><td> <?php echo $row['birthdate'];?> (Hidden)</td></tr>
               <?php } ?>
-              <tr><td style="visibility:none;color:#fff">.</td></tr>
-              <tr><td colspan="2"><b>Working Groups &nbsp;<span class="glyphicon glyphicon-question-sign" id="tooltip1" data-toggle="popover" data-original-title="Technical Working Groups" data-content="<span class='glyphicon glyphicon-star' style='color:#ffcc09'></span> - Indicates head / focal person<br><b>NITWG</b> - National Inter-agency TWG<br><b>DSWD</b> - TWG within DSWD<br><b>SLP</b> - TWG within SLP" rel="popover" data-placement="top" data-trigger="hover" ></span> &nbsp;<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#requestTWG" style="margin-top:2px;padding:0;padding-left:3px;padding-right:3px;font-size:11px;font-weight:bold">Request Change</button> &nbsp;<?php if ($_SESSION['id']==9) { echo '<button type="button" class="btn btn-info" data-toggle="modal" data-target="#twgmodal" style="margin-top:2px;padding:0;padding-left:3px;padding-right:3px;font-weight:bold;font-size:11px">Add</button>'; } ?></b></td></tr>
+             </table>
 
-<?php
-try {
-  $stmt3 = $db->prepare("SELECT groupname, groupdesc, isactive, groupleader FROM HRgroups WHERE HRDBid = :HRDBid");
-  $stmt3->bindParam(':HRDBid', $_GET['id']);
-  $stmt3->execute();
-} catch(PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}//endtry
-
-    while ($row4 = $stmt3->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-      if ($row4[2]=="1") {
-        $row4[2]="Active";
-      } else {
-        $row4[2]="Inactive";
-      }
-      if ($row4[3]==1) {
-        $row4[3]=" &nbsp;<span class='glyphicon glyphicon-star' style='color:#ffcc09'></span>";
-      } else {
-        $row4[3]="";
-      }
-      if ($row4[1]==null) {
-        echo '<tr><td style="font-size:12px">'.$row4[0].$row4[3].'</td><td style="font-size:13px;"><center>'.$row4[2].'</center></td></tr>'; 
-      } else {
-        echo '<tr><td style="font-size:12px">'.$row4[0].$row4[3].'</td><td style="font-size:13px;"><center>'.$row4[1].'-'.$row4[2].'</center></td></tr>'; 
-      }
-    }
-?>
+              </div>
+                  <div class="col-md-5" style="padding:1em;";>
+                      <h6 style="text-align:center">LOGIN ATTEMPTS</h6>
+                      <div id="container" style="min-width: 200px; height: 180px; max-width: 200px; margin: 0 auto"></div>
+                </div>
+          </div>
+                     
+          <div class="row">   
+           <div class="col-md-11">
+              
+         <table style="width:100%" id="userdetails">
+               <tr><td style="visibility:none;color:#fff">.</td></tr>
+              <tr><td colspan="2" style="font-size:14px"><b>Working Groups &nbsp;<span class="glyphicon glyphicon-question-sign" id="tooltip1" data-toggle="popover" data-original-title="Technical Working Groups" data-content="<span class='glyphicon glyphicon-star' style='color:#ffcc09'></span> - Indicates head / focal person<br><b>NITWG</b> - National Inter-agency TWG<br><b>DSWD</b> - TWG within DSWD<br><b>SLP</b> - TWG within SLP" rel="popover" data-placement="top" data-trigger="hover" ></span> &nbsp;<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#requestTWG" style="margin-top:2px;padding:0;padding-left:3px;padding-right:3px;font-size:11px;font-weight:bold">Request Change</button> &nbsp;<?php if ($_SESSION['id']==9) { echo '<button type="button" class="btn btn-info" data-toggle="modal" data-target="#twgmodal" style="margin-top:2px;padding:0;padding-left:3px;padding-right:3px;font-weight:bold;font-size:11px">Add</button>'; } ?></b></td></tr>
+                                  <?php
+                                  try {
+                                    $stmt3 = $db->prepare("SELECT groupname, groupdesc, isactive, groupleader FROM HRgroups WHERE HRDBid = :HRDBid");
+                                    $stmt3->bindParam(':HRDBid', $_GET['id']);
+                                    $stmt3->execute();
+                                  } catch(PDOException $e) {
+                                      echo "Error: " . $e->getMessage();
+                                  }//endtry
+                                      while ($row4 = $stmt3->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
+                                        if ($row4[2]=="1") {
+                                          $row4[2]="Active";
+                                        } else {
+                                          $row4[2]="Inactive";
+                                        }
+                                        if ($row4[3]==1) {
+                                          $row4[3]=" &nbsp;<span class='glyphicon glyphicon-star' style='color:#ffcc09'></span>";
+                                        } else {
+                                          $row4[3]="";
+                                        }
+                                        if ($row4[1]==null) {
+                                          echo '<tr><td style="font-size:12px">'.$row4[0].$row4[3].'</td><td style="font-size:13px;"><center>'.$row4[2].'</center></td></tr>'; 
+                                        } else {
+                                          echo '<tr><td style="font-size:12px">'.$row4[0].$row4[3].'</td><td style="font-size:13px;"><center>'.$row4[1].'-'.$row4[2].'</center></td></tr>'; 
+                                        }
+                                      }
+                                  ?>
             </table>
-        </div>
+            </div>
+          </div>
+</div> 
 
-        <div class="col-md-4 wellz" style="padding:1em;">
+
+
+
+        <div class="col-md-3 wellz" style="padding:1em;">
           <b style="font-size:20px">
 <?php if ($row['nickname'] != "") {
             echo $row['nickname'];
@@ -550,17 +607,28 @@ $('#viewdata').on( 'click', 'tbody tr', function () {
                           <div class="form-group">
                               <select class="form-control cleanselect" name="event" id="event" required>
                                 <option value="" selected>Select Event</option>
-                                <option>Official CDO</option>
-                                <option>Internal CDO</option>
-                                <option>Meeting outside Metro Manila</option>
-                                <option>Meeting within Metro Manila</option>
-                                <option>Meeting within Central Office</option>
-                                <option>Field Monitoring</option>
-                                <option value="Leave">Leave (Vacation, Sick, Forced, etc)</option>
-                                <option>Workshop</option>
-                                <option>Training</option>
-                                <option>DSWD Event</option>
-                              </select>
+                                      <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM libhr_event order by hreventname");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
+                              $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
+                        
+                        while($hreventname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value=" <?php echo $hreventname['hreventname']; ?>"> <?php echo $hreventname['hreventname']; ?> </option>
+                    
+                      <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                   
+                        ?>
+                      </select>
+                    <!-- upto this -->  
                           </div>
                           <div class="form-group">
                               <input type="text" class="form-control" placeholder="Venue" id="venue" name="venue">
@@ -643,7 +711,7 @@ $(function () {
 
           <div class="modal-content" style="padding:1em;padding-top:0.5em;">
                   <h3 style="color:#5cb85c;margin-bottom:6px">Success!</h3>
-                  <span style="font-size:13px" id="sucsubtext">Boom</span><br><br>
+                  <span style="font-size:13px" id="sucsubtext">Profile picture uploaded.</span><br><br>
                   <button type="button" class="btn btn-primary pull-right" style="background:#5cb85c;border:0;margin-top:0;padding:5px 10px 5px 10px" id="okaybtn" data-dismiss="modal">Okay</button>
                   <div class="clearfix"></div>
           </div>
@@ -679,6 +747,65 @@ $(function () {
       
     </div>
   </div>
+    <!-- Modal -->
+  <div class="modal fade" id="uploadprofile" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content" style="padding:1em" id="upprof">
+        <div class="modal-body">
+              <div class="form-group" style="margin-bottom:0">
+<h3 style="margin-top:0">Profile Picture</h3>
+            <form id="myForm" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="dt" value="<?php echo date("m-d-Y h:i:sa"); ?>" />
+                  <div class="input-group" style="margin-bottom:0;margin-top:1em">
+                      <input id="uploadfilename" class="form-control" placeholder="Choose image.." disabled="disabled">
+                      <div class="input-group-btn">
+                        <div class="fileUpload btn btn-primary">
+                            <span><span class="glyphicon glyphicon-camera"></span> &nbsp; Choose Image</span>
+                            <input type="file" id="userfile" name="userfile" class="upload" required/>
+                        </div>
+                      </div>
+                    </div><!-- /input-group -->
+                    <span style="font-size:12px;margin-bottom:1em">Supported file types: PNG, JPG, JPEG, TIFF, BMP</span>
+                    <span style="font-size:12px;margin-bottom:2em" class="pull-right">Maximum file size:10MB</span><br>
+<?php
+             try {
+                    $at = $db->prepare("SELECT * FROM hr_profilepics WHERE hrdbid=:id");
+                    $at->bindParam(':id', $_SESSION['pageid']);
+                    $at->execute();
+                    $rows=$at->fetch();
+            
+                 } catch(PDOException $e) {
+                  echo "Error: " . $e->getMessage();
+                  }//endtry
+if ( ($_SESSION['permlvl']>0 && $rows['hrdbid']==$_SESSION['pageid']) || ($_SESSION['permlvl']<1 && $rows['hrdbid']==$_SESSION['pageid']) ) { 
+// reupload 
+  ?>        
+            
+            <button type="button" id="profileBtnRe" class="btn btn-info pull-left" style="padding:6;margin-top:1.2em;margin-bottom:2em">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Reupload</button>
+            <br><br>
+ <?php
+ }
+if ( ($_SESSION['permlvl']>0 && $rows['hrdbid']!=$_SESSION['pageid']) || ($_SESSION['permlvl']<1 && $rows['hrdbid']!=$_SESSION['pageid']) ) { 
+// upload 
+?>
+            <button type="button" id="profileBtn" class="btn btn-info pull-left" style="padding:6;margin-top:1.2em;margin-bottom:2em">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Upload</button>
+            <br><br>
+<?php 
+}
+
+?>
+  </form>
+            </body>
+            </html>  
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal -->
   <div class="modal fade" id="twgmodal" role="dialog">
     <div class="modal-dialog">
@@ -983,6 +1110,69 @@ $("#saveTWG").click(function(event) {
            }
         });//endAjax
   });
+  // UPLOAD BUTTON
+$("#profileBtn").click(function(event) {
+     $("#loadoverlay").show();
+     var fd = new FormData;                  
+     file1 = $('#userfile').prop('files')[0];
+     fd.append('action', 'uploadpics');
+     fd.append('file', file1);
+      //fd.append('dt', $('input[name=dt]').val());
+         console.log("hello world");
+     $.ajax({
+                url: 'uploadprofilepic.php',
+                dataType: 'text',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: fd,                         
+                type: 'POST',
+                success: function(data){
+                    $("#loadoverlay").hide();
+
+                    if (data=="Success") {
+                      $('#myModal').modal();
+                       $("#uploadprofile").hide()
+                      $('#myModal').on('hidden.bs.modal', function () {
+                          location.href = "user.php?id=<?php echo $_SESSION['pageid']; ?>";
+                      })
+                     ;
+                    } else {
+                      alert(data);
+                    }
+                }
+      });
+}); 
+// REUPLOAD BUTTON 
+$("#profileBtnRe").click(function(event) {
+     $("#loadoverlay").show();
+     var fd1 = new FormData;                  
+     file2 = $('#userfile').prop('files')[0];
+     fd1.append('action', 'reuploadpics');
+     fd1.append('file', file2);
+     $.ajax({
+                url: 'uploadprofilepic.php',
+                dataType: 'text',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: fd1,                         
+                type: 'post',
+                success: function(data){
+                    $("#loadoverlay").hide();
+                    if (data=="Success") {
+                      $('#myModal').modal();
+                       $("#uploadprofile").hide()
+                      $('#myModal').on('hidden.bs.modal', function () {
+                          location.href = "user.php?id=<?php echo $_SESSION['pageid']; ?>";
+                      })
+                    } else {
+                      alert(data);
+                    }
+                }
+          });
+    });
+/////////////////////////////////////////////////////////
   $("#comment").keyup(function (e) {
     if (e.keyCode == 13) {
       if ($("#comment").val() == "") {
@@ -1066,6 +1256,116 @@ if ($("#comment").val() == "") {
 </script>
 <script type="text/javascript" src="../js/feedback.js"></script>
 <script type="text/javascript" src="../js/jquery.autocomplete.min.js"></script>
-<script src="http://slp.ph/js/pikaday.min.js"></script>
+<script src="../../js/pikaday.min.js"></script>
+<script>
+$(document).ready(function() {
+  document.getElementById("userfile").onchange = function () {
+    document.getElementById("uploadfilename").value = this.value;
+  };
+});
+</script>
+<?php
+//$filter = $_SESSION['filter'];
+        /*if ($filter == "NPMO") {*/
+//$stmt = $db->prepare("SELECT count(id) as total, count(case when confirmed = '1' then 1 else null end) as confirmed FROM HRDB"); 
+$stmt = $db ->prepare("SELECT logincount + loginfail as total,logincount as logincount, loginfail as loginfail from HRDB where id = :hrdbid");
+$stmt->bindParam(':hrdbid', $_SESSION['pageid']);
+        /*} else {
+$stmt = $db->prepare("SELECT count(id) as total, count(case when isnew = '1' then 1 else null end) as confirmed FROM HRDB WHERE region = '".$filter."'");           
+        }*/
+$stmt->execute();
+$row = $stmt->fetch();
+?>
+<script>
+$(function () {
+
+    $(document).ready(function () {
+      var colors = Highcharts.getOptions().colors,
+        logincount = '<?php echo $row["logincount"]; ?>',
+        loginfail = '<?php echo $row["loginfail"]; ?>';
+        total = <?php echo $row['total']; ?>
+        // Build the chart
+        $('#container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+                backgroundColor: null
+            },
+            title: {
+                   text: total,
+                   verticalAlign: 'middle',
+                   y: -12,
+                   style: {
+                        fontFamily: 'Lato', 
+                        fontSize: '30px',
+                        fontWeight: 'bold',
+                    }
+            },
+            subtitle: {
+                text: 'Total',
+                verticalAlign: 'middle',
+                y: 2,
+                style: {
+                        fontFamily: 'Lato', 
+                        fontSize: '14px',
+                    }
+            },
+            tooltip: {
+                formatter: function() {
+                    var point = this.point,
+                        s = point.name+': <b>'+point.y.toFixed(0)+'</b>';
+                    return s;
+                },
+                hideDelay: 0
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            legend: {
+              layout: 'horizontal',
+              align: 'center',
+              verticalAlign: 'bottom',
+              floating: false,
+              backgroundColor: '',
+              itemStyle: {
+                 font: 'Lato, sans-serif',
+              },
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Users',
+                colorByPoint: true,
+                innerSize: '75%',
+                data: [{
+                    name: 'SUCCESS',
+                    y: parseInt(logincount),
+                    color: '#2c3e50'
+                    
+                }, {
+                    name: 'FAIL',
+                    y: parseInt(loginfail),
+                    color: '#d8d8d8'
+                }]
+            }]
+        });
+    });
+});
+</script>
+
+
+
+
+
 </body>
 </html>

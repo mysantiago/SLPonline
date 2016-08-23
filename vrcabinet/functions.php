@@ -99,11 +99,11 @@ ob_start();
               
               $mail->SMTPAuth = true;
               $mail->SMTPSecure = 'ssl';
-              $mail->Host = "sg2plcpnl0084.prod.sin2.secureserver.net";
-              $mail->Port = 465;
-              $mail->IsHTML(true);
-              $mail->Username = "slponline";
-              $mail->Password = "Jiji98909";
+              $mail->Host = "gator4192.hostgator.com";
+                $mail->Port = 465;
+                $mail->IsHTML(true);
+                $mail->Username = "noreply@slp.ph";
+                $mail->Password = "turtles98!!";
               $mail->SetFrom($from,$fromname);
               $mail->Subject = $_POST['docsubject'];
               $mail->Body = $myvar;
@@ -333,7 +333,7 @@ if(!empty($_POST))
 
             $doctype = $_POST['doctype'];
             if(move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
-
+                
                 try {
                     $stmt = $db->prepare("INSERT IGNORE INTO DOCDB (doctype,title,author,filename,filesize,remarks,added,hrdbid) VALUES (:doctype,:title,:author,:filename,:filesize,:remarks,:added,:hrdbid)");
                     $stmt->bindParam(':doctype', $doctype);

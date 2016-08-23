@@ -1,8 +1,8 @@
 <?php
-require("../mailer/PHPMailerAutoload.php");
-require("../mailer/class.phpmailer.php");
-require("../mailer/class.smtp.php");
-require "../zxcd9.php";
+require("../../mailer/PHPMailerAutoload.php");
+require("../../mailer/class.phpmailer.php");
+require("../../mailer/class.smtp.php");
+require "../../zxcd9.php";
 
 //generatepassword
 function generateRandomString($length = 6) {
@@ -447,11 +447,11 @@ ob_start();
         
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = 'ssl';
-        $mail->Host = "sg2plcpnl0084.prod.sin2.secureserver.net";
+        $mail->Host = "gator4192.hostgator.com";
         $mail->Port = 465;
         $mail->IsHTML(true);
-        $mail->Username = "slponline";
-        $mail->Password = "Jiji98909";
+        $mail->Username = "noreply@slp.ph";
+        $mail->Password = "turtles98!!";
         $mail->From = "SLP Online <noreply@slp.ph>";
         $mail->SetFrom($from,$fromname);
         $mail->Subject = "BOOM! We've started it for you, ".$subjectname.".";
