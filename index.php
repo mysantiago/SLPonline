@@ -26,7 +26,7 @@ if (isset($_SESSION['discard_after']) && $now > $_SESSION['discard_after']) {
 }
 $_SESSION['discard_after'] = $now + 1800;
 if(!empty($_SESSION['emailaddress'])) { 
-    header("Location: http://slp.ph"); 
+    header("Location: main.php"); 
 }
 ?>
 <!DOCTYPE html>

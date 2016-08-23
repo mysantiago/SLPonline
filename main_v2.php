@@ -351,26 +351,43 @@ h3 {
   <div class="col-md-3 padfix padfix2" style="">
     <div class="row">
       <div style="border:solid 1px #c5d6de;margin-left:1em;background:#fff;text-align:center;padding:1em">
-        <?php
-        $prof = $db->prepare("SELECT * FROM hr_profilepics WHERE hrdbid=:hrdbid");
-        $prof->bindParam(':hrdbid', $_SESSION['id']);
+        <div id="box" style="margin-bottom:1em">
+<?php
+if ($_SESSION['permlvl']>0 || ($_SESSION['permlvl']<1 && $_SESSION['id']==$_SESSION['pageid'])  ) { 
+?>
+    <div id="overlay">
+        <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#uploadprofile">
+          <span class="glyphicon glyphicon-picture"></span> Upload Picture
+        </button>      
+    </div>
+<?php
+}
+
+      try {
+        $prof = $db->prepare("SELECT * FROM hr_profilepics WHERE hrdbid=:hrdbida");
+        $prof->bindParam(':hrdbida', $_SESSION['id']);
         $prof->execute();
         $p=$prof->fetch();
-
               if($p['hrdbid']=="") {
-                  if ($row['sex'] == 0) {
+                      if ($row['sex'] == 0) {
                         echo '<img src="../imgs/partner.png" style="margin-bottom:1em">';
-                  } else {
+                      } else {
                         echo '<img src="../imgs/female.png" style="margin-bottom:1em">';
-                  }     
+                      }     
               } else {
-                  echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" style="border-radius:50%" />';
+              echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" alt="myprofilepicture" width="200" height="200" vspace="5" style="border-radius:50%" />';
               }   
-        ?>
-        <br><br>
+} catch(PDOException $e) {
+      echo "Error: " . $e->getMessage();
+}
+          $byte = $db->prepare("SELECT SUM(amt) as total FROM bytez m WHERE m.hrdbid='".$_GET['id']."' ");
+          $byte->execute();
+          $bytez = $byte->fetch();
+          ?> 
+</div>
         <?php echo $_SESSION['firstname'].' '.$_SESSION['lastname']; ?><br>
         <?php echo $_SESSION['designation']; ?><br>
-        <a href="hr/user.php?id=<?php echo $_SESSION['id']; ?>"><span class="label label-info labelhover">View Profile Page</span></a><br>
+        <a href="hr/user.php?id=<?php echo $_SESSION['id']; ?>"><span class="label label-info labelhover">View Profile</span></a><br>
         <br>
         <span class="glyphicon glyphicon-flash"></span>Bytez: <b><?php echo number_format($totalarray[4]); ?></b><br>
         <span class="glyphicon glyphicon-question-sign" id="tooltip1" data-toggle="popover" data-original-title="Bytez <span class='glyphicon glyphicon-flash'>" data-content="Bytez are automatically earned by using the system. What are they for? Nothing for now." rel="popover" data-placement="top" data-trigger="hover" ></span>
@@ -424,7 +441,7 @@ h3 {
           Starting today, the <b>profile picture uploading feature </b> is now available for SLP.PH users!
           Along with this, a complete list of latest enhancements are listed below: <br>
           <ul style="font-size:12px;text-align:left"></center>
-            <li><b>Profile pictures</b> - simply hover and click on the upload button on your profile page to upload!</li>
+            <li><b>Profile pictures</b> - simply hover and click on the camera icon on your profile to upload!</li>
             <li><b>Announcements page</b> - this will always be updated with the latest SLP news.</li>
             <li><a href="faqs.php" style="color:#00ADDe"><b>Frequently Asked Questions (FAQs) page</b></a> - for anything and everything system related, for now.</li>
             <li><b>Brand new server and enhanced security protocols</b> - to make your browsing faster and safer!</li>
@@ -522,6 +539,68 @@ h3 {
 
   </div>
 </div>
+
+ <!-- Modal -->
+  <div class="modal fade" id="uploadprofile" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content" style="padding:1em" id="upprof">
+        <div class="modal-body">
+              <div class="form-group" style="margin-bottom:0">
+<h3 style="margin-top:0">Profile Picture</h3>
+            <form id="myForm" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="dt" value="<?php echo date("m-d-Y h:i:sa"); ?>" />
+                  <div class="input-group" style="margin-bottom:0;margin-top:1em">
+                      <input id="uploadfilename" class="form-control" placeholder="Choose image.." disabled="disabled">
+                      <div class="input-group-btn">
+                        <div class="fileUpload btn btn-primary">
+                            <span><span class="glyphicon glyphicon-camera"></span> &nbsp; Choose Image</span>
+                            <input type="file" id="userfile" name="userfile" class="upload" required/>
+                        </div>
+                      </div>
+                    </div><!-- /input-group -->
+                    <span style="font-size:12px;margin-bottom:1em">Supported file types: PNG, JPG, JPEG, TIFF, BMP</span>
+                    <span style="font-size:12px;margin-bottom:2em" class="pull-right">Maximum file size:10MB</span><br>
+<?php
+             try {
+                    $at = $db->prepare("SELECT * FROM hr_profilepics WHERE hrdbid=:id");
+                    $at->bindParam(':id', $_SESSION['pageid']);
+                    $at->execute();
+                    $rows=$at->fetch();
+            
+                 } catch(PDOException $e) {
+                  echo "Error: " . $e->getMessage();
+                  }//endtry
+if ( ($_SESSION['permlvl']>0 && $rows['hrdbid']==$_SESSION['pageid']) || ($_SESSION['permlvl']<1 && $rows['hrdbid']==$_SESSION['pageid']) ) { 
+// reupload 
+  ?>        
+            
+            <button type="button" id="profileBtnRe" class="btn btn-info pull-left" style="padding:6;margin-top:1.2em;margin-bottom:2em">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Reupload</button>
+            <br><br>
+ <?php
+ }
+if ( ($_SESSION['permlvl']>0 && $rows['hrdbid']!=$_SESSION['pageid']) || ($_SESSION['permlvl']<1 && $rows['hrdbid']!=$_SESSION['pageid']) ) { 
+// upload 
+?>
+            <button type="button" id="profileBtn" class="btn btn-info pull-left" style="padding:6;margin-top:1.2em;margin-bottom:2em">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Upload</button>
+            <br><br>
+<?php 
+}
+
+?>
+  </form>
+            </body>
+            </html>  
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
       <!-- Modal -->
       <div class="modal fade" id="myModal" role="dialog" style="margin-top:3em">
         <div class="modal-dialog modal-sm">
@@ -682,7 +761,7 @@ $("#profileBtn").click(function(event) {
      fd.append('file', file1);
 
      $.ajax({
-                url: 'uploadprofilepic.php',
+                url: 'hr/uploadprofilepic.php',
                 dataType: 'text',
                 cache: false,
                 contentType: false,
@@ -713,7 +792,7 @@ $("#profileBtnRe").click(function(event) {
      fd1.append('action', 'reuploadpics');
      fd1.append('file', file2);
      $.ajax({
-                url: 'uploadprofilepic.php',
+                url: 'hr/uploadprofilepic.php',
                 dataType: 'text',
                 cache: false,
                 contentType: false,
