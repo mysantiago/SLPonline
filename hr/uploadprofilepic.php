@@ -1,7 +1,7 @@
 <?php
 require "../zxcd9.php";
 function upload_dir(){
-  $dir = $_SERVER['DOCUMENT_ROOT']."/SLP.PH2/docs/profilepics/";
+  $dir = $_SERVER['DOCUMENT_ROOT']."/docs/profilepics/";
   return($dir);
 }
 if(!empty($_POST)) 
@@ -10,7 +10,7 @@ if(!empty($_POST))
     {
             $ext=date("mdY");
             $maxsize=10000000;
-            $FILE_EXTS = array('jpg','jpeg','png', 'bmp', 'tiff');				 
+            $FILE_EXTS = array('jpg','jpeg','png', 'bmp', 'JPG', 'JPEG', 'PNG', 'BMP');         
             $file_name = $_FILES['file']['name'];
             $file_name = preg_replace("/ /", "-", $file_name);
             $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
@@ -28,23 +28,23 @@ if(!empty($_POST))
             $uploaddir = upload_dir();
             $uploadname = $ext.'_'.$_SESSION['pageid'].'.'.$file_ext;
             $uploadfile = $uploaddir.$uploadname;
-     		if(is_uploaded_file($_FILES['file']['tmp_name']))
-     		{
-				try 	
-                	{	
-                   move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile);
-                     $stmt = $db->prepare("INSERT INTO hr_profilepics(hrdbid, name, filename ,dtetme) VALUES (:id, :file, :file1,:dt)");
+
+
+            if(move_uploaded_file($_FILES['file']['tmp_name'], $uploaddir."/".$uploadname )) {
+            try { 
+                      byteMe($_SESSION['id'],'profilepic',40);
+                      $stmt = $db->prepare("INSERT INTO hr_profilepics(hrdbid, name, filename ,dtetme) VALUES (:id, :file, :file1,:dt)");
                       $stmt->bindParam(':id',$_SESSION['pageid']);
                       $stmt->bindParam(':file', $uploadname);
                       $stmt->bindParam(':file1', $file_name );
-                      $stmt->bindParam(':dt', date("Y-m-d h:i:sa"));
+                      $date2 = date("Y-m-d h:i:sa");
+                      $stmt->bindParam(':dt', $date2);
                      
                       $stmt->execute(); 
-                  } 
-                catch(PDOException $e) 
-                  {
+            } 
+            catch(PDOException $e)  {
                       echo "Error: " . $e->getMessage();
-                  }
+            }
 
                     if ($_POST['switch']>0) 
                     {
@@ -63,7 +63,7 @@ if(!empty($_POST))
 
     if($_POST['action'] == "reuploadpics") {
             $ext=date("mdY");
-            $maxsize=10000000;
+            $maxsize=5000000;
             $FILE_EXTS = array('jpg','jpeg','png', 'bmp', 'tiff');      
             $file_name = $_FILES['file']['name'];
             $file_name = preg_replace("/ /", "-", $file_name);
@@ -82,28 +82,31 @@ if(!empty($_POST))
 
 
             $uploaddir = upload_dir();
-              $uploadname = $ext.'_'.$file_name;
+            $uploadname = $ext.'_'.$file_name;
             $uploadname2 = $ext.'_'.$_SESSION['pageid'].'.'.$file_ext;
             $uploadfile = $uploaddir.$uploadname2;
             
 
-              try{
-                       $edit = $db->prepare("Select name from hr_profilepics where hrdbid=:hrdbid");
-                        $edit->bindParam(':hrdbid',$_SESSION['pageid']);
-                        $edit->execute();
-                           $edit_row = $edit->fetch(PDO::FETCH_ASSOC);
-                        unlink('../../docs/profilepics/'.$edit_row['name']);
-                    }catch(PDOException $e){
-                      echo "Error. ". $e->getMessage();
-                    } 
-            if(is_uploaded_file($_FILES['file']['tmp_name'])) {
+              try {
+                    byteMe($_SESSION['id'],'profilepic',3);
+                    $edit = $db->prepare("SELECT name FROM hr_profilepics WHERE hrdbid=:hrdbidz");
+                    $edit->bindParam(':hrdbidz',$_SESSION['pageid']);
+                    $edit->execute();
+                    $edit_row = $edit->fetch(PDO::FETCH_ASSOC);
+                    unlink($uploaddir.$edit_row['name']);
+
+              } catch(PDOException $e){
+                    echo "Error: " . $e->getMessage();
+              } 
+            if(move_uploaded_file($_FILES['file']['tmp_name'], $uploaddir."/".$uploadname2 )) {
                try {
-                      move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile);
-                      $stmt = $db->prepare("UPDATE hr_profilepics SET hrdbid=:pageid, name=:file, filename=:file1, dtetme=:dt WHERE hrdbid=:pageid");
+                      
+                      $stmt = $db->prepare("UPDATE hr_profilepics SET name=:file, filename=:filez1, dtetme=:dt WHERE hrdbid=:pageid");
                       $stmt->bindParam(':pageid',$_SESSION['pageid']);
                       $stmt->bindParam(':file', $uploadname2);
-                      $stmt->bindParam(':file1', $file_name );
-                      $stmt->bindParam(':dt', date("Y-m-d h:i:sa"));
+                      $stmt->bindParam(':filez1', $file_name );
+                      $date2 = date("Y-m-d h:i:sa");
+                      $stmt->bindParam(':dt', $date2);
                     $stmt->execute();
                 } catch(PDOException $e) {
                     echo "Error: " . $e->getMessage();
