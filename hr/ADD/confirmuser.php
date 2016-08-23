@@ -1,7 +1,7 @@
 <?php
-require("../mailer/PHPMailerAutoload.php");
-require("../mailer/class.phpmailer.php");
-require("../mailer/class.smtp.php");
+require("../../mailer/PHPMailerAutoload.php");
+require("../../mailer/class.phpmailer.php");
+require("../../mailer/class.smtp.php");
 $username = "jmigdela_slpmain"; 
 $password = "turtles98"; 
 $host = "localhost"; 
