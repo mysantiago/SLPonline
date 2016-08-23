@@ -1,5 +1,5 @@
 <?
-require "../zxcd9.php";
+require "../../zxcd9.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,11 +10,11 @@ require "../zxcd9.php";
     <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
     <link rel="shortcut icon" href="..imgs/favicon.ico" type="image/x-icon">
     <link rel="icon" href="..imgs/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../css/flatbootstrap.css"/>
-    <link rel="stylesheet" href="../css/bootstrapValidator.css"/>
-    <script src="../js/jquery-1.10.2.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../js/bootstrapValidator.js"></script>
+    <link rel="stylesheet" href="../../css/flatbootstrap.css"/>
+    <link rel="stylesheet" href="../../css/bootstrapValidator.css"/>
+    <script src="../../js/jquery-1.10.2.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../js/bootstrapValidator.js"></script>
     <style>
 
 body {
@@ -150,13 +150,13 @@ if ($_SESSION['permlvl'] < 1) {
 }
 
 ?>
-<script type="text/javascript" src="../js/hrForm.js"></script>
+<script type="text/javascript" src="../../js/hrForm.js"></script>
 <div class="container-fluid">
     <div class="row">
       <!--ifsuccess-->
       <div class="col-md-offset-2 col-md-8 successcontent">
         <center>
-          <br><font size="70px" color="#5cb85c"><img src="../imgs/upload.png">
+          <br><font size="70px" color="#5cb85c"><img src="../../imgs/upload.png">
           <br>Success!</font>
           <br><font size="4px">Your input has been added to the database.</font>
           <br><br><button class="btn btn-success" id="btnAddnew">Add new record</button>
@@ -165,7 +165,7 @@ if ($_SESSION['permlvl'] < 1) {
         <div class="col-md-offset-2 col-md-8" id="maincontent">
             <div class="row">
               <div class="col-sm-12" role="alert" style="border:0px solid;padding:5px 0px 15px 0px;font-size:20px">
-                <center><img src="../imgs/slplogo_med.png" width="100em"><br>
+                <center><img src="../../imgs/slplogo_med.png" width="100em"><br>
                 Hi! Please fill out the form.
               </div>
             </div>

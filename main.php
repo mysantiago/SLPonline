@@ -1,7 +1,7 @@
 <?php
 require "zxcd9.php";
 byteMe($_SESSION['id'],'main',0.10);
-$stmt = $db->prepare("SELECT COUNT(id) as total FROM PRTemployers UNION SELECT SUM(numopenings) FROM PRTdemand UNION SELECT COUNT(id) FROM PRTsupply UNION SELECT COUNT(id) FROM HRDB UNION SELECT COUNT(id) FROM HRDB WHERE CONFIRMED = 1 UNION SELECT SUM(logincount) FROM HRDB UNION SELECT COUNT(id) FROM DOCDB UNION SELECT COUNT(id) FROM monicadb UNION (SELECT SUM(amt) FROM bytez m WHERE m.hrdbid='".$_SESSION['id']."')");
+$stmt = $db->prepare("SELECT COUNT(id) as total FROM HRDB WHERE CONFIRMED = 1 UNION SELECT COUNT(id) FROM HRDB UNION SELECT SUM(numopenings) FROM PRTdemand UNION SELECT COUNT(id) FROM PRTsupply UNION SELECT SUM(amt) FROM bytez m WHERE m.hrdbid='".$_SESSION['id']."' UNION SELECT SUM(amt) FROM bytez");
 $stmt->execute();
 $totalarray = [];
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -98,7 +98,7 @@ button {
   background: #000;
 }
 .dashpanel {
-  border:solid 1px #c5d6de;margin:1em;margin-top:0;background:#fff;text-align: center;
+  border:solid 1px #c5d6de;background:#fff;text-align: center;
   height:100%;
   border-radius: 4px;
 }
@@ -288,6 +288,26 @@ h3 {
   padding:0;
   text-align: left
 }
+.hoverme {
+  background:#3a4455;
+}
+.hoverme:hover {
+  background:#303641;
+}
+.hoverme .background{
+    color: rgba(0,0,0,0.3);
+    position: absolute;
+    bottom: 0px;
+    right: 15px;
+    z-index: 9999999;
+}
+.hoverme .background_left{
+    color: rgba(0,0,0,0.3);
+    position: absolute;
+    bottom: 0px;
+    left: 15px;
+    z-index: 9999999;
+}
 </style>
 </head>
 <body>
@@ -328,7 +348,7 @@ h3 {
         <?php echo $_SESSION['designation']; ?><br>
         <a href="hr/user.php?id=<?php echo $_SESSION['id']; ?>"><span class="label label-info labelhover">View Profile</span></a><br>
         <br>
-        <span class="glyphicon glyphicon-flash"></span>Bytez: <b><?php echo number_format($totalarray[8]); ?></b><br>
+        <span class="glyphicon glyphicon-flash"></span>Bytez: <b><?php echo number_format($totalarray[4]); ?></b><br>
         <span class="glyphicon glyphicon-question-sign" id="tooltip1" data-toggle="popover" data-original-title="Bytez <span class='glyphicon glyphicon-flash'>" data-content="Bytez are automatically earned by using the system. What are they for? Nothing for now." rel="popover" data-placement="top" data-trigger="hover" ></span>
       </div>
     </div>
@@ -365,93 +385,79 @@ h3 {
       </div>
     </div>
   </div>
-  <div class="col-md-9" style="padding:1em;padding-top:0;">
+  <div class="col-md-6" style="padding:1em;padding-top:0;padding-right:0">
+    <div style="border:solid 1px #c5d6de;margin-left:1em;background:#fff;text-align:center;padding:1em;padding-left:1.5em;padding-right:1.5em">
+        <div class="row" style="padding-right:1.6em;margin-bottom:0;padding-bottom:0;padding-left:1.6em">
+          <p class="pull-left" style="font-size: 12px; color:#ccc">Posted by: ITU</p>
+          <p class="pull-right" style="font-size: 12px; color:#ccc">22 August 2016</p>
+        </div>
+        <center>
+          <img src="imgs/slpphtrend.png"><br>
+          <h2 style="color:black;margin-bottom:0;margin-top:0"><b>It's a BRAND NEW day</b></h2>
+          <p style="color:black; font-size: 18px">And it's time to upload a profile photo.</p>
+        </center>
+        <p class="text-justify" style="font-size: 12px">
+          Starting today, the <b>profile picture uploading feature </b> is now available for SLP.PH users!
+          Along with this, a complete list of latest enhancements are listed below: <br>
+          <ul style="font-size:12px;text-align:left"></center>
+            <li><b>Profile pictures</b> - simply hover and click on the camera icon on your profile to upload!</li>
+            <li><b>Announcements page</b> - this will always be updated with the latest SLP news.</li>
+            <li><a href="faqs.php" style="color:#00ADDe"><b>Frequently Asked Questions (FAQs) page</b></a> - for anything and everything system related, for now.</li>
+            <li><b>Brand new server and enhanced security protocols</b> - to make your browsing faster and safer!</li>
+            <li><b>Other enhancements and optimizations</b> - fixing of minor errors encountered throughout different systems.</li>
+          </ul>
 
-      <!--row1-->
-      <div class="row" style="height:100%;">
+      <p class="text-left" style="font-size: 12px"><span style="font-size: 16px"><b>But you ain't seen nothing yet.</b></span> SLP.PH is set to unravel COOLer(convenient online) features that will make your browsing experience more exciting so stay tuned! Also, we love to hear from you so don't hesitate to send your feedback so that we keep improving our systems!</p></center>
 
-          <!--HR-->
-          <div class="col-xs-12 col-md-6 padfix" style="height:100%;">
-            <div class="dashpanel">
-              <div class="dashpanelheader">Human Resources</div>
-            <div style="text-align:left;padding-left:1.2em;margin-bottom:0;padding-bottom:0">National database for HR data and universal access accounts</div>
-            <br>
-                    <div style="width:100%;text-align:center;margin-top:0">
-                      <div style="width:32.5%;display:inline-block;padding-top;0">
-                        <h3 style="margin-bottom:0;margin-top:0" id="hr1"></h3>
-                        <span class="bluetext">Accounts</span>
-                      </div>
-                      <div style="width:32.5%;display:inline-block;">
-                        <h3 style="margin-bottom:0;margin-top:0;" id="hr2"></h3>
-                        <span class="bluetext">Confirmed</span>
-                      </div>
-                      <div style="width:32.5%;display:inline-block;">
-                        <h3 style="margin-bottom:0;margin-top:0" id="hr3"></h3>
-                        <span class="bluetext">Login Count</span>
-                      </div>
-                    </div>
-                    <br>
+    </div>
+  </div>
+  <div class="col-md-3" style="padding:1em;padding-top:0em;border:0px solid blue;padding-left:0.5em;padding-right:0.5em;margin-top:0">
+  <div class="col-md-11" style="padding-right:0">
+      
+      <div style="border:0px solid blue;margin-top:0;padding-top:0">
+
+          <div style="position:relative;margin-top:0">
+            <div style="text-align:center;padding-right:4em;border-radius:5px;color:#fff;padding-top:1em;padding-bottom:1em;font-size:15px;padding-left:0" class="hoverme">
+              <div class="background" style="font-size:40px"><span class="glyphicon glyphicon-user"></span></div>
+              <h3 style="margin-bottom:0;margin-top:0;display:inline-block;color:#fff;font-weight:900" id="hr1"></h3> / <h3 style="color:#fff;margin-bottom:0;margin-top:0;display:inline-block;font-size:16px" id="hr2"></h3><br>
+              <span style="color:#fff">Confirmed Accounts</span>
             </div>
           </div>
 
-          <!--HB-->
-          <div class="col-xs-12 col-md-6 padfix3" style="height:100%;margin-bottom:0;">
-            <div class="dashpanel">
-            <div class="dashpanelheader">HanapBuhay</div>
-            <div class="dashpanelsubhead">EF tool for labor/market demand and supply</div>
-            <br>
-                  <div style="width:100%;">
-                      <div style="width:32.5%;display:inline-block;">
-                        <h3 style="margin-bottom:0;margin-top:0" id="hb1"></h3>
-                        <span class="bluetext">Partners</span>
-                      </div>
-                      <div style="width:32.5%;display:inline-block;">
-                        <h3 style="margin-bottom:0;margin-top:0;" id="hb2"></h3>
-                        <span class="bluetext">Job Opportunities</span>
-                      </div>
-                      <div style="width:32.5%;display:inline-block;">
-                        <h3 style="margin-bottom:0;margin-top:0" id="hb3"></h3>
-                        <span class="bluetext">Participants</span>
-                      </div>
-                    </div>
-                    <br>
+          <div style="margin-top:1em;position:relative">
+            <div style="text-align:center;padding:0;border-radius:5px;padding:1em;color:#fff" class="hoverme">
+              <div class="background" style="font-size:24px"><span class="glyphicon glyphicon-home"></span></div>
+              <div class="background_left" style="font-size:40px"><img src="imgs/building.png" style="width:30px;opacity:0.3"></div>
+              
+              <div style="border:0px solid;padding-left:1.5em;padding-right:1.5em">
+                <table style="width:100%;border:0px solid">
+                  <tr>
+                        <td style="border-right:1px solid">
+                          <h3 style="margin-bottom:0;margin-top:0;display:inline-block;color:#fff;font-weight:900;font-size:24px" id="hb1"></h3>
+                          <br>Demand
+                        </td>
+                        <td>
+                          <h3 style="margin-bottom:0;margin-top:0;display:inline-block;color:#fff;font-weight:900;font-size:24px" id="hb2"></h3>
+                          <br>Supply
+                        </td>
+                  </tr>
+                </table>
+              </div>
+
             </div>
           </div>
 
+    <div style="position:relative;margin-top:1em">
+      <div style="text-align:center;padding-right:4em;border-radius:5px;color:#fff;padding-top:1em;padding-bottom:1em;font-size:15px;padding-left:0" class="hoverme">
+        <div class="background" style="font-size:40px"><img src="imgs/keyboard.png" style="width:36px;opacity:0.3;margin-bottom:10px"></div>
+        <h3 style="margin-bottom:0;margin-top:0;display:inline-block;color:#fff;font-weight:900" id="by1"></h3><br>
+        <span style="color:#fff">Bytez of User Activity</span>
       </div>
-      <!--row1-->
+    </div>
+</div>
 
-      <div class="row" style="margin-bottom:0">
 
-          <div class="col-xs-12 col-md-6 padfix" style="height:100%;margin-bottom:0">
-            <div class="dashpanel">
-            <div class="dashpanelheader" style="margin-top:0">E-Library</div>
-            <div class="dashpanelsubhead">Repository for all pertinent SLP files</div>
-            <br>
-                    <div style="width:100%;">
-                        <h3 style="margin-bottom:0;margin-top:0" id="vc1"></h3>
-                        <span class="bluetext">Files</span>
-                    </div>
-                    <br>
-            </div>
-          </div>
-          <div class="col-xs-12 col-md-6 padfix3" style="height:100%;margin-bottom:0">
-            <div class="dashpanel">
-            <div class="dashpanelheader">Historical DB</div>
-            <div class="dashpanelsubhead">Historical accomplishment 2011-2015</div>
-            <br>
-                    <div style="width:100%;">
-                        <h3 style="margin-bottom:0;margin-top:0" id="md1"></h3>
-                        <span class="bluetext">Records</span>
-                    </div>
-                    <br>
-            </div>
-          </div>
-      </div>
-
-      <div class="row padfix4" style="margin-top:0;padding-top:0">
-      <div class="col-md-6" style="padding:0">
-        <div class="dashpanel">
+<div class="dashpanel" style="margin-top:1em;position:relative;">
           <table class="table table-bordered" style="margin-top:0em;line-height:0.9;vertical-align:middle;border:0;margin-bottom:1em">
               <thead style="background:#f6f8fa">
                 <th><b>Feedback for System Development</b></th>
@@ -465,9 +471,9 @@ h3 {
               <div class="col-sm-8">
                     <select class="form-control" onchange="filterCategory()" id="filterstatus">
                       <option value="3">Completed</option>
-                      <option value="2">Accepted - In Development</option>
-                      <option value="1">Viewed - For discussion</option>
-                      <option value="0" selected>New and unimplemented</option>
+                      <option value="2">In Development</option>
+                      <option value="1">For discussion</option>
+                      <option value="0" selected>New</option>
                     </select>
               </div>
           </div><br>
@@ -484,34 +490,12 @@ h3 {
                     </thead>
               </table>
       </div>
-    </div>
 
-      <div class="col-md-6" style="padding:0">
-        <div class="dashpanel">
-          <table class="table table-bordered" style="margin-top:0em;line-height:0.9;vertical-align:middle;border:0;margin-bottom:0">
-              <thead style="background:#f6f8fa">
-                <th><b>Announcements</b></th>
-              </thead>
-<?php
-      $stmtann = $db->prepare("SELECT DATE_FORMAT(announcedate, '%m/%d'), subject, announceid FROM announcements ORDER BY announceid DESC LIMIT 5");
-      $stmtann->execute();
-      while ($rowann = $stmtann->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-            echo '<tr><td style="text-align:left"><a href="announcements.php?id='.$rowann[2].'" style="text-decoration:none">'.$rowann[0].': <span style="color:#00ADDe">'.$rowann[1].'</span></a></td></tr>';
-      }
-?>
-          </table>
-          <table class="table table-bordered" style="margin-top:0em;line-height:0.9;vertical-align:middle;border:0;margin-bottom:0">
-              <thead style="background:#f6f8fa">
-                <th><b>Latest Activity</b></th>
-              </thead>
-              <tr>
-                <td>-</td>
-              </tr>
-          </table>
-        </div>
-      </div>
 
-      </div>
+
+
+  </div>
+
   </div>
 </div>
       <!-- Modal -->
@@ -704,22 +688,16 @@ var options = {
   prefix : '', 
   suffix : '' 
 };
-var c1 = new CountUp("hr1", 0, "<?php echo $totalarray[3]; ?>", 0, 2.5, options);
-var c2 = new CountUp("hr2", 0, "<?php echo $totalarray[4]; ?>", 0, 2.5, options);
-var c3 = new CountUp("hr3", 0, "<?php echo $totalarray[5]; ?>", 0, 2.5, options);
-var c4 = new CountUp("hb1", 0, "<?php echo $totalarray[0]; ?>", 0, 2.5, options);
-var c5 = new CountUp("hb2", 0, "<?php echo $totalarray[1]; ?>", 0, 2.5, options);
-var c6 = new CountUp("hb3", 0, "<?php echo $totalarray[2]; ?>", 0, 2.5, options);
-var c7 = new CountUp("vc1", 0, "<?php echo $totalarray[6]; ?>", 0, 2.5, options);
-var c8 = new CountUp("md1", 0, "<?php echo $totalarray[7]; ?>", 0, 2.5, options);
+var c1 = new CountUp("hr1", 0, "<?php echo $totalarray[0]; ?>", 0, 2.5, options);
+var c2 = new CountUp("hr2", 0, "<?php echo $totalarray[1]; ?>", 0, 2.5, options);
+var c3 = new CountUp("hb1", 0, "<?php echo $totalarray[2]; ?>", 0, 2.5, options);
+var c4 = new CountUp("hb2", 0, "<?php echo $totalarray[3]; ?>", 0, 2.5, options);
+var c5 = new CountUp("by1", 0, "<?php echo $totalarray[5]; ?>", 0, 2.5, options);
 c1.start();
 c2.start();
 c3.start();
 c4.start();
 c5.start();
-c6.start();
-c7.start();
-c8.start();
 </script>
 </body>
 </html>

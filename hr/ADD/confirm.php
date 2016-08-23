@@ -1,8 +1,8 @@
 <?php
-$username = "slpuser"; 
-$password = "turtles9"; 
+$username = "jmigdela_slpmain"; 
+$password = "turtles98"; 
 $host = "localhost"; 
-$dbname = "slponline"; 
+$dbname = "jmigdela_slponline";
 
 $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'); 
 try 

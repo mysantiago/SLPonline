@@ -15,7 +15,8 @@ $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $stmt->bindParam(':wallowner', $_POST['hrdbid']);
         $stmt->bindParam(':wall_msg', $comment);
         $stmt->bindParam(':wallposter', $_SESSION["id"]);
-        $stmt->bindParam(':wallposted', date("Y-m-d H:i:s"));
+        $date2 = date("Y-m-d H:i:s");
+        $stmt->bindParam(':wallposted', $date2);
         $stmt->execute();
 
         if ($_POST['hrdbid'] != $_SESSION['id']) {
