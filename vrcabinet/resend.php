@@ -342,62 +342,85 @@ function typeChange(){
                       <div class="form-group">
                           <select onchange="changeValue2(this.id)" class="form-control" id="recip_npmo">
                             <option value="">Select NPMO</option>
-                            <option>All NPMO</option>
-                            <option>Director</option>
-                            <option>DPM - PMEF</option>
-                            <option>DPM - OPS</option>
-                            <option value="Management Committee">Man. Comm.</option>
-                            <option value="Administrative Support Unit">Admin</option>
-                            <option value="Finance Unit">Finance</option>
-                            <option value="Information Technology Unit">IT</option>
-                            <option value="Operations Unit">Operations</option>
-                            <option value="Partnerships Unit">Partnerships</option>
-                            <option value="Monitoring and Evaluation Unit">PM&E</option>
-                            <option value="Social Marketing Unit">SM/KM</option>
-                          </select>
+                            <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM lib_npmo order by npmoname");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
+                              $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
+                        
+                        while($npmoname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value=" <?php echo $npmoname['npmoname']; ?>"> <?php echo $npmoname['npmoname']; ?> </option>
+                    
+                      <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                   
+                        ?>
+                      </select>
+                    <!-- upto this -->      
                       </div>
                   </div>
                   <div class="col-md-4" onchange="changeValue2(this.id)" style="padding-right:0;padding-left:0" id="recip_rpmo">
                       <div class="form-group">
                           <select class="form-control">
                             <option value="">Select RPMO</option>
-                            <option value="Regional Director">All Regional Directors</option>
-                            <option value="ARDO">All ARDOs</option>
-                            <option value="ARDA">All ARDAs</option>
-                            <option value="Regional Project Coordinator">All RPCs</option>
-                            <option value="CDED Officer">All CDEDOs</option>
-                            <option value="External Relations Officer">All EROs</option>
-                            <option value="M&E Officer for Finance">All M&E Finance</option>
-                            <option value="M&E Officer for Operations">All M&E Operations</option>
-                            <option value="Training Officer">All Training Officers</option>
-                            <option value="Provincial Coordinator">All PCs</option>
-                          </select>
+                            <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM lib_rpmo order by rpmoname");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
+                              $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
+                        
+                        while($rpmoname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value=" <?php echo $rpmoname['rpmoname']; ?>"> <?php echo $rpmoname['rpmoname']; ?> </option>
+                    
+                      <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                   
+                        ?>
+                      </select>
+                    <!-- upto this -->           
                       </div>
                   </div>
                   <div class="col-md-4" style="margin-right:0;padding-right:0;padding-left:0" >
                       <div class="form-group">
                           <select class="form-control" onchange="changeValue2(this.id)" id="recip_region">
                             <option value="">Select Entire Region</option>
-                            <option>NPMO</option>
-                            <option>NCR</option>
-                            <option>CAR</option>
-                            <option>REGION I</option>
-                            <option>REGION II</option>
-                            <option>REGION III</option>
-                            <option>REGION IV-A</option>
-                            <option>REGION IV-B</option>
-                            <option>REGION V</option>
-                            <option>REGION VI</option>
-                            <option>REGION VII</option>
-                            <option>REGION VIII</option>
-                            <option>REGION IX</option>
-                            <option>REGION X</option>
-                            <option>REGION XI</option>
-                            <option>REGION XII</option>
-                            <option>CARAGA</option>
-                            <option>ARMM</option>
-                            <option>NIR</option>
-                          </select>
+                            <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM lib_regions order by regname");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
+                              $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
+                        
+                        while($regname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value=" <?php echo $regname['regname']; ?>"> <?php echo $regname['regname']; ?> </option>
+                    
+                      <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                   
+                        ?>
+                      </select>
+                    <!-- upto this -->  
+
                       </div>
                   </div>
 <?PhP

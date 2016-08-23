@@ -185,7 +185,11 @@ global $db;
                 $rowfailed = $db->prepare($sql); 
                 $result = $rowfailed->execute($query_params);
                     echo "login failed";  
+<<<<<<< HEAD
         }       
+=======
+        }		
+>>>>>>> ff7366157b8cfe7194f3f9238fc5677e2691e3a7
           
     } else {
         echo "empty";
