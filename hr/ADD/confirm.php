@@ -40,11 +40,11 @@ function test_input($data) {
     <title>SLP | HR</title>
     <meta name="description" content="SLP DSWD Livelihood"/>
     <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" href="../css/flatbootstrap.css"/>
-    <link rel="stylesheet" href="../css/bootstrapValidator.css"/>
-    <script src="../js/jquery-1.10.2.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../js/bootstrapValidator.js"></script>
+    <link rel="stylesheet" href="../../css/flatbootstrap.css"/>
+    <link rel="stylesheet" href="../../css/bootstrapValidator.css"/>
+    <script src="../../js/jquery-1.10.2.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../js/bootstrapValidator.js"></script>
     <style>
 
 body {
@@ -65,7 +65,7 @@ body {
   display:none;
 }
 .cleanselect {
-  -webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none;background:#fff url(../imgs/arrows.png) no-repeat right 9px;
+  -webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none;background:#fff url(../../imgs/arrows.png) no-repeat right 9px;
 }
 .disabled {
   background:rgba(1,1,1,0.2);
@@ -161,7 +161,7 @@ body {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../" style="font-weight:900"><img src="../imgs/slpsmall.png" style="display:inline;margin-right:0.5em;margin-top:-0.2em">SLP</a>
+      <a class="navbar-brand" href="../" style="font-weight:900"><img src="../../imgs/slpsmall.png" style="display:inline;margin-right:0.5em;margin-top:-0.2em">SLP</a>
     </div>
    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -170,13 +170,13 @@ body {
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<script type="text/javascript" src="../js/hrForm2.js"></script>
+<script type="text/javascript" src="../../js/hrForm2.js"></script>
 <div class="container-fluid">
 <?php
-$username = "slpuser"; 
-$password = "turtles9"; 
+$username = "jmigdela_slpmain"; 
+$password = "turtles98"; 
 $host = "localhost"; 
-$dbname = "slponline"; 
+$dbname = "jmigdela_slponline";
 
 $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'); 
 try 
@@ -243,7 +243,7 @@ if(!empty($_GET))
       <!--iferror-->
       <div class='col-md-offset-2 col-md-8 errorcontent'>
         <center>
-          <br><font size='90px' color='#5cb85c'><img src='../imgs/ufo.png'></font>
+          <br><font size='90px' color='#5cb85c'><img src='../../imgs/ufo.png'></font>
           <br><font size='70px' color='#d9534f'>Oops!</font><br>
           <br><font size='4px'>Missing object. Its possible that this account has already been confirmed.<br><br>If you feel this is an error, please send an email to: <b>jmodelacruz@e-dswd.net.</font></b>
           
@@ -257,7 +257,7 @@ if(!empty($_GET))
 <!--ifsuccess-->
       <div class="col-md-offset-2 col-md-8 successcontent">
         <center>
-          <br><img src="../imgs/upload.png">
+          <br><img src="../../imgs/upload.png">
           <br><font size="70px" color="#5cb85c">Success!</font>
           <br><font size="4px">Thanks for the help, <b><?php echo $row['firstname']; ?></b>.<br>Your account details have been sent to your email.<br><br>We hope for your continued support as we roll out more systems in the near future.<br>Have a great day!</font>
           <br><br><a href="http://slp.ph/hr"><button class="btn btn-success" id="btnAddnew">Leave this page</button></a>
@@ -268,7 +268,7 @@ if(!empty($_GET))
           <div class="row">
               <div class="col-sm-12" role="alert" style="border:0px solid;padding:5px 0px 15px 0px;font-size:20px">
                 <center>
-                <div class="col-sm-2" style="padding-top:10px"><img src="../imgs/Smiley.png" style="width:6em"></div>
+                <div class="col-sm-2" style="padding-top:10px"><img src="../../imgs/Smiley.png" style="width:6em"></div>
                 <div class="col-sm-9" style="text-align:left;padding-left:2em">
                   <h1>Welcome <span style="font-weight:900"><?php echo $row['firstname'];?></span>!</h1>
                   <span style="font-weight:300">We've collected your information for you. Please confirm if the following details are correct.</span>
@@ -674,7 +674,7 @@ function isfemale() {
       <!--iferror-->
       <div class='col-md-offset-2 col-md-8 errorcontent'>
         <center>
-          <br><font size='90px' color='#5cb85c'><img src='../imgs/ufo.png'></font>
+          <br><font size='90px' color='#5cb85c'><img src='../../imgs/ufo.png'></font>
           <br><font size='70px' color='#d9534f'>Oops!</font><br>
           <br><font size='4px'>Missing object. Its possible that this account has already been confirmed.<br><br>If you feel this is an error, please send an email to: <b>jmodelacruz@e-dswd.net.</font></b>
           
