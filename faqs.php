@@ -121,6 +121,20 @@ byteMe($_SESSION['id'],'faqs',0.10); ?>
                   </div>
                         </div>
 
+
+                        <div class="panel-body"><span class="glyphicon glyphicon-menu-down" data-toggle="collapse" aria-hidden="true" href="#collapse6"></span>
+                            <a data-toggle="collapse" href="#collapse6"><b>How can I upload a profile photo?</b></a>
+                          </div>                                 
+                          <div id="collapse6" class="panel-collapse collapse">
+                  <div class="row"><img src="imgs/photographer.png" class="img-rounded" style="width: 100px; height: 100px">
+                    <div class="col-md-10">
+                        <ul class="list-group">
+                           <li class="list-group-item"><p align="justify">Go to your profile page and upon hovering the mouse pointer on your default profile image, the Upload Photo option will be shown. Click it and a modal window will appear which will allow you to browse images from your device. Once you have your desired image, select Upload and wait for the success notification. Same thing goes when reuploading. Please take note that only PNG, JPG, JPEG, TIFF, BMP files not more than 10MB are accepted.</p></li>
+                          </ul>
+                    </div>  
+                  </div>
+                        </div>
+
                             <div class="panel-body"><span class="glyphicon glyphicon-menu-down" data-toggle="collapse" aria-hidden="true" href="#collapse6"></span>
                             <a data-toggle="collapse" href="#collapse6"><b>What is the purpose of ROVER?</b></a>
                           </div>                               
