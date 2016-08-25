@@ -444,14 +444,7 @@ ob_start();
         $mail = new PHPMailer();
         $mail->IsSMTP();
         
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = 'ssl';
-        $mail->Host = "smtp.gmail.com";
-        $mail->Port = 465;
-        $mail->Username = "info@slp.ph";
-        $mail->Password = "turtles98!!";
-        $mail->From = "info@slp.ph";
-        $mail->FromName = "SLP";
+        require("../../lcefgmai.php");
 
 
         $mail->Subject = "[SLP] BOOM! We've started it for you, ".$subjectname.".";

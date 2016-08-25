@@ -16,120 +16,8 @@ $(document).ready(function() {
     
     document.getElementById("province").disabled = true;
     document.getElementById("municipality").disabled = true;
-    $("#region").change(function() {
-
-      var $dropdown = $(this);
-      $.getJSON("../json/regiondata2.json", function(data) {
-      
-        var key = $dropdown.val();
-        var vals = [];
-        var $secondChoice = $("#province");
-        var $thirdChoice = $("#province");
-        switch(key) {
-          case 'Select Office':
-            $secondChoice.empty();
-            $secondChoice.append("<option value=''>-</option>");
-            break;
-          case 'NPMO':
-            $secondChoice.empty();
-            $secondChoice.append("<option value=''>-</option>");
-            break;
-          case 'CAR':
-            vals = data.CAR.split(",");
-            break;
-          case 'NCR':
-            vals = data.NCR.split(",");
-            break;
-          case 'REGION I':
-            vals = data.I.split(",");
-            break;
-          case 'REGION II':
-            vals = data.II.split(",");
-            break;
-          case 'REGION III':
-            vals = data.III.split(",");
-            break;
-          case 'REGION IV-A':
-            vals = data.IVA.split(",");
-            break;
-          case 'REGION IV-B':
-            vals = data.IVB.split(",");
-            break;
-          case 'REGION V':
-            vals = data.V.split(",");
-            break;
-          case 'REGION VI':
-            vals = data.VI.split(",");
-            break;
-          case 'REGION VII':
-            vals = data.VII.split(",");
-            break;
-          case 'REGION VIII':
-            vals = data.VIII.split(",");
-            break;
-          case 'REGION IX':
-            vals = data.IX.split(",");
-            break;
-          case 'REGION X':
-            vals = data.X.split(",");
-            break;
-          case 'REGION XI':
-            vals = data.XI.split(",");
-            break;  
-          case 'REGION XII':
-            vals = data.XII.split(",");
-            break;
-          case 'CARAGA':
-            vals = data.CARAGA.split(",");
-            break;
-          case 'ARMM':
-            vals = data.ARMM.split(",");
-            break;
-          case 'NIR':
-            vals = data.NIR.split(",");
-            break;
-        }
-        
-        if (key != "NPMO" && key != "Select Office") {
-            document.getElementById("province").disabled = false;
-            $secondChoice.empty();
-            $secondChoice.append("<option>Select Province</option>");
-            $.each(vals, function(index, value) {
-              $secondChoice.append("<option>" + value + "</option>");
-            });
-        } else {
-            document.getElementById("province").disabled = true;
-            document.getElementById("municipality").disabled = true;
-        }
-        
-        
-
-      });
-    $("#province").change(function() {
-
-      var $dropdown = $(this);
-      var json = $.getJSON("../json/munidata2.json", function(data) {
-        var key2 = $dropdown.val();
-        var vals = [];
-        var $thirdchoice = $("#municipality");
-        document.getElementById("municipality").disabled = false;
-
-            if (key2) {       
-                for (key in data) {
-                    console.log(data[key2]);
-                    vals = data[key2].split(",");
-                }
-            }
-        
-        
-        $thirdchoice.empty();
-        $thirdchoice.append("<option>Select Municipality</option>");
-        $.each(vals, function(index, value) {
-          $thirdchoice.append("<option>" + value + "</option>");
-        });
-
-          });//endjson
-      });//endprovince
+    
+    
 });
 
 
@@ -308,9 +196,9 @@ $(document).ready(function() {
           'employstatus'         : $('#employstatus option:selected').val(),
           'employdate'           : $('input[name=employdate]').val(),
           'fundsource'           : $('#fundsource option:selected').val(),
-          'region'               : $('#region option:selected').val(),
-          'province'             : $('#province option:selected').val(),
-          'municipality'         : $('#municipality option:selected').val(),
+          'region'               : $('#region option:selected').text(),
+          'province'             : $('#province option:selected').text(),
+          'municipality'         : $('#municipality option:selected').text(),
           'remarks'              : $('input[name=remarks]').val(),
           'comptype'             : $('#comptype option:selected').val(),
           'compyear'             : $('#compyear option:selected').val(),
@@ -343,4 +231,4 @@ $(document).ready(function() {
                 return false;
     });//endsuccess
     
-});
+

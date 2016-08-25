@@ -46,8 +46,8 @@ $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
               catch(PDOException $ex) 
               { die("Failed to run query: " . $ex->getMessage()); } 
               echo "<option value=''>Select Province</option>";
-              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                 echo "<option value='".$row["provid"]."'>".$row['provname']."</option>";
+              while ($rowl = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                 echo "<option value='".$rowl["provid"]."'>".$rowl['provname']."</option>";
           	  }
     }
 

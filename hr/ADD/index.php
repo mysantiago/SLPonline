@@ -35,7 +35,7 @@ body {
   display: none;
 }
 .cleanselect {
-  -webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none;background:#fff url(../imgs/arrows.png) no-repeat right 9px;
+  -webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none;background:#fff url(../../imgs/arrows.png) no-repeat right 9px;
 }
 .disabled {
   background:rgba(1,1,1,0.2);
@@ -520,7 +520,6 @@ function isfemale() {
 </div>
 <script>
 function getProv() {
-  console.log("asd");
   var formData = { 
     'action' : 'province',
     'regionid' : $('#region option:selected').val()

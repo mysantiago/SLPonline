@@ -379,27 +379,19 @@ function isfemale() {
                                   <div class="form-group">
                                     <label for="designation" class="col-sm-4 control-label">Regional Office</label>
                                     <div class="col-sm-8">
-                                          <select class="form-control cleanselect" name="region" id="region" required >
+                                          <select class="form-control cleanselect" name="region" id="region" onchange="getProv()" required >
                                             <option selected><?php echo $row['region'];?></option>
                                            <!-- get this --> 
                       <?php
-                      try {
-                              $sql = $db->prepare("SELECT * FROM lib_regions order by regname");
-                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
-                              $sql->execute();
-                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
-                        
-                        while($regname=$sql->fetch(PDO::FETCH_ASSOC))
-                        {
-                      ?>
-                        <option value=" <?php echo $regname['regname']; ?>"> <?php echo $regname['regname']; ?> </option>
-                    
-                      <?php
-                        }
-                              } catch(PDOException $e) {
-                            echo "Error: " . $e->getMessage();
-                            }//en
-                        ?>
+                      $query = "SELECT * FROM lib_regions"; 
+                      try 
+                      { $stmt = $db->prepare($query); $result = $stmt->execute(); } 
+                      catch(PDOException $ex) 
+                      { die("Failed to run query: " . $ex->getMessage()); } 
+                      while ($rowl = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                         echo "<option value='".$rowl["regid"]."'>".$rowl['regname']."</option>";
+                      }
+                  ?>
                       </select>
 
 <!-- up to this -->
@@ -412,7 +404,7 @@ function isfemale() {
                                 <div class="form-group">
                                   <label for="designation" class="col-sm-4 control-label">Province</label>
                                   <div class="col-sm-8">
-                                        <select class="form-control cleanselect" id="province" name="province" >
+                                        <select class="form-control cleanselect" id="province" name="province" onchange="getCitymun()">
                                           <option selected><?php echo $row['province'];?></option>
                                         </select>
                                   </div>
@@ -547,6 +539,38 @@ function isfemale() {
       <!--end iferror-->
 <?php } ?>          
 <script>
+function getProv() {
+  var formData = { 
+    'action' : 'province',
+    'regionid' : $('#region option:selected').val()
+  };
+  $.ajax({
+  type: "POST",
+  url: "add/getLocations.php",
+  data: formData,
+  success: function(data) {
+            $("#province").prop('disabled', false);
+            $("#province").html(data);
+        }
+
+  });
+}
+function getCitymun() {
+  var formData = { 
+    'action' : 'citymun',
+    'provid' : $('#province option:selected').val()
+  };
+  $.ajax({
+  type: "POST",
+  url: "add/getLocations.php",
+  data: formData,
+  success: function(data) {
+            $("#municipality").prop('disabled', false);
+            $("#municipality").html(data);
+        }
+
+  });
+}
 $(document).ready(function() {
 sexload = '<?php echo $row['sex'];?>';
 window.confirmcode = '<?php $getid = filter_var($_GET["id"], FILTER_SANITIZE_NUMBER_INT); echo $getid;?>';
