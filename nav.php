@@ -67,7 +67,6 @@ while ($row2 = $stmt2->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
             <li><a href="http://slp.ph/hr/add/">Add Record</a></li>
             <li><a href="http://slp.ph/hr/viewdata.php">View Directory</a></li>
             <li><a href="http://slp.ph/hr/user.php?id=<?php echo $_SESSION['id']; ?>">My Profile</a></li>
-            <li><a href="http://slp.ph/hr/user.php?id=<?php echo $_SESSION['id']; ?>">ROVER</a></li>
           </ul>
         </li>
         <li class="dropdown">

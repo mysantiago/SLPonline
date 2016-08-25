@@ -412,7 +412,7 @@ $("#submitBtn").click(function(event) {
             $("#modalsub").html('A password retrieval email was sent to the specified email address');
             $("#forgotForm").hide();
           } else {
-            //alert(data);
+            alert(data);
             document.getElementById("submitBtn").disabled = false;
             $("#submitBtn").html("Submit");
           }

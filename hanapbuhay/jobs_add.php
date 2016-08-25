@@ -455,7 +455,7 @@ function getBrgy(val) {
     $('#idg').hide();
 function sectorChange() {
       var $dropdown = $("#sector");
-      $.getJSON("json/sector.json", function(data) {
+      $.getJSON("../json/sector.json", function(data) {
       document.getElementById("filter2").disabled = false;
         var key = $dropdown.val();
         var vals = [];

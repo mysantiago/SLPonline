@@ -5,10 +5,10 @@
     <title>SLP | Partners</title>
     <meta name="description" content="SLP DSWD Livelihood"/>
     <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="shortcut icon" href="../imgs/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="../imgs/favicon.ico" type="image/x-icon">
-    <script src="../js/jquery-1.10.2.min.js"></script>
-    <link rel="stylesheet" href="../css/flatbootstrap.css"/>
+    <link rel="shortcut icon" href="../../imgs/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../../imgs/favicon.ico" type="image/x-icon">
+    <script src="../../js/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" href="../../css/flatbootstrap.css"/>
     <style>
 
 body {
@@ -85,13 +85,13 @@ body {
 </nav>
 <div class="container-fluid" id="maincont">
 <?php
-require("../mailer/PHPMailerAutoload.php");
-require("../mailer/class.phpmailer.php");
-require("../mailer/class.smtp.php");
-$username = "slpuser"; 
-$password = "turtles9"; 
+require("../../mailer/PHPMailerAutoload.php");
+require("../../mailer/class.phpmailer.php");
+require("../../mailer/class.smtp.php");
+$username = "jmigdela_slpmain"; 
+$password = "turtles98"; 
 $host = "localhost"; 
-$dbname = "slponline"; 
+$dbname = "jmigdela_slponline";
 
 $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'); 
 try 
@@ -106,7 +106,7 @@ catch(PDOException $ex)
 $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-session_start(); 
+session_start();
 $now = time();
 if (isset($_SESSION['discard_after']) && $now > $_SESSION['discard_after']) {
     session_unset();
@@ -188,7 +188,7 @@ if(!empty($_GET))
             <font size="90px" color="#5cb85c"><span class="glyphicon glyphicon-ok"></font></span><br>
             <font size="2">Success! You may now login using your new password.</font>
             <br><br>
-            <a href="../viewdata/login.php"><button class="btn btn-primary">Login</button></a>
+            <a href="http://slp.ph"><button class="btn btn-primary">Login</button></a>
             </div>
 <script>
 $(document).ready(function() {
