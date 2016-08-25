@@ -604,11 +604,17 @@ if ($("#comment").val() == "") {
                 //endAjax
 }); //endpost
 console.log('<?php echo json_encode($totalarray); ?>');
-$.fn.DataTable.ext.pager.numbers_length = 5;
+$.fn.DataTable.ext.pager.numbers_length = 2;
   oTable = $('#viewdata').dataTable({
     "aProcessing": true,
     "aServerSide": true,
     "orderCellsTop": true,
+    "oLanguage": {
+          "oPaginate": {
+          "sPrevious": "",
+          "sNext": "",
+          }
+    },
     "pageLength": 4,
     "order": [[2, "desc" ]],
     "ajax": "dt_feedbackmain.php",

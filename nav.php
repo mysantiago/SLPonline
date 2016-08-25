@@ -66,6 +66,7 @@ while ($row2 = $stmt2->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
           <ul class="dropdown-menu slpdropsub">
             <li><a href="http://slp.ph/hr/add/">Add Record</a></li>
             <li><a href="http://slp.ph/hr/viewdata.php">View Directory</a></li>
+            <li><a href="http://slp.ph/rpmodirectory.php">RPMO directory</a></li>
             <li><a href="http://slp.ph/hr/user.php?id=<?php echo $_SESSION['id']; ?>">My Profile</a></li>
           </ul>
         </li>
@@ -100,9 +101,9 @@ while ($row2 = $stmt2->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             Others <span class="caret"></span></a>
           <ul class="dropdown-menu slpdropsub">
-            <li><a href="http://slp.ph/rpmodirectory.php">RPMO directory</a></li>
-            <li><a href="http://slp.ph/dev.php">System Development</a></li>
             <li><a href="http://slp.ph/faqs.php">FAQs</a></li>
+            <li><a href="http://slp.ph/feedbackportal.php">Feedback Portal</a></li>
+            <li><a href="http://slp.ph/dev.php">System Development</a></li>
           </ul>
         </li>
       </ul>

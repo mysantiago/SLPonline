@@ -683,11 +683,17 @@ if ($("#comment").val() == "") {
                 //endAjax
 }); //endpost
 console.log('<?php echo json_encode($totalarray); ?>');
-$.fn.DataTable.ext.pager.numbers_length = 5;
+$.fn.DataTable.ext.pager.numbers_length = 3;
   oTable = $('#viewdata').dataTable({
     "aProcessing": true,
     "aServerSide": true,
     "orderCellsTop": true,
+    "oLanguage": {
+          "oPaginate": {
+          "sPrevious": "",
+          "sNext": "",
+          }
+    },
     "pageLength": 4,
     "order": [[2, "desc" ]],
     "ajax": "dt_feedbackmain.php",
@@ -741,6 +747,7 @@ $.fn.DataTable.ext.pager.numbers_length = 5;
             { "bVisible": false, "aTargets":[0,3,4,5] }
                     ]
   });
+$.fn.DataTable.ext.pager.numbers_length = 3;
 oTable.fnFilter("0", 3, true, false, true);
 oTable.fnSort([5,'desc']);
 function filterCategory() {
