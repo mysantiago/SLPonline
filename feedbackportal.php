@@ -232,7 +232,7 @@ if ($_SESSION['permlvl'] < 1) {
             <div class="row">
               <div class="col-sm-12" role="alert" style="border:0px solid;padding:5px 0px 15px 0px;font-size:20px">
                 <center><img src="imgs/slplogo_med.png" width="100em"><br>
-                FEEDBACK FORM
+                FEEDBACK PORTAL<br>
               </div>
             </div>
 <script>
@@ -249,15 +249,18 @@ function isfemale() {
 </script>
 <form class="form-horizontal" id="hrForm" method="post" action="" autocomplete="off">
                           <div class="form-group">
-                            <label for="typeofcomm" class="col-sm-2 control-label">Type of Communication</label>
+                            <label for="typeofcomm" class="col-sm-2 control-label">Type of Feedback</label>
                             <div class="col-sm-10">
                               <select class="form-control cleanselect" name="typeofcomm" id="typeofcomm">
-                                        <option value="" selected>Select your type</option>
-                                        <option value="Feedback for system">Feedback for system</option>
-                                        <option value="Grievance">Grievance</option>
+                                        <option value="" selected>Select Feedback Type</option>
+                                        <option value="">---------IT RELATED/SYSTEMS---------</option>
                                         <option value="Questions regarding the system">Questions regarding the system</option>
-                                        <option value="Questions regarding the SLP process">Questions regarding the SLP process</option>
-                                      </select>
+                                        <option value="Feedback for system">Suggestions for system development</option>
+                                        <option value=""></option>
+                                        <option value="">-------------SLP PROCESS-------------</option>
+                                        <option value="Questions regarding the SLP process">Questions regarding SLP process</option>
+                                        <option value="Grievance">Grievance</option>
+                                </select>
                             </div>
                           </div>
 
@@ -270,7 +273,7 @@ function isfemale() {
                           </div>
                       
                       <div class="form-group">
-                            <label for="remarks" class="col-sm-2 control-label">Comments and Suggestions</label>
+                            <label for="remarks" class="col-sm-2 control-label">Message</label>
                             <div class="col-sm-10">
                               <textarea name="remarks" class="form-control" id="remarks" placeholder="" rows="15" ></textarea>
                             </div>
@@ -283,7 +286,7 @@ function isfemale() {
                               </div>
                               <div class="col-sm-8">
                                 </form>
-                                <button id="hrsubmit" class="btn col-sm-12 btn-success has-feedback" style="font-size:18px">Submit</button>
+                                <button id="hrsubmit" class="btn col-sm-12 btn-success has-feedback" style="font-size:18px;margin-bottom:2em">Submit</button>
                          
                               </div>
                             </div>
@@ -326,7 +329,7 @@ $("#hrsubmit").click(function(event) {
                   $("#loadoverlay").hide();           
                     if (data=="Success") {
                             $('#loadoverlay1').show();
-                          location.href = "feedback_portal.php";
+                          location.href = "feedbackportal.php";
                     } else {
                       alert(data);
 
@@ -357,8 +360,8 @@ $("#hrsubmit").click(function(event) {
 
                   $("#loadoverlay").hide();
                     if (data=="Success") {
-                              $('#loadoverlay1').show();
-                          location.href = "feedback_portal.php";
+                          $('#loadoverlay1').show();
+                          location.href = "feedbackportal.php";
                     } else {
                       alert(data);
                     }
