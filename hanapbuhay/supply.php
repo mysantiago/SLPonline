@@ -168,56 +168,7 @@ tbody tr {
 {
     text-align:center;
 }
-#slideout {
-      z-index: 998;
-      position: fixed;
-      top: 70%;
-      right: 0;
-      width: 35px;
-      padding: 12px 0;
-      text-align: center;
-      background: #5cb85c;
-      -webkit-transition-duration: 0.3s;
-      -moz-transition-duration: 0.3s;
-      -o-transition-duration: 0.3s;
-      transition-duration: 0.3s;
-      -webkit-border-radius: 5px 0px 0px 5px;
-      -moz-border-radius: 5px 0px 0px 5px;
-      border-radius: 5px 0px 0px 5px;
-    }
-    #slideout_inner {
-      z-index: 999;
-      position: fixed;
-      top: 70%;
-      right: -250px;
-      background: #5cb85c;
-      width: 250px;
-      padding: 0;
-      height: 170px;
-      -webkit-transition-duration: 0.3s;
-      -moz-transition-duration: 0.3s;
-      -o-transition-duration: 0.3s;
-      transition-duration: 0.3s;
-      text-align: left;
-      -webkit-border-radius: 0px 0 0px 5px;
-      -moz-border-radius: 0px 0 0px 5px;
-      border-radius: 0px 0 0px 5px;
-    }
-    #slideout_inner textarea {
-      z-index: 999;
-      margin-right: 5px;
-      width: 210px;
-      height: 100px;
-      margin-bottom: 6px;
-    }
-    #slideout:hover {
-      z-index: 999;
-      right: 250px;
-    }
-    #slideout:hover #slideout_inner {
-      z-index: 999;
-      right: 0;
-    }
+
     .form-control {
         display: block;
         width: 100%;

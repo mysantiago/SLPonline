@@ -18,10 +18,12 @@ $(document).ready(function() {
     document.getElementById("municipality").disabled = true;
     
     
-});
+
+
 
 
     $('#hrForm').bootstrapValidator({
+
         feedbackIcons: {
             valid: 'blank',
             invalid: 'glyphicon glyphicon-remove',
@@ -174,6 +176,7 @@ $(document).ready(function() {
         }
     })
     .on('success.form.bv', function(e) {
+        console.log("asfsdfzz");
         e.preventDefault();
         e.stopImmediatePropagation();
         $("#loadicon").show();
@@ -230,5 +233,7 @@ $(document).ready(function() {
                 $("#hrForm").unbind('submit');
                 return false;
     });//endsuccess
+
+});
     
 

@@ -346,7 +346,7 @@ function filterRegion() {
       <div class="col-md-12" style="">
         <div class="col-md-12" style="margin-right:0;margin-bottom:0.6em;padding-right:0">
             <div class="pull-left"><a href="export.php" class="pull-left"><button class="btn btn-primary" style="font-size:12px;padding:5px">Export to Excel</button></a></div>
-            <div class="pull-right col-md-3" style="text-align:right"><input id="searchbox" type="text" class="form-control" placeholder="Search HR Database (all columns)" style="height:31px"/></div>
+            <div class="pull-right col-md-3" style="text-align:right"><input id="searchbox" type="text" class="form-control" placeholder="Search directory (all columns)" style="height:31px"/></div>
             <?php if ($_SESSION['filter']=="NPMO") {
               echo '<div class="pull-right col-md-2" style="padding-right:0"><select id="regionfilter" onchange="filterRegion()" class="form-control" style="height:31px"><option value="" selected>Filter by Region</option>';
               $query = "SELECT regname FROM lib_regions ORDER BY regname"; 
@@ -467,7 +467,7 @@ $(function () {
                 colorByPoint: true,
                 innerSize: '75%',
                 data: [{
-                    name: 'Encoded',
+                    name: 'Pending',
                     y: parseInt(counttotal-countconfirmed),
                     color: '#d8d8d8'
                     
