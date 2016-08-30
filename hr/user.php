@@ -273,7 +273,7 @@ tbody tr {
 </style>
 </head>
 <body>
-<?php require "nav.php"; ?>
+<?php require "../nav.php"; ?>
 <div class="row" style="margin:0;padding:0;margin-left:1em;margin-right:1em;border:solid 1px #c5d6de;background:#fff;text-align:center;padding:0">
         <div class="col-md-3 wellz" style="padding:1em">
 

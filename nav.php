@@ -67,7 +67,6 @@ while ($row2 = $stmt2->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
             <li><a href="http://slp.ph/hr/add/">Add Record</a></li>
             <li><a href="http://slp.ph/hr/viewdata.php">View Directory</a></li>
             <li><a href="http://slp.ph/rpmodirectory.php">RPMO directory</a></li>
-            <li><a href="http://slp.ph/hr/user.php?id=<?php echo $_SESSION['id']; ?>">My Profile</a></li>
           </ul>
         </li>
         <li class="dropdown">
@@ -136,6 +135,7 @@ if ($notifs == 0) {
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> <?php echo $_SESSION['firstname']; ?> <span class="caret"></span></a>
           <ul class="dropdown-menu slpdropsub">
             <li><a href="http://slp.ph/changepassword.php">Change Password</a></li>
+            <li><a href="http://slp.ph/hr/user.php?id=<?php echo $_SESSION['id']; ?>">My Profile</a></li>
             <li><a href="http://slp.ph/hr/feedback.php">My Feedback</a></li>
             <li><a href="http://slp.ph/logout.php">Logout</a></li>
           </ul>

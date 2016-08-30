@@ -422,7 +422,7 @@ h3 {
         </center>
         <p class="text-justify" style="font-size: 12px">
           Starting today, the <b>profile picture uploading feature </b> is now available for SLP.PH users!
-          Along with this, a complete list of latest enhancements are listed below: <br>
+          Along with this, other enhancements are listed below: <br>
           <ul style="font-size:12px;text-align:left"></center>
             <li><b>Profile pictures</b> - simply hover and click on the upload button on your profile page to upload!</li>
             <li><b>Announcements page</b> - this will always be updated with the latest SLP news.</li>
@@ -431,8 +431,11 @@ h3 {
             <li><b>Other enhancements and optimizations</b> - fixing of minor errors encountered throughout different systems.</li>
           </ul>
 
-      <p class="text-left" style="font-size: 12px"><span style="font-size: 16px"><b>But you ain't seen nothing yet.</b></span> SLP.PH is set to unravel COOLer(convenient online) features that will make your browsing experience more exciting so stay tuned! Also, we love to hear from you so don't hesitate to send your feedback so that we keep improving our systems!</p></center>
-
+      <p class="text-left" style="font-size: 12px"><span style="font-size: 16px"><b>But you ain't seen nothing yet.</b></span> SLP.PH is set to unravel COOLer(convenient online) features that will make your browsing experience more exciting so stay tuned! Also, we love to hear from you so don't hesitate to send your feedback so that we keep improving our systems!</p>
+      <hr>
+      <p class="text-center" style="font-size: 12px"><span style="font-size: 14px"><b style="color:red">PROMO: Earn 40 Bytez instantly when you upload your initial profile photo! <br>Promo runs until August 31, 2016.</b></span></p></p>
+      <img src="http://www.slp.ph/imgs/profpic.jpg" style="max-width:454px;margin-top:1em">
+      </center>
     </div>
   </div>
   <div class="col-md-3" style="padding:1em;padding-top:0em;border:0px solid blue;padding-left:0.5em;padding-right:0.5em;margin-top:0">

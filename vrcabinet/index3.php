@@ -81,6 +81,16 @@ table tr {
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { font-weight: bold; font-size: 16px; color: #000; display: block; border-bottom: 1px solid #000; }
 
+.totalfilecount {
+  text-align:center;font-weight:bold;font-size:26px;vertical-align:middle;
+}
+
+.foldericon {
+  width:40px;vertical-align:middle;
+  background: url("../imgs/foldericon.png") no-repeat 15px -2px;
+  background-size: 74%;
+  border-right:0px;
+}
 </style>
 </head>
 <body>
@@ -108,7 +118,7 @@ table tr {
 
       <div class="row">
           <div class="col-md-offset-1 col-md-2" id="maincontent" style="margin-top:3em;margin-bottom:2em;text-align:center">
-                <img src="imgs/slpangel.png" style="max-width:8em;" id="angelimg">
+                <img src="../imgs/slpangel.png" style="max-width:8em;" id="angelimg">
           </div>
           <div class="col-md-8" id="searchblock" style="padding:2em;">
                 <div style="margin-top:2em">
@@ -167,27 +177,90 @@ table tr {
           <button id="resetfilters" class="btn btn-warning col-md-12" style="padding:6px 10px 6px 10px;">Reset Filters</button>
         </div>
       </div>
+
+
       <div class="row" id="dttablerow">
         <div class="col-md-12" style="padding: 2em 3em 2em 3em">
             <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-hover hover" id="folders" style="background-color:#fff;width:100%;line-height:0.5;">
               <thead>
                 <tr>
-                <th style="background:none"></th>
-                <th style="width:70%;">Files by Category</th>
+                
+                <th style="width:70%;" colspan="2">Files by Category</th>
                 <th>Total Files</th>
                 <th>Latest Activity</th>
                 </tr>
               </thead>
-              <tr>
-                <td style="width:40px;vertical-align:middle;"><img src="../imgs/foldericon.png" style="width:34px;height:auto;"></td>
+              
+              <tr onclick="gotofiles('External Memorandum');">
+                <td class="foldericon"></td>
+                <td style="border-left:0px"><div style="font-size:18px;font-weight:bold;">External Memorandums</div>For memorandums sent nationwide</td>
+                <td class="totalfilecount">17</td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Internal Memorandum');">
+                <td class="foldericon"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Internal Memorandums</div>For memorandums sent within Central-Office</td>
+                <td class="totalfilecount">17</td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Project Proposal');">
+                <td class="foldericon"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Project Proposals</div>For completed project proposals</td>
+                <td>17</td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Policy Document');">
+                <td class="foldericon"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Policy Documents</div>For completed project proposals</td>
+                <td>17</td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Guide / Manual');">
+                <td class="foldericon"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Guides & Manuals</div>-</td>
+                <td>17</td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Template / Form');">
+                <td class="foldericon"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Templates & Forms</div>-</td>
+                <td>17</td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Accomplishment Report');">
+                <td class="foldericon"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Accomplishment Reports</div>For physical accomplishment</td>
+                <td>17</td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Financial Report');">
+                <td class="foldericon"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Financial Reports</div>For financial accomplishment</td>
+                <td>17</td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Feedback Report');">
+                <td class="foldericon"></td>
                 <td><div style="font-size:18px;font-weight:bold;">Feedback Reports</div>For feedback uploaded through ROVER</td>
                 <td>32</td>
                 <td>-</td>
               </tr>
-              <tr>
-                <td style="width:40px;vertical-align:middle;"><img src="../imgs/foldericon.png" style="width:34px;height:auto;"></td>
-                <td><div style="font-size:18px;font-weight:bold;">Internal Memorandum</div>Within CO</td>
-                <td>17</td>
+              <tr onclick="gotofiles('Program Flow');">
+                <td class="foldericon"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Supporting Documents</div>For projects</td>
+                <td>32</td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Notes');">
+                <td class="foldericon"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Notes</div>For anything SLP related</td>
+                <td>32</td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Knowledge Product');">
+                <td class="foldericon"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Blasts</div>For previously sent email blasts</td>
+                <td>32</td>
                 <td>-</td>
               </tr>
             </table>
@@ -230,6 +303,20 @@ table tr {
 <script type="text/javascript" language="javascript" src="../js/jquery.dataTables.js"></script>
 <script src="../js/DTbootstrap.js"></script>
 <script>
+function gotofiles(filetype) {
+  var formData = { 'sector' : redirection2 };
+  $.ajax({
+    type: "POST",
+    url: "jobdetails.php",
+    data: formData,
+    success: function(data) {
+            if (data == "visitpage") {
+              location.href="jobdetails.php?id="+redirection;
+            }
+          }
+
+  });
+}
 function filterCategory() {
   var category = document.getElementById("fCategory").value;
     oTable.fnFilter("^"+category+"$", 2, true, false, true);

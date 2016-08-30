@@ -143,7 +143,7 @@ body {
   </div>
 
 <?php
-include "../nav.php";
+include "../../nav.php";
 if ($_SESSION['permlvl'] < 1) {
   echo "<div class='container-fluid'><div class='col-md-offset-2 col-md-8' style='margin-top:5em;text-align:center'><img src='../imgs/search.png'><br><br>Access to this function is only available to <b>HR focals.</b><br>If you believe you should have access to this, please send an email to jmodelacruz@e-dswd.net.";
   die;
@@ -347,25 +347,20 @@ function isfemale() {
                                 <div class="col-sm-8">
                                       <select class="form-control cleanselect" name="fundsource" id="fundsource">
                                         <option value="" selected>Select Source</option>
-                                 
  <!-- get this --> 
                       <?php
                       try {
                               $sql = $db->prepare("SELECT * FROM libhr_funsource order by hrfundsourcename");
-                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
                               $sql->execute();
-                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
                         
-                        while($hrfundsourcename=$sql->fetch(PDO::FETCH_ASSOC))
-                        {
-                      ?>
-                        <option value=" <?php echo $hrfundsourcename['hrfundsourcename']; ?>"> <?php echo $hrfundsourcename['hrfundsourcename']; ?> </option>
-                    
-                      <?php
-                        }
-                              } catch(PDOException $e) {
-                            echo "Error: " . $e->getMessage();
-                            }//en
+                                      while($hrfundsourcename=$sql->fetch(PDO::FETCH_ASSOC)) {
+                                    ?>
+                                      <option value=" <?php echo $hrfundsourcename['hrfundsourcename']; ?>"> <?php echo $hrfundsourcename['hrfundsourcename']; ?> </option>
+                                    <?php
+                                      }
+                      } catch(PDOException $e) {
+                              echo "Error: " . $e->getMessage();
+                      }
                         ?>
                       </select>
 
@@ -490,7 +485,7 @@ function isfemale() {
                                 </div>
                         </div>
 
-                      <div class="row">
+                      <div class="row" style="margin-bottom:2em">
                           <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-sm-4 control-label" id="captchaOperation"></label>
