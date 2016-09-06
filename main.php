@@ -13,7 +13,7 @@ function timeago($ptime)
 
     if ($etime < 1)
     {
-        return '0 seconds';
+        return 'just now';
     }
 
     $a = array( 365 * 24 * 60 * 60  =>  'year',
@@ -410,6 +410,18 @@ h3 {
     </div>
   </div>
   <div class="col-md-6" style="padding:1em;padding-top:0;padding-right:0">
+
+  <div class="row" style="padding-left:1em;padding-right:0.5em"> 
+    <div style="border:solid 1px #c5d6de;margin-left:1em;background:#fff;text-align:center;padding:1em;padding-left:1.5em;padding-right:1.5em;font-size:12px">
+      09/01/2016 - Advisory: We are experiencing technical difficulties with sending automated emails to <b>yahoo</b> email addresses. The following are directly affected and are temporarily non-functional:
+      <div class="col-md-offset-4" style="text-align:center"><ul style="text-align:left;margin-bottom:0.5em;margin-top:0.5em">
+        <li>Account confirmation</li>
+        <li>Forgot password feature</li>
+      </ul></div>
+      Apologies for the inconvenience. We will be providing updates once the issue is resolved.
+    </div>
+  </div>
+  <div class="row" style="padding-top:1em;padding-left:1em;padding-right:0.5em">
     <div style="border:solid 1px #c5d6de;margin-left:1em;background:#fff;text-align:center;padding:1em;padding-left:1.5em;padding-right:1.5em">
         <div class="row" style="padding-right:1.6em;margin-bottom:0;padding-bottom:0;padding-left:1.6em">
           <p class="pull-left" style="font-size: 12px; color:#ccc">Posted by: ITU</p>
@@ -437,6 +449,9 @@ h3 {
       <img src="http://www.slp.ph/imgs/profpic.jpg" style="max-width:454px;margin-top:1em">
       </center>
     </div>
+
+  </div>
+
   </div>
   <div class="col-md-3" style="padding:1em;padding-top:0em;border:0px solid blue;padding-left:0.5em;padding-right:0.5em;margin-top:0">
   <div class="col-md-11" style="padding-right:0">

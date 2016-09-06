@@ -12,7 +12,7 @@ function sendFeedback(page,feedback,sender) {
       'feedbacker'    : sender
     };
                 $.ajax({
-                   url: "http://slp.ph/hr/sendfeedback.php",
+                   url: "../hr/sendfeedback.php",
                    type: "POST",
                    data: formData,
                    success: function(data)

@@ -55,7 +55,8 @@ while ($row2 = $stmt2->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="http://slp.ph/main.php" style="font-weight:900"><img src="http://slp.ph/imgs/slpsmall.png" style="display:inline;margin-right:0.5em;margin-top:-0.17em">SLP</a>
+      <?php $linkadd = "http://".$_SERVER[HTTP_HOST]; ?>
+      <a class="navbar-brand" href="<?php echo $linkadd; ?>/main.php" style="font-weight:900"><img src="http://slp.ph/imgs/slpsmall.png" style="display:inline;margin-right:0.5em;margin-top:-0.17em">SLP</a>
     </div>
    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -64,45 +65,55 @@ while ($row2 = $stmt2->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             Human Resources <span class="caret"></span></a>
           <ul class="dropdown-menu slpdropsub">
-            <li><a href="http://slp.ph/hr/add/">Add Record</a></li>
-            <li><a href="http://slp.ph/hr/viewdata.php">View Directory</a></li>
-            <li><a href="http://slp.ph/rpmodirectory.php">RPMO directory</a></li>
+            <?php
+            echo "<li><a href='".$linkadd."/hr/add'>Add Record</a></li>";
+            echo "<li><a href='".$linkadd."/hr/viewdata.php'>View Directory</a></li>";
+            echo "<li><a href='".$linkadd."/rpmodirectory.php'>RPMO Directory</a></li>";
+            ?>
           </ul>
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             HanapBuhay <span class="caret"></span></a>
           <ul class="dropdown-menu slpdropsub">
-            <li><a href="http://slp.ph/hanapbuhay/partners.php">Partners</a></li>
-            <li><a href="http://slp.ph/hanapbuhay/jobs.php">Jobs</a></li>
-            <li><a href="http://slp.ph/hanapbuhay/supply.php">Supply</a></li>
-            <li><a href="http://slp.ph/hanapbuhay/support.php">Support</a></li>
+            <?php
+            echo "<li><a href='".$linkadd."/hanapbuhay/partners.php'>Partners</a></li>";
+            echo "<li><a href='".$linkadd."/hanapbuhay/jobs.php'>Jobs</a></li>";
+            echo "<li><a href='".$linkadd."/hanapbuhay/supply.php'>Supply</a></li>";
+            echo "<li><a href='".$linkadd."/hanapbuhay/support.php'>Support</a></li>";
+            ?>
           </ul>
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             E-Library <span class="caret"></span></a>
           <ul class="dropdown-menu slpdropsub">
-            <li><a href="http://slp.ph/vrcabinet/">Search</a></li>
-            <li><a href="http://slp.ph/vrcabinet/upload.php">Upload</a></li>
+            <?php
+            echo "<li><a href='".$linkadd."/vrcabinet/'>Search</a></li>";
+            echo "<li><a href='".$linkadd."/vrcabinet/upload.php'>Upload</a></li>";
+            ?>
           </ul>
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             Reports <span class="caret"></span></a>
           <ul class="dropdown-menu slpdropsub">
-            <li><a href="#" style="color:#888">Operations Dashboard</a></li>
-            <li><a href="http://slp.ph/hbdashboard.php">HanapBuhay Dashboard</a></li>
-            <li><a href="http://slp.ph/monicadb">Historical Data</a></li>
+            <?php
+            echo '<li><a href="#" style="color:#888">Operations Dashboard</a></li>';
+            echo "<li><a href='".$linkadd."/hbdashboard.php'>HanapBuhay Dashboard</a></li>";
+            echo "<li><a href='".$linkadd."/monicadb'>Historical Data</a></li>";
+            ?>
           </ul>
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             Others <span class="caret"></span></a>
           <ul class="dropdown-menu slpdropsub">
-            <li><a href="http://slp.ph/faqs.php">FAQs</a></li>
-            <li><a href="http://slp.ph/feedbackportal.php">Feedback Portal</a></li>
-            <li><a href="http://slp.ph/dev.php">System Development</a></li>
+            <?php
+            echo "<li><a href='".$linkadd."/faqs.php'>FAQs</a></li>";
+            echo "<li><a href='".$linkadd."/feedbackportal.php'>Feedback Portal</a></li>";
+            echo "<li><a href='".$linkadd."/dev.php'>System Development</a></li>";
+            ?>
           </ul>
         </li>
       </ul>
