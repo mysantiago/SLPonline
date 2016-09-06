@@ -32,7 +32,7 @@ if(!empty($_POST))
 
             if(move_uploaded_file($_FILES['file']['tmp_name'], $uploaddir."/".$uploadname )) {
             try { 
-                      byteMe($_SESSION['id'],'profilepic',40);
+                      byteMe($_SESSION['id'],'profilepic',15);
                       $stmt = $db->prepare("INSERT INTO hr_profilepics(hrdbid, name, filename ,dtetme) VALUES (:id, :file, :file1,:dt)");
                       $stmt->bindParam(':id',$_SESSION['pageid']);
                       $stmt->bindParam(':file', $uploadname);

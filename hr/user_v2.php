@@ -1,8 +1,10 @@
 <?php
 require "../zxcd9.php";
   byteMe($_SESSION['id'],'hr_profile',0.10);
+
   $_GET   = filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
-  $_SESSION['pageid'] = $_GET['id'];
+  $_SESSION['uid'] = $_GET['id'];
+    $_SESSION['pageid'] = $_GET['id'];
   $query = "SELECT firstname, middlename, lastname, nickname, sex, birthdate, emailaddress, contactnumber, designation, position, employstatus, employdate, fundsource, region, province, municipality, comptype, compyear, compstatus, compnotes, inactive, feeling FROM HRDB WHERE id = :id";
   $query_params = array(':id' => $_GET['id']);
         try 
@@ -299,7 +301,7 @@ if ($_SESSION['permlvl']>0 || ($_SESSION['permlvl']<1 && $_SESSION['id']==$_SESS
                         echo '<img src="../imgs/female.png" style="margin-bottom:1em">';
                       }     
               } else {
-              echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" vspace="5" style="border-radius:50%" style="max-width:200px"/>';
+              echo '<img src="../../docs/profilepics/'.$p['name'].'" border="2" vspace="5" style="border-radius:50%;max-width:200;height:200px"/>';
               }   
 } catch(PDOException $e) {
       echo "Error: " . $e->getMessage();
