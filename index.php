@@ -272,6 +272,8 @@ echo $_COOKIE['rememberme']; ?>"/>
                         </div>
                         <span id="loadicon" class="glyphicon glyphicon-refresh spin" style="font-size:30px;display:none;"></span>
                         <div id="statusdisp" class="col-sm-12 padstop" style="color:red;text-align:center;display:none;font-size:15px"></div>
+                        <div style="margin-top:4em">Looking for SLPIS? Visit:</div>
+                        <a href="http://slpis.dswd.gov.ph" target="blank">http://slpis.dswd.gov.ph</a>
                       </form>
                   </div>
                 </div>

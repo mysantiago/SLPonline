@@ -145,10 +145,10 @@ if ($notifs == 0) {
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> <?php echo $_SESSION['firstname']; ?> <span class="caret"></span></a>
           <ul class="dropdown-menu slpdropsub">
-            <li><a href="http://slp.ph/changepassword.php">Change Password</a></li>
-            <li><a href="http://slp.ph/hr/user.php?id=<?php echo $_SESSION['id']; ?>">My Profile</a></li>
-            <li><a href="http://slp.ph/hr/feedback.php">My Feedback</a></li>
-            <li><a href="http://slp.ph/logout.php">Logout</a></li>
+            <li><a href="<?php echo $linkadd; ?>/changepassword.php">Change Password</a></li>
+            <li><a href="<?php echo $linkadd; ?>/hr/user.php?id=<?php echo $_SESSION['id']; ?>">My Profile</a></li>
+            <li><a href="<?php echo $linkadd; ?>/hr/feedback.php">My Feedback</a></li>
+            <li><a href="<?php echo $linkadd; ?>/logout.php">Logout</a></li>
           </ul>
         </li>
       </ul>

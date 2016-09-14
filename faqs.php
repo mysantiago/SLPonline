@@ -213,6 +213,19 @@ byteMe($_SESSION['id'],'faqs',0.10); ?>
                   </div>
                         </div> 
 
+                  <div class="panel-body"><span class="glyphicon glyphicon-menu-down" data-toggle="collapse" aria-hidden="true" href="#collapse11"></span>
+                            <a data-toggle="collapse" href="#collapse11"><b>How do i go to the SLPIS website?</b></a>
+                          </div>                                 
+                          <div id="collapse11" class="panel-collapse collapse">
+                  <div class="row"><img src="imgs/mobile-app-dev.png" class="img-rounded" style="width: 100px; height: 100px">
+                    <div class="col-md-10">
+                        <ul class="list-group">
+                           <li class="list-group-item"><p align="justify">The SLPIS website can be accessed through the following link: <a href="http://slpis.dswd.gov.ph" target="blank">http://slpis.dswd.gov.ph</a></p></li>
+                          </ul>
+                    </div>  
+                  </div>
+                        </div> 
+
                             <div class="panel-body"><span class="glyphicon glyphicon-menu-down" data-toggle="collapse" aria-hidden="true" href="#collapse12"></span>
                             <a data-toggle="collapse" href="#collapse12"><b>Wait I have brilliant ideas to make the site more exciting, where to?</b></a>
                           </div>                                 
