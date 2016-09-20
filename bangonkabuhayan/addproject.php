@@ -2,7 +2,28 @@
 require "../zxcd9.php";
 byteMe($_SESSION['id'],'bkadd',0.10);
 ?>
+        <?php
+                     
+                     
+                      try 
+                      {
 
+                       $query = "SELECT * from bk_step1 order by id DESC limit 0,1"; 
+                       
+                       $stmt = $db->prepare($query);
+             
+
+                       $result = $stmt->execute(); 
+                    //   $lastId = $db->lastInsertId('id');
+                       $row = $stmt->fetch();
+                    
+                      } 
+                      catch(PDOException $ex) 
+                      { die("Failed to run query: " . $ex->getMessage()); }      
+               
+
+                      $_SESSION['sid']=$row['id'];
+                  ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -249,10 +270,10 @@ h3 {
             <br><br>
         <form>
           <div class="form-group">
-            <input class="form-control" placeholder="Name of Project" type="password" id="oldpass" name="oldpass" required>
+            <input class="form-control" placeholder="Name of Project" type="text" id="projectname" name="projectname" >
           </div>
           <div class="form-group">
-              <select class="form-control cleanselect" name="region" id="region" onchange="getProv()" required>
+              <select class="form-control cleanselect" name="region" id="region" onchange="getProv()">
                   <option value="" selected>Select Region</option>
                   <?php
                       $query = "SELECT * FROM lib_regions"; 
@@ -261,7 +282,7 @@ h3 {
                       catch(PDOException $ex) 
                       { die("Failed to run query: " . $ex->getMessage()); } 
                       while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                         echo "<option value='".$row["regid"]."'>".$row['regname']."</option>";
+                         echo "<option value='".$row['regid']."'>".$row['regname']."</option>";
                       }
                   ?>
               </select>
@@ -277,26 +298,30 @@ h3 {
                     </select>
           </div>
           <div class="form-group">
-            <input class="form-control" placeholder="Project Start Date" type="password" id="newpass" name="newpass" required>
+            <input class="form-control" placeholder="Project Start Date(MM/DD/YYYY)" type="text" id="projectsd" name="projectsd">
           </div>
           <div class="form-group">
-            <input class="form-control" placeholder="Average Annual Income of Project" type="password" id="newpass" name="newpass" required>
+            <input class="form-control" placeholder="Average Annual Income of Project" type="text" id="AveAnnIncProject" name="AveAnnIncProject">
           </div>
-          Type of Project Registration (if applicable)<br>
+          <h3>Type of Project Registration (if applicable)</h3><br>
           <div class="form-group" style="margin-top:0.5em;margin-left:2em">
-              <div class="checkbox-inline" id="tooltip1">
-                <label><input type="checkbox" value="" id="hasnso" name="hasnso" onchange="hasNSO();">CDA</label>
+              <div class="checkbox-inline" >
+               <label><input type="checkbox" value="0" id="cda" name="cda" onchange="Cda();">CD</label>
               </div>
-              <div class="checkbox-inline" id="tooltip2">
-                <label><input type="checkbox" value="" id="hasnbi" name="hasnbi" onchange="hasNBI();">DOLE</label>
+              <div class="checkbox-inline">
+                <label><input type="checkbox" value="0" id="dole" name="dole" onchange="Dole();">DOLE</label>
               </div>
-              <div class="checkbox-inline" id="tooltip2">
-                <label><input type="checkbox" value="" id="hasnbi" name="hasnbi" onchange="hasNBI();">DTI</label>
-              </div>
-              <div class="checkbox-inline" id="tooltip2">
-                <label><input type="checkbox" value="" id="hasnbi" name="hasnbi" onchange="hasNBI();">SEC</label>
+              <div class="checkbox-inline">
+                <label><input type="checkbox" value="0" id="dti" name="dti" onchange="Dti();">DTI</label>
+              </div> 
+              <div class="checkbox-inline" >
+                <label><input type="checkbox" value="0" id="sec" name="sec" onchange="Sec();">SEC</label>
               </div>
           </div>
+
+
+   
+
           <div class="form-group">
                   <select class="form-control cleanselect" id="modality" name="modality" onchange="getBaby(this.id)">
                     <option value="" selected>Select Project Modalities</option>
@@ -311,7 +336,7 @@ h3 {
                 <div class="col-md-8">
                   <div class="input-group" style="margin-bottom:1em;" id="scf_activity" name="scf_activity">
                       <span class="input-group-addon" style="min-width:80px">SCF</span>
-                      <input type="text" class="form-control" placeholder="Type of Activity">
+                      <input type="text" class="form-control" placeholder="Type of Activity" id="mod_scf" name="mod_scf">
                   </div>
                 </div>
                 <div class="col-md-2" style="padding-left:0;">
@@ -357,7 +382,7 @@ h3 {
                 <div class="col-md-8">
                   <div class="input-group" style="margin-bottom:1em;" id="cbla_activity" name="cbla_activity">
                       <span class="input-group-addon" style="min-width:80px">CBLA</span>
-                      <input type="text" class="form-control" placeholder="Type of Activity">
+                      <input type="text" class="form-control" placeholder="Type of Activity" id="mod_cbla" name="mod_cbla">
                   </div>
                 </div>
                 <div class="col-md-2" style="padding-left:0;">
@@ -403,7 +428,7 @@ h3 {
                 <div class="col-md-8">
                   <div class="input-group" style="margin-bottom:1em;" id="peaf_activity" name="peaf_activity">
                       <span class="input-group-addon" style="min-width:80px">PEAF</span>
-                      <input type="text" class="form-control" placeholder="Type of Activity">
+                      <input type="text" class="form-control" placeholder="Type of Activity" id="mod_peaf" name="mod_peaf">
                   </div>
                 </div>
                 <div class="col-md-2" style="padding-left:0;">
@@ -449,7 +474,7 @@ h3 {
                 <div class="col-md-8">
                   <div class="input-group" style="margin-bottom:1em;" id="st_activity" name="st_activity">
                       <span class="input-group-addon" style="min-width:80px">ST</span>
-                      <input type="text" class="form-control" placeholder="Type of Activity">
+                      <input type="text" class="form-control" placeholder="Type of Activity" id="mod_st" name="mod_st">
                   </div>
                 </div>
                 <div class="col-md-2" style="padding-left:0;">
@@ -503,112 +528,112 @@ h3 {
           </div>
           <div class="input-group" style="margin-bottom:1em;display:none" id="fund_dswd" name="fund_dswd">
               <span class="input-group-addon" style="min-width:200px">DSWD</span>
-              <input type="text" class="form-control" placeholder="Amount provided by fund source (in PHP)">
+              <input type="text" class="form-control" placeholder="Amount provided by fund source (in PHP)" id="fund_dswd" name="fund_dswd">
           </div>
           <div class="input-group" style="margin-bottom:1em;display:none" id="fund_lgu" name="fund_lgu">
               <span class="input-group-addon" style="min-width:200px">LGU</span>
-              <input type="text" class="form-control" placeholder="Amount provided by fund source (in PHP)" aria-describedby="sizing-addon2">
+              <input type="text" class="form-control" placeholder="Amount provided by fund source (in PHP)" id="fund_lgu" name="fund_lgu" aria-describedby="sizing-addon2">
           </div>
           <div class="input-group" style="margin-bottom:1em;display:none" id="fund_mfi" name="fund_mfi">
               <span class="input-group-addon" style="min-width:200px">MFI</span>
-              <input type="text" class="form-control" placeholder="Amount provided by fund source (in PHP)" aria-describedby="sizing-addon2">
+              <input type="text" class="form-control" placeholder="Amount provided by fund source (in PHP)" id="fund_mfi" name="fund_mfi" aria-describedby="sizing-addon2">
           </div>
           <div class="input-group" style="margin-bottom:1em;display:none" id="fund_partner" name="fund_partner">
               <span class="input-group-addon" style="min-width:200px">Partner</span>
-              <input type="text" class="form-control" placeholder="Amount provided by fund source (in PHP)" aria-describedby="sizing-addon2">
+              <input type="text" class="form-control" placeholder="Amount provided by fund source (in PHP)" id="fund_partner" name="fund_partner" aria-describedby="sizing-addon2">
           </div>
           <div class="input-group" style="margin-bottom:1em;display:none" id="fund_participant" name="fund_participant">
               <span class="input-group-addon" style="min-width:200px">Participant Counterpart</span>
-              <input type="text" class="form-control" placeholder="Amount provided by fund source (in PHP)" aria-describedby="sizing-addon2">
+              <input type="text" class="form-control" placeholder="Amount provided by fund source (in PHP)" id="fund_participant" name="fund_participant" aria-describedby="sizing-addon2">
           </div>
           <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <input class="form-control" placeholder="Contact Name" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Contact Name" type="text" id="contactname" name="contactname" required>
                 </div>          
                 <div class="form-group">
-                  <input class="form-control" placeholder="Contact Designation / Position" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Contact Designation / Position" type="text" id="contactdp" name="contactdp" required>
                 </div>          
                 <div class="form-group">
-                  <input class="form-control" placeholder="Contact Number" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Contact Number" type="text" id="contactno" name="contactno" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <input class="form-control" placeholder="Alternate Contact Name" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Alternate Contact Name" type="text" id="altconname" name="altconname" required>
                 </div>          
                 <div class="form-group">
-                  <input class="form-control" placeholder="Alternate Contact Designation / Position" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Alternate Contact Designation / Position" type="text" id="altcontactdp" name="altcontactdp" required>
                 </div>          
                 <div class="form-group">
-                  <input class="form-control" placeholder="Alternate Contact Number" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Alternate Contact Number" type="text" id="altcontactno" name="altcontactno" required>
                 </div>
               </div>
           </div>
           <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <input class="form-control" placeholder="Partner" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Partner" type="text" id="partner1" name="partner1" >
                 </div>
                 <div class="form-group">
-                  <input class="form-control" placeholder="Partner" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Partner" type="text" id="partner2" name="partner2" >
                 </div>
                 <div class="form-group">
-                  <input class="form-control" placeholder="Partner" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Partner" type="text" id="partner3" name="partner3" >
                 </div>
               </div>
               <div class="col-md-2" style="padding-left:0">
                 <div class="form-group">
-                  <select class="form-control cleanselect" id="fundsource" name="fundsource" onchange="getBaby(this.id)">
+                  <select class="form-control cleanselect" id="f1" name="f1">
                     <option value="" selected>Partner Type</option>
-                    <option value="fund_dswd">DSWD</option>
-                    <option value="fund_lgu">LGU</option>
-                    <option value="fund_mfi">MFI</option>
-                    <option value="fund_partner">Partner</option>
-                    <option value="fund_participant">Participant Counterpart</option>
+                  <option value="fund_dswd,">DSWD</option>
+                    <option value="fund_lgu,">LGU</option>
+                    <option value="fund_mfi,">MFI</option>
+                    <option value="fund_partner,">Partner</option>
+                    <option value="fund_participant,">Participant Counterpart</option>
                   </select>
                 </div>          
                 <div class="form-group">
-                  <select class="form-control cleanselect" id="fundsource" name="fundsource" onchange="getBaby(this.id)">
+                  <select class="form-control cleanselect" id="f2" name="f2" >
                     <option value="" selected>Partner Type</option>
-                    <option value="fund_dswd">DSWD</option>
-                    <option value="fund_lgu">LGU</option>
-                    <option value="fund_mfi">MFI</option>
-                    <option value="fund_partner">Partner</option>
-                    <option value="fund_participant">Participant Counterpart</option>
+                    <option value="fund_dswd,">DSWD</option>
+                    <option value="fund_lgu,">LGU</option>
+                    <option value="fund_mfi,">MFI</option>
+                    <option value="fund_partner,">Partner</option>
+                    <option value="fund_participant,">Participant Counterpart</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <select class="form-control cleanselect" id="fundsource" name="fundsource" onchange="getBaby(this.id)">
+                  <select class="form-control cleanselect" id="f3" name="f3" >
                     <option value="" selected>Partner Type</option>
-                    <option value="fund_dswd">DSWD</option>
-                    <option value="fund_lgu">LGU</option>
-                    <option value="fund_mfi">MFI</option>
-                    <option value="fund_partner">Partner</option>
-                    <option value="fund_participant">Participant Counterpart</option>
+                      <option value="fund_dswd,">DSWD</option>
+                    <option value="fund_lgu,">LGU</option>
+                    <option value="fund_mfi,">MFI</option>
+                    <option value="fund_partner,">Partner</option>
+                    <option value="fund_participant,">Participant Counterpart</option>
                   </select>
                 </div>
               </div>
               <div class="col-md-4" style="padding-left:0;padding-right:0">
                 <div class="form-group">
-                  <input class="form-control" placeholder="Input Provided" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Input Provided" type="text" id="input1" name="input1">
                 </div>          
                 <div class="form-group">
-                  <input class="form-control" placeholder="Input Provided" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Input Provided" type="text" id="input2" name="input2">
                 </div>          
                 <div class="form-group">
-                  <input class="form-control" placeholder="Input Provided" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Input Provided" type="text" id="input3" name="input3" >
                 </div>          
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <input class="form-control" placeholder="Contact details" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Contact details" type="text" id="contactdetails1" name="contactdetails1">
                 </div>          
                 <div class="form-group">
-                  <input class="form-control" placeholder="Contact details" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Contact details" type="text" id="contactdetails2" name="contactdetails2">
                 </div>          
                 <div class="form-group">
-                  <input class="form-control" placeholder="Contact details" type="password" id="newpass" name="newpass" required>
+                  <input class="form-control" placeholder="Contact details" type="text" id="contactdetails3" name="contactdetails3">
                 </div>     
               </div>
           </div>
@@ -616,7 +641,7 @@ h3 {
 
 
           <div class="form-group">
-            <button class="btn btn-info btn-md pull-right" id="submitpass" type="">Next &nbsp;<span class="glyphicon glyphicon-arrow-right"></span></button>
+            <button class="btn btn-info btn-md pull-right" id="submitpass" type="" >Next &nbsp;<span class="glyphicon glyphicon-arrow-right"></span></button>
           </div>
           <div class="clearfix"></div>
 
@@ -631,7 +656,7 @@ h3 {
 
           <div class="modal-content" style="padding:1em;padding-top:0.5em;">
                   <h3 style="color:#5cb85c;margin-bottom:6px">Success!</h3>
-                  <span style="font-size:13px" id="sucsubtext">Boom</span><br><br>
+                  <span style="font-size:13px" id="sucsubtext">Step 1 saved!</span><br><br>
                   <button type="button" class="btn btn-primary pull-right" style="background:#5cb85c;border:0;margin-top:0;padding:5px 10px 5px 10px" id="okaybtn" data-dismiss="modal">Okay</button>
                   <div class="clearfix"></div>
           </div>
@@ -639,7 +664,10 @@ h3 {
         </div>
       </div>
       <!-- Modal -->
+
+
 <script>
+
 function getBaby(parent) {
   var str = $('#'+parent+' option:selected').val();
   $('#'+str).fadeIn(399);
@@ -677,38 +705,128 @@ function getCitymun() {
 
   });
 }
+function Cda() {
+  
+        if (document.getElementById('cda').checked) {
+             document.getElementById('cda').value=1;
+        } else {
+            document.getElementById('cda').value=0;        
+        }   
+}
+
+function Dole() {
+  
+        if (document.getElementById('dole').checked) {    
+             document.getElementById('dole').value=1;
+        } else {
+            document.getElementById('dole').value=0;       
+        }   
+}
+
+function Dti() {
+  
+        if (document.getElementById('dti').checked) {    
+             document.getElementById('dti').value =1;
+        } else {
+            document.getElementById('dti').value =0;    
+        }   
+}
+
+function Sec() {
+  
+        if (document.getElementById('sec').checked) {            
+             document.getElementById('sec').value =1;
+        } else {
+            document.getElementById('sec').value =0;           
+        }   
+}
+
+
+
+
 $("#submitpass").click(function(event) {
   event.preventDefault();
   event.stopImmediatePropagation();
   $("#submitpass").html("Processing..");
   document.getElementById("submitpass").disabled = true;
+
   var formData = {
-      'oldpass'       : $('input[name=oldpass]').val(), 
-      'newpass'       : $('input[name=newpass]').val(), 
-      'newpass2'      : $('input[name=newpass2]').val()
-  };
+
+
+       'action'           :'submitpass',
+       'projectname'      :$('input[name=projectname]').val(), 
+       'region'           :$('#region option:selected').val(),
+       'province'         :$('#province option:selected').val(),
+       'municipality'     :$('#municipality option:selected').val(),
+       'projectsd'        :$('input[name=projectsd]').val(), 
+       'AveAnnIncProject' :$('input[name=AveAnnIncProject]').val(),
+       'cda'              :$('input[name=cda]').val(),
+       'dole'             :$('input[name=dole]').val(),
+       'dti'              :$('input[name=dti]').val(),
+       'sec'              :$('input[name=sec]').val(),
+       'mod_scf'          :$('input[name=mod_scf]').val(),
+       'scf_start'        :$('#scf_start option:selected').val(),
+       'scf_end'          :$('#scf_end option:selected').val(),
+       'mod_cbla'         :$('input[name=mod_cbla]').val(),
+       'cbla_start'       :$('#cbla_start option:selected').val(),
+       'cbla_end'         :$('#cbla_end option:selected').val(),
+       'mod_peaf'         :$('input[name=mod_peaf]').val(),
+       'peaf_start'       :$('#peaf_start option:selected').val(),
+       'peaf_end'         :$('#peaf_end option:selected').val(),
+       'mod_st'           :$('input[name=mod_st]').val(),
+       'st_start'         :$('#st_start option:selected').val(),
+       'st_end'           :$('#st_end option:selected').val(),
+       'fund_dswd'        :$('input[name=fund_dswd]').val(), 
+       'fund_lgu'         :$('input[name=fund_lgu]').val(), 
+       'fund_mfi'         :$('input[name=fund_mfi]').val(), 
+       'fund_partner'     :$('input[name=fund_partner]').val(), 
+       'fund_participant' :$('input[name=fund_participant]').val(), 
+       'contactname'      :$('input[name=contactname]').val(), 
+       'altconname'       :$('input[name=altconname]').val(),
+       'contactdp'        :$('input[name=contactdp]').val(),
+       'altcontactdp'     :$('input[name=altcontactdp]').val(),
+       'contactno'        :$('input[name=contactno]').val(),
+       'altcontactno'     :$('input[name=altcontactno]').val(),
+       'partner1'         :$('input[name=partner1]').val(),
+       'partner2'         :$('input[name=partner2]').val(),
+       'partner3'         :$('input[name=partner3]').val(),
+       'f1'               :$('#f1 option:selected').val(),
+       'f2'               :$('#f2 option:selected').val(),
+       'f3'               :$('#f3 option:selected').val(),
+       'input1'           :$('input[name=input1]').val(),
+       'input2'           :$('input[name=input2]').val(),
+       'input3'           :$('input[name=input3]').val(),
+       'contactdetails1'  :$('input[name=contactdetails1]').val(),
+       'contactdetails2'  :$('input[name=contactdetails2]').val(),
+       'contactdetails3'  :$('input[name=contactdetails3]').val()
+
+     };
+
   $.ajax({
-       url: "chpass.php",
+       url: "functionz.php",
        type: "POST",
        data: formData,
        success: function(data)
        {
-          if (data == "good") {
-            $("#sucsubtext").html("Password changed")
-            $('#myModal').modal();
-            $('#myModal').on('hidden.bs.modal', function () {
-                location.href = "http://slp.ph/main.php";
-            })
-          } else {
-            alert(data);
-            $("#submitpass").html("Submit");
-            document.getElementById("submitpass").disabled = false;
-          }
+                if (data=="success") {
+                    document.getElementById("submitpass").disabled = false;
+                  $("#sucsubtext").html("Step 1 saved!");
+                      $('#myModal').modal();
+                      $('#myModal').on('hidden.bs.modal', function () {location.href = "../bangonkabuhayan/addproject_step2.php"; });
+                    } else {
+                     document.getElementById("submitpass").disabled = false;
+                       $("#sucsubtext").html("Step 1 saved!");
+                      $('#myModal').modal();
+                      $('#myModal').on('hidden.bs.modal', function () {location.href = "../bangonkabuhayan/addproject_step2.php"; });
+
+
+                    }
+
        }
     });//endajax
-
-
 });
+
+
 </script>
 </body>
 </html>
