@@ -350,7 +350,7 @@ function isfemale() {
  <!-- get this --> 
                       <?php
                       try {
-                              $sql = $db->prepare("SELECT * FROM libhr_funsource order by hrfundsourcename");
+                              $sql = $db->prepare("SELECT * FROM libhr_fundsource order by hrfundsourcename");
                               $sql->execute();
                         
                                       while($hrfundsourcename=$sql->fetch(PDO::FETCH_ASSOC)) {
