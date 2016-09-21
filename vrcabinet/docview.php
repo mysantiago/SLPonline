@@ -291,9 +291,11 @@ h3 {
       </div>
 
       <div class="row" style="margin-top:1em;text-align:right;padding-right:1em;color:#00ADDe;font-size:14px">
+        <?php if ($_SESSION['permlvl']>0||$_SESSION['id']==$rowdv['hrid']) { ?> 
         <span class="link-hover" id="reupfile"><span class="glyphicon glyphicon-upload"></span> Reupload &nbsp;</span>
         <span class="link-hover editbtn" id="editfile"><span class="glyphicon glyphicon-pencil"></span> Edit &nbsp; </span>
         <span class="link-hover delbtn" id="delfile"><span class="glyphicon glyphicon-trash"></span> Delete</span>
+        <?php } ?>
       </div>
 
     </div>
