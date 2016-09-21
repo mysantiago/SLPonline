@@ -126,6 +126,8 @@ if(!empty($_POST))
 //filter input
 //$_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
+
+
     if($_POST['action'] == "getemails_regions") {
         $id = test_input($_POST['id']);
 

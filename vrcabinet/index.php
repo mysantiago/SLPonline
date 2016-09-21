@@ -1,11 +1,24 @@
 <?php require "../zxcd9.php";
 byteMe($_SESSION['id'],'vc_search',0.10);
+$stmt = $db->prepare("SELECT doctype, COUNT(id) as total FROM `DOCDB` GROUP BY doctype");
+$stmt->execute();
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    switch($row['doctype']) {
+        case "Admin Doc": $count_admin=$row['total']; break;
+        case "Blast": $count_blast=$row['total']; break;
+        case "Guide / Manual": $count_guide=$row['total']; break;
+        case "Project Proposal": $count_proposal=$row['total']; break;
+        case "Policy Document": $count_policy=$row['total']; break;
+        case "Report": $count_report=$row['total']; break;
+        case "Template / Form": $count_template=$row['total']; break;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>SLP | VR Cabinet</title>
+    <title>SLP | E-Library</title>
     <meta name="description" content="SLP DSWD Livelihood"/>
     <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
     <link rel="shortcut icon" href="../imgs/favicon.ico" type="image/x-icon">
@@ -15,6 +28,7 @@ byteMe($_SESSION['id'],'vc_search',0.10);
     <link rel="stylesheet" href="../css/fileicon.css"/>
     <link rel="stylesheet" href="../css/pikaday.css"/>
     <script type="text/javascript" src="../js/jquery.autocomplete.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
     <style>
 
 body {
@@ -81,11 +95,20 @@ table tr {
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { font-weight: bold; font-size: 16px; color: #000; display: block; border-bottom: 1px solid #000; }
 
+.totalfilecount {
+  text-align:center;font-weight:normal;font-size:26px;vertical-align:middle;
+}
+
+.foldericon {
+  width:40px;
+  height:40px;
+  padding:1em;
+}
 </style>
 </head>
 <body>
   <div id="slideout">
-    <img src="http://slp.ph/imgs/feedback.png" alt="Feedback" />
+    <img src="../imgs/feedback.png" alt="Feedback" />
     <div id="slideout_inner">
       <span id="loadicon" class="glyphicon glyphicon-refresh spin" style="color:#fff;font-size:50px;padding:10px;display:none"></span>
       <div id="formz">
@@ -107,8 +130,13 @@ table tr {
 <?php include "../nav.php"; ?>
 
       <div class="row">
-          <div class="col-md-offset-1 col-md-2" id="maincontent" style="margin-top:3em;margin-bottom:2em;text-align:center">
-                <img src="../imgs/slpangel.png" style="max-width:8em;" id="angelimg">
+          <div class="col-md-3" id="maincontent" style="margin-top:2.5em;margin-bottom:0em;text-align:center;padding-left:3em">
+                
+
+              <div style="border:solid 0px #c5d6de;background:none;text-align:left;padding:0;margin-bottom:0;height:160px;padding-left:1em" id="cont1">
+              </div>
+
+
           </div>
           <div class="col-md-8" id="searchblock" style="padding:2em;">
                 <div style="margin-top:2em">
@@ -167,9 +195,73 @@ table tr {
           <button id="resetfilters" class="btn btn-warning col-md-12" style="padding:6px 10px 6px 10px;">Reset Filters</button>
         </div>
       </div>
+
+
       <div class="row" id="dttablerow">
         <div class="col-md-12" style="padding: 2em 3em 2em 3em">
-            <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-hover hover" id="docdata" style="background-color:#fff;width:100%;line-height:0.5">
+            <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-hover hover" id="folders" style="background-color:#fff;width:100%;line-height:0.5;">
+              <thead style="width:100%">
+                <tr style="width:100%">
+                
+                <th style="width:70%;" colspan="2">Files by Category</th>
+                <th>Total Files</th>
+                <th>Latest Activity</th>
+                </tr>
+              </thead>
+              
+              <tr onclick="gotofiles('Admin Doc');">
+                <td class="foldericon"><img src="../imgs/foldericon.png" style="width:100%;"></td>
+                <td style="border-left:0px"><div style="font-size:18px;font-weight:bold;">Admin Docs</div>For advisories, memorandums, etc.</td>
+                <td class="totalfilecount"><?php echo $count_admin; ?></td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Blast');">
+                <td class="foldericon"><img src="../imgs/foldericon.png" style="width:100%;"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Blasts</div>For previously sent email blasts</td>
+                <td class="totalfilecount"><?php echo $count_blast; ?></td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Guide / Manual');">
+                <td class="foldericon"><img src="../imgs/foldericon.png" style="width:100%;"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Guides & Manuals</div>-</td>
+                <td class="totalfilecount"><?php echo $count_guide; ?></td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Project Proposal');">
+                <td class="foldericon"><img src="../imgs/foldericon.png" style="width:100%;"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Project Proposals</div>For reference in best practices</td>
+                <td class="totalfilecount"><?php echo $count_proposal; ?></td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Policy Document');">
+                <td class="foldericon"><img src="../imgs/foldericon.png" style="width:100%;"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Policy Documents</div>For all SLP relevant policies</td>
+                <td class="totalfilecount"><?php echo $count_policy; ?></td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Report');">
+                <td class="foldericon"><img src="../imgs/foldericon.png" style="width:100%;"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Reports</div>For physical and financial accomplishment and other reports</td>
+                <td class="totalfilecount"><?php echo $count_report; ?></td>
+                <td>-</td>
+              </tr>
+              <tr onclick="gotofiles('Template / Form');">
+                <td class="foldericon"><img src="../imgs/foldericon.png" style="width:100%;"></td>
+                <td><div style="font-size:18px;font-weight:bold;">Templates & Forms</div>-</td>
+                <td class="totalfilecount"><?php echo $count_template; ?></td>
+                <td>-</td>
+              </tr>
+              
+              
+            </table>
+
+        </div>
+      </div>
+      <div class="row" id="dttablerow2" style="display:none">
+        <div class="col-md-12" style="padding: 2em 3em 2em 3em">
+
+            <button class="btn btn-danger" id="categoryback" style="margin-bottom:1em;padding:6px 10px 6px 10px;"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp; Show All Categories</button><br>
+            <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-hover hover" id="docdata" style="background-color:#fff;width:100%;line-height:0.5;">
             <thead>
               <tr>
               <th style="background:none"></th>
@@ -207,6 +299,143 @@ table tr {
 <script type="text/javascript" language="javascript" src="../js/jquery.dataTables.js"></script>
 <script src="../js/DTbootstrap.js"></script>
 <script>
+                function com(x) {
+                    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
+                admin = <?php echo $count_admin; ?>;
+                blast = <?php echo $count_blast; ?>;
+                guide = <?php echo $count_guide; ?>;
+                propo = <?php echo $count_proposal; ?>;
+                policy = <?php echo $count_policy; ?>;
+                report = <?php echo $count_report; ?>;
+                form = <?php echo $count_template; ?>;
+                totalcounter = <?php echo ($count_admin+$count_blast+$count_guide+$count_proposal+$count_policy+$count_report+$count_template); ?>;
+$(function () {
+    $(document).ready(function () {
+      var colors = Highcharts.getOptions().colors;
+        $('#cont1').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+                backgroundColor: null,
+                margin: [0,0,0,0],
+                spacing: 0,
+            },
+            title: {
+                   text: totalcounter,
+                   verticalAlign: 'middle',
+                   y: 0,
+                   x: 0,
+                   style: {
+                        fontFamily: 'Lato', 
+                        fontSize: '26px',
+                        fontWeight: 'bold',
+                    }
+            },
+            subtitle: {
+                text: 'Total Files',
+                verticalAlign: 'middle',
+                y: 15,
+                x: 0,
+                style: {
+                        fontFamily: 'Lato', 
+                        fontSize: '12px',
+                    }
+            },
+
+            tooltip: {
+                formatter: function() {
+                    var point = this.point,
+                        s = '<span style="color:#000;font-size:11">' + point.name +': <b>'+ Highcharts.numberFormat(this.point.y,0,'.',',') +'</b><br/>';
+                    if (point.drilldown) {
+                        s += '<span style="color:#000;font-size:11">Click to view regional';
+                    } else if (!point.drilldown) {
+                        s = this.point.name +': <b>'+ Highcharts.numberFormat(this.point.y,0,'.',',') +'</b><br/>';
+                    } else {
+                        s += '<span style="color:#000;font-size:10">Click to return';
+                    }
+                    return s;
+                },
+                hideDelay: 0
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    size:'100%',
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            legend: {
+              layout: 'horizontal',
+              align: 'center',
+              verticalAlign: 'bottom',
+              floating: false,
+              backgroundColor: '',
+              //width: 300,
+              //x: 50,
+              itemStyle: {
+                 font: 'Lato, sans-serif',
+                 fontSize: '10px'
+              },
+              enabled: false
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Users',
+                colorByPoint: true,
+                innerSize: '70%',
+                data: [{
+                    name: 'Admin Docs',
+                    y: parseInt(admin),
+                    color: colors[2]
+                    
+                }, {
+                    name: 'Blasts',
+                    y: parseInt(blast),
+                    color: colors[0]
+                }, {
+                    name: 'Guides & Manuals',
+                    y: parseInt(guide),
+                    color: colors[3]
+                }, {
+                    name: 'Project Proposals',
+                    y: parseInt(propo),
+                    color: colors[4]
+                }, {
+                    name: 'Policy Documents',
+                    y: parseInt(policy),
+                    color: colors[5]
+                }, {
+                    name: 'Reports',
+                    y: parseInt(report),
+                    color: colors[6]
+                }, {
+                    name: 'Templates & Forms',
+                    y: parseInt(form),
+                    color: colors[7]
+                }]
+            }]
+        });
+    });
+});
+            </script>
+<script>
+function gotofiles(filetype) {
+  if (tableshown==false) {
+      tableshown=true;
+      $("#dttablerow").css( "display", "none" );
+      $("#dttablerow2").css( "display", "block" );
+      oTable.fnFilter("^"+filetype+"$", 2, true, false, true);
+   }
+}
 function filterCategory() {
   var category = document.getElementById("fCategory").value;
     oTable.fnFilter("^"+category+"$", 2, true, false, true);
@@ -261,6 +490,8 @@ $.fn.DataTable.ext.pager.numbers_length = 5;
                       return '<td><div class="file-icon file-icon-sm" data-type="png"></div></td>';
                     } else if (file_ext == "jpg") {
                       return '<td><div class="file-icon file-icon-sm" data-type="jpg"></div></td>';
+                    } else if (file_ext == "zip") {
+                      return '<td><div class="file-icon file-icon-sm" data-type="zip"></div></td>';
                     } else {
                       return false;
                     }
@@ -330,6 +561,14 @@ $(document).ready(function() {
 $("#searchme").keyup(function() {
    if (tableshown==false) {
       tableshown=true;
+      $("#dttablerow").css( "display", "none" );
+      $("#dttablerow2").css( "display", "block" );
+   } else {
+      if (document.getElementById('searchme').value == "") {
+        tableshown=false;
+        $("#dttablerow").css( "display", "block" );
+        $("#dttablerow2").css( "display", "none" );
+      }
    }
    oTable.fnFilter(this.value);
 }); 
@@ -347,6 +586,13 @@ $("#advancedbtn").click(function(event) {
     $("#advancedbtn").html('<span class="glyphicon glyphicon-search"></span> Advanced Search');
     advance = 0;
   }
+});
+
+$("#categoryback").click(function(event) {
+    tableshown=false;
+    $("#dttablerow").css( "display", "block" );
+    $("#dttablerow2").css( "display", "none" );
+    $("#searchme").val() = "";
 });
 
 
