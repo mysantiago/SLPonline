@@ -365,20 +365,21 @@ function typeChange(){
                   <div class="form-group" style="margin-top:1em">
                       <select class="form-control" onchange="typeChange()" id="doctypeselector">
                         <option value="">Select Document Type</option>
-                        <option value="Internal Memorandum">Internal Memorandum (within CO)</option>
-                        <option value="External Memorandum">External Memorandum (to regions)</option>
-                        <option>Project Proposal</option>
-                        <option>Policy Document</option>
-                        <option>Guide / Manual</option>
-                        <option>Template / Form</option>
-                        <option>Accomplishment Report</option>
-                        <option>Financial Report</option>
-                        <option>Feedback Report</option>
-                        <option>Program Flow</option>
-                        <option>Supporting Document</option>
-                        <option>IEC materials</option>
-                        <option>Notes</option>
-                        <option>Knowledge Product</option>
+            <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM libhr_doctype order by hrdocname");
+                              $sql->execute();
+                        
+                        while($hrdocname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+            ?>
+                        <option value=" <?php echo $hrdocname['hrdocname']; ?>"> <?php echo $hrdocname['hrdocname']; ?> </option>
+            <?php
+                        }
+                      } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                      }
+            ?>
                         <?php if ($_SESSION['permlvl']>0) {?>
                         <option>Blast</option>
                         <?php } ?>

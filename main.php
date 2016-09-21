@@ -421,8 +421,42 @@ h3 {
       Apologies for the inconvenience. We will be providing updates once the issue is resolved.
     </div>
   </div>
+
+
+<div class="row" style="padding-top:1em;padding-left:1em;padding-right:0.5em">
+    <div style="border:solid 1px #c5d6de;margin-left:1em;background:#fff;text-align:center;padding:1em;padding-left:1.5em;padding-right:1.5em;">
+        <div class="row" style="padding-right:1.6em;margin-bottom:0;padding-bottom:0;padding-left:1.6em">
+          <p class="pull-left" style="font-size: 12px; color:#ccc">Posted by: ITU</p>
+          <p class="pull-right" style="font-size: 12px; color:#ccc">22 September 2016</p>
+        </div>
+        <div style="color:#444444;border-collapse:collapse;font-size:14pt;font-family:proxima_nova,&#39;Open Sans&#39;,&#39;Lucida Grande&#39;,&#39;Segoe UI&#39;,Arial,Verdana,&#39;Lucida Sans Unicode&#39;,Tahoma,&#39;Sans Serif&#39;;">
+        Organize E-Library into folders? We hear you!
+      </div>
+      <br>
+      <img src="http://www.slp.ph/imgs/elibraryupdate.png" style="max-width:360px">
+      <br>
+      Thank you for all the feedback. Your suggestions have helped make <a href="http://www.slp.ph" style="text-decoration:none;color:#4583ed">SLP.PH</a> COOLer and better with its freshly organized E-Library!
+      <br><br>
+      <b>But we're not done!</b>
+      <br>
+      You can help make it even better by uploading important SLP files such as:
+      <div>
+          <ul style=" display: inline-block;
+        text-align:left;">
+            <li>Manuals and Guides</li>
+            <li>Policy Documents</li>
+            <li>Templates and Forms</li>
+          </ul>
+      </div>
+      <span style="text-align:justify">As an incentive, we will be giving an <span style="color:#2ecc71;font-weight:bold">additional 20 bytez for <b>all</b> E-Library uploads that fall under the above categories</span> (promos runs until 31 September 2016)! Again, we thank you for your continued support. Happy working!</span>
+      <br>
+      <br>
+    </div>
+
+  </div>
+
   <div class="row" style="padding-top:1em;padding-left:1em;padding-right:0.5em">
-    <div style="border:solid 1px #c5d6de;margin-left:1em;background:#fff;text-align:center;padding:1em;padding-left:1.5em;padding-right:1.5em">
+    <div style="border:solid 1px #c5d6de;margin-left:1em;background:#fff;text-align:center;padding:1em;padding-left:1.5em;padding-right:1.5em;">
         <div class="row" style="padding-right:1.6em;margin-bottom:0;padding-bottom:0;padding-left:1.6em">
           <p class="pull-left" style="font-size: 12px; color:#ccc">Posted by: ITU</p>
           <p class="pull-right" style="font-size: 12px; color:#ccc">22 August 2016</p>
@@ -445,7 +479,7 @@ h3 {
 
       <p class="text-left" style="font-size: 12px"><span style="font-size: 16px"><b>But you ain't seen nothing yet.</b></span> SLP.PH is set to unravel COOLer(convenient online) features that will make your browsing experience more exciting so stay tuned! Also, we love to hear from you so don't hesitate to send your feedback so that we keep improving our systems!</p>
       <hr>
-      <p class="text-center" style="font-size: 12px"><span style="font-size: 14px"><b style="color:red">PROMO: Earn 40 Bytez instantly when you upload your initial profile photo! <br>Promo runs until August 31, 2016.</b></span></p></p>
+      <p class="text-center" style="font-size: 12px"><span style="font-size: 14px"><b style="color:#2ecc71">PROMO: Earn 40 Bytez instantly when you upload your initial profile photo! <br>Promo runs until August 31, 2016.</b></span></p></p>
       <img src="http://www.slp.ph/imgs/profpic.jpg" style="max-width:454px;margin-top:1em">
       </center>
     </div>

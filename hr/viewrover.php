@@ -806,8 +806,7 @@ if( $stmt->rowCount() <= 0)
                         {
                       ?>
                         <option value=" <?php echo $hrdocname['hrdocname']; ?>"> <?php echo $hrdocname['hrdocname']; ?> </option>
-                      <?php
-                        }
+                      <?php }
                        if ($_SESSION['permlvl']>0) { 
                         ?>
                         <option>Blast</option>
