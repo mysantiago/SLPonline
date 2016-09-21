@@ -23,6 +23,7 @@ while ($row2 = $stmt2->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
       }
       $i++;
 }
+$linkadd = "http://".$_SERVER[HTTP_HOST];
 ?>
 <script>
   function triggerClicked(str,str2) {
@@ -31,7 +32,7 @@ while ($row2 = $stmt2->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
               'notifid'                 : str
             };
     $.ajax({
-                   url: "http://www.slp.ph/hr/clickNotif.php",
+                   url: "<?php echo $linkadd; ?>hr/clickNotif.php",
                    type: "POST",
                    data: formData,
                    success: function(data)
@@ -55,8 +56,8 @@ while ($row2 = $stmt2->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <?php $linkadd = "http://".$_SERVER[HTTP_HOST]; ?>
-      <a class="navbar-brand" href="<?php echo $linkadd; ?>/main.php" style="font-weight:900"><img src="http://slp.ph/imgs/slpsmall.png" style="display:inline;margin-right:0.5em;margin-top:-0.17em">SLP</a>
+      
+      <a class="navbar-brand" href="<?php echo $linkadd; ?>/main.php" style="font-weight:900"><img src="<?php echo $linkadd; ?>/imgs/slpsmall.png" style="display:inline;margin-right:0.5em;margin-top:-0.17em">SLP</a>
     </div>
    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
