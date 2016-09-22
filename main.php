@@ -448,7 +448,7 @@ h3 {
             <li>Templates and Forms</li>
           </ul>
       </div>
-      <span style="text-align:justify">As an incentive, we will be giving an <span style="color:#2ecc71;font-weight:bold">additional 20 bytez for <b>all</b> E-Library uploads that fall under the above categories</span> (promos runs until 31 September 2016)! Again, we thank you for your continued support. Happy working!</span>
+      <span style="text-align:justify">As an incentive, we will be giving an <span style="color:#2ecc71;font-weight:bold">additional 20 bytez for <b>all</b> E-Library uploads that fall under the above categories</span> (promo runs until 31 September 2016)! Again, we thank you for your continued support. Happy working!</span>
       <br>
       <br>
     </div>

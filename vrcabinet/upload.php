@@ -373,7 +373,7 @@ function typeChange(){
                         while($hrdocname=$sql->fetch(PDO::FETCH_ASSOC))
                         {
             ?>
-                        <option value=" <?php echo $hrdocname['hrdocname']; ?>"> <?php echo $hrdocname['hrdocname']; ?> </option>
+                        <option value="<?php echo $hrdocname['hrdocname']; ?>"><?php echo $hrdocname['hrdocname']; ?></option>
             <?php
                         }
                       } catch(PDOException $e) {

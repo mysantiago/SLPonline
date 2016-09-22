@@ -141,7 +141,7 @@ table tr {
           <div class="col-md-8" id="searchblock" style="padding:2em;">
                 <div style="margin-top:2em">
                   <div class="form-group">
-                      <input id="searchme" class="form-control" placeholder="Search keywords.." style="height:50px;text-align:center;padding-left:0"/><center>
+                      <input id="searchme" class="form-control" placeholder="Search keywords..." style="height:50px;text-align:center;padding-left:0"/><center>
                       <button id="advancedbtn" class="btn btn-info" style="padding:6px 10px 6px 10px;margin-top:0.8em"><span class="glyphicon glyphicon-search"></span> Advanced Search</button> 
                       <a href="upload.php"><button class="btn btn-success" style="padding:6px 10px 6px 10px;margin-top:0.8em"><span class="glyphicon glyphicon-cloud-upload"></span> Upload</button></a>
                   </div>
@@ -153,17 +153,17 @@ table tr {
               <div class="form-group">
                 <select class="form-control" onchange="filterCategory()" id="fCategory">
                   <option value="">Filter by Category</option>
-                  <option value="Internal Memorandum">Internal Memorandum (within CO)</option>
-                  <option value="External Memorandum">External Memorandum (to regions)</option>
-                  <option>Project Proposal</option>
-                  <option>Template / Guide</option>
-                  <option>Accomplishment Report</option>
-                  <option>Financial Report</option>
-                  <option>Feedback Report</option>
-                  <option>Program Flow</option>
-                  <option>Supporting Documents</option>
-                  <option>IEC materials</option>
-                  <option>Notes</option>
+                  <?php
+                        $sql = $db->prepare("SELECT * FROM libhr_doctype order by hrdocname");
+                        $sql->execute();
+
+                        while($hrdocname=$sql->fetch(PDO::FETCH_ASSOC)) {
+                  ?>
+                          <option value="<?php echo $hrdocname['hrdocname']; ?>"><?php echo $hrdocname['hrdocname']; ?></option>
+                  <?php
+                        }
+                  ?>
+                        <option>Blast</option>
                 </select>
               </div>
               <div class="form-group">

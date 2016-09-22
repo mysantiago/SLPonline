@@ -359,7 +359,7 @@ if(!empty($_POST))
           if ($_POST['switch']>0) {
                 $refid = $db->lastInsertId();
                 sendEmail($refid,$uploadname,$doctype);
-                if ($doctype=="Policy Document" || $doctype=="Template / Froms" || $doctype=="Manual / Guide") {
+                if ($doctype=="Policy Document" || $doctype=="Template / Form" || $doctype=="Manual / Guide") {
                     byteMe($_SESSION['id'],'upload',20);
                 } else {
                     byteMe($_SESSION['id'],'upload',3);

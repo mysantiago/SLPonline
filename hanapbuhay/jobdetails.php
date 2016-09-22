@@ -50,6 +50,7 @@ require "../zxcd9.php";
                 m.engaged, 
                 m.approved, 
                 m.completed, 
+                m.encodedby, 
                 p.firstname, 
                 p.region 
             FROM PRTdemand m 
@@ -226,8 +227,11 @@ $("#canceljob").click(function(){
         </div>
         <div class="row">
           <div class="col-md-12" style="text-align:left;margin-top:1em">
+            <?php
+              if ($_SESSION['permlvl']>0||$_SESSION['id']==$row['encodedby']) { ?>
             <a href="jobs_edit.php?id=<?php echo $_GET['id']; ?>"><button id="editjob" class="btn btn-info pull-left">Edit Job</button></a> &nbsp; 
              &nbsp; <button id="deljob" class="btn btn-danger pull-left" style="margin-left:5px">Delete Job</button>
+            <?php } ?>
           </div>
         </div>
       </div>
