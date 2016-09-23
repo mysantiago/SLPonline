@@ -358,9 +358,9 @@ var formData = {
       'password'           : $('input[name=password]').val(),
       'rememberme'         : document.getElementById("remember").checked
     };
-
+    var timestamp = new Date().getTime();
     $.ajax({
-       url: "login2.php",
+       url: "login2.php?"+timestamp,
        type: "POST",
        data: formData,
        success: function(data)

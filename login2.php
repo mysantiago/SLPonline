@@ -25,7 +25,9 @@ if (isset($_SESSION['discard_after']) && $now > $_SESSION['discard_after']) {
     session_start();
 }
 $_SESSION['discard_after'] = $now + 14400;
-//testinput
+
+header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
+
 function test_input($data) {
    $data = trim($data);
    $data = stripslashes($data);

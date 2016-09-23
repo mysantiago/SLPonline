@@ -297,6 +297,19 @@ if(!empty($_POST))
             echo "Success";
     }
 
+    if($_POST['action'] == "countDL") {
+        $docdbidz = test_input($_POST["docdbid"]);  
+            try {
+                    $stmt = $db->prepare("UPDATE DOCDB SET downloads=downloads+1 WHERE id=:id");
+                    $stmt->bindParam(':id', $docdbidz);
+                    $stmt->execute();
+                } catch(PDOException $e) {
+                    echo "Error: " . $e->getMessage();
+                }
+            byteMe($_SESSION['id'],'dl',0.10);
+            echo "counted";
+    }
+
     if($_POST['action'] == "upload") {
             $ext=date("mdY");
             $maxsize=9000000;
@@ -354,16 +367,15 @@ if(!empty($_POST))
                     echo "Error: " . $e->getMessage();
                 }
 
-                
+            if ($doctype=="Policy Document" || $doctype=="Template / Form" || $doctype=="Manual / Guide") {
+                byteMe($_SESSION['id'],'upload',20);
+            } else {
+                byteMe($_SESSION['id'],'upload',3);
+            }
 
           if ($_POST['switch']>0) {
                 $refid = $db->lastInsertId();
-                sendEmail($refid,$uploadname,$doctype);
-                if ($doctype=="Policy Document" || $doctype=="Template / Form" || $doctype=="Manual / Guide") {
-                    byteMe($_SESSION['id'],'upload',20);
-                } else {
-                    byteMe($_SESSION['id'],'upload',3);
-                }
+                sendEmail($refid,$uploadname,$doctype);                
                 echo "Success";
           } else {
             echo "Success";
