@@ -316,6 +316,7 @@ echo $_COOKIE['rememberme']; ?>"/>
       if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
       else window.addEventListener('load', loadDeferredStyles);
     </script>
+
 </body>
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/bootstrap.min.js"></script>

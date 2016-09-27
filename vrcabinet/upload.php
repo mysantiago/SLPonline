@@ -364,6 +364,7 @@ function typeChange(){
                     </div><!-- /input-group -->
                     <span style="font-size:12px;margin-bottom:1em">Supported file types: PDF, DOC, XLSX, PNG, JPG, ZIP</span>
                     <span style="font-size:12px;margin-bottom:1em" class="pull-right">Maximum file size: 8MB</span><br>
+
 <script>
 
 function typeChange2(){
@@ -403,8 +404,6 @@ console.log(selection);
                    
                         ?>
                     <!-- upto this -->
-
-
                         <?php if ($_SESSION['permlvl']>0) {?>
                         <option>Blast</option>
                         <?php } ?>
@@ -738,7 +737,7 @@ $(function () {
       <!-- Modal -->
 <script>
 $(document).ready(function() {
-  
+
   document.getElementById("theupload").onchange = function () {
     document.getElementById("uploadfilename").value = this.value;
   };
@@ -813,7 +812,10 @@ $("#uploadBtn").click(function(event) {
      fd.append('docsubject', $('input[name=dsubject]').val());
      fd.append('docauthor', window.selectPartner2);
      fd.append('docdate', $('input[name=ddate]').val());
+<<<<<<< HEAD
+=======
      fd.append('docdate', $('input[name=rdate]').val());
+>>>>>>> 68afac52dfe89e449de5ba94f2534202d0a32545
      fd.append('remarks', $('textarea[name=remarks]').val());
      fd.append('switch', switchClass);
      fd.append('emailarray', emailfinal.toString());
@@ -887,6 +889,7 @@ $("#sendfeedback").click(function(event) {
             $('#emaildate').html("dated <b style='color:red'>"+this.getMoment().format('M/D/YYYY')+"</b>");
       }
     });
+
         var picker = new Pikaday({ 
       field: $('#rdate')[0], 
       format: 'M/D/YYYY', 
@@ -896,6 +899,7 @@ $("#sendfeedback").click(function(event) {
     });
 
     
+
 </script>
 </body>
 </html>
