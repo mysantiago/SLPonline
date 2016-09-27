@@ -172,6 +172,7 @@ body {
 table {
   border-collapse: inherit;
 }
+
 </style>
 </head>
 <body>
@@ -305,6 +306,7 @@ function getEmail(str,str2) {
              dataType:"json"
           });//endajax
 }
+
 function typeChange(){
       var option=$("#doctypeselector option:selected").html();
 
@@ -362,41 +364,163 @@ function typeChange(){
                     </div><!-- /input-group -->
                     <span style="font-size:12px;margin-bottom:1em">Supported file types: PDF, DOC, XLSX, PNG, JPG, ZIP</span>
                     <span style="font-size:12px;margin-bottom:1em" class="pull-right">Maximum file size: 8MB</span><br>
+<script>
+
+function typeChange2(){
+var selection = $('#doctypeselector option:selected').val();
+console.log(selection);
+    if (selection == "Administration Document") {
+            $("#admintype").fadeIn(); $("#logtype").fadeIn(); $("#refnumber").fadeIn(); $("#sourceoffice").fadeIn(); 
+            $("#sourcename").fadeIn();$("#destoffice").fadeIn(); $("#destname").fadeIn(); $("#rdate").fadeIn();        
+    } else {
+            $("#admintype").fadeOut(); $("#logtype").fadeOut(); $("#refnumber").fadeOut(); $("#sourceoffice").fadeOut(); 
+            $("#sourcename").fadeOut(); $("#destoffice").fadeOut(); $("#destname").fadeOut(); $("#rdate").fadeOut();
+    }
+}
+</script>
                   <div class="form-group" style="margin-top:1em">
-                      <select class="form-control" onchange="typeChange()" id="doctypeselector">
+                      <select class="form-control" onchange="typeChange2()" id="doctypeselector">
                         <option value="">Select Document Type</option>
-            <?php
+
+                        <!-- get this --> 
+                      <?php
                       try {
                               $sql = $db->prepare("SELECT * FROM libhr_doctype order by hrdocname");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
                               $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
                         
-                        while($hrdocname=$sql->fetch(PDO::FETCH_ASSOC))
+                        while($hreventname=$sql->fetch(PDO::FETCH_ASSOC))
                         {
-            ?>
-                        <option value="<?php echo $hrdocname['hrdocname']; ?>"><?php echo $hrdocname['hrdocname']; ?></option>
-            <?php
+                      ?>
+                        <option value="<?php echo $hreventname['hrdocname']; ?>"><?php echo $hreventname['hrdocname']; ?> </option>
+                    
+                      <?php
                         }
-                      } catch(PDOException $e) {
+                              } catch(PDOException $e) {
                             echo "Error: " . $e->getMessage();
-                      }
-            ?>
+                            }//en
+                   
+                        ?>
+                    <!-- upto this -->
+
+
                         <?php if ($_SESSION['permlvl']>0) {?>
                         <option>Blast</option>
                         <?php } ?>
                       </select>
                   </div>
-                  <div class="form-group" style="margin-top:1em;" id="docsubject">
+
+                  <div class="form-group" style="display: none; margin-top:1em" id="admintype">
+                      <select class="form-control" id="admintype">
+                        <option value="">Select Admin Document Type</option>
+
+                        <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM libhr_subdoctype order by hrsubdocname");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
+                              $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
+                        
+                        while($hreventname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value=" <?php echo $hreventname['hrsubdocname']; ?>"> <?php echo $hreventname['hrsubdocname']; ?> </option>
+                    
+                      <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                   
+                        ?>
+                    <!-- upto this -->
+                    </select>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="form-group" style="display: none" id="logtype">
+                        <select class="form-control" id="logtype">
+                        <option value="">Select Log Type</option>
+                        <option value="">Incoming</option>
+                        <option value="">Outgoing</option>
+                  </select>
+                          <div class="col-sm-8">
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group" style="display: none" id="refnumber">
+                       <input class="form-control" placeholder="Reference Number" id="refnumber" required/><center>
+                        <div class="col-sm-8">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group" style="" id="docsubject">
                       <input class="form-control" placeholder="Document Title / Subject" style="" id="dsubject" name="dsubject" required/><center>
                   </div>
-                  <div class="form-group" style="margin-top:1em;" id="docdate">
+                  <div class="form-group" style="" id="docdate">
                       <input type="text" name="autocompleteajax2" id="autocompleteajax2" class="form-control" placeholder="Author (if applicable)"/>
                       <input type="hidden" id="autocomplete-ajax-x-2" disabled="disabled"/>
                   </div>
-                  <div class="form-group" style="margin-top:1em;" id="docdate">
-                      <input class="form-control" placeholder="Date Written / Created" style="" id="ddate" name="ddate" required/><center>
+
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="form-group" style="display: none" id="sourceoffice">
+                        <input class="form-control" placeholder="Source Office" style="" id="sourceoffice" required/><center>
+                          <div class="col-sm-8">
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group" style="display: none" id="sourcename">
+                       <input class="form-control" placeholder="Source Name" style="" id="sourcename" required/><center>
+                        <div class="col-sm-8">
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="form-group" style="margin-top:1em">
-                      <textarea rows="3" class="form-control" placeholder="Remarks / Summary" style="padding-top:0.6em;resize:none" id="remarks" name="remarks" required></textarea><center>
+
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="form-group" style="display: none" id="destoffice">
+                        <input class="form-control" placeholder="Destination Office" style="" id="destoffice" required/><center>
+                          <div class="col-sm-8">
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group" style="display: none" id="destname">
+                       <input class="form-control" placeholder="Destination Name" style="" id="destname" required/><center>
+                        <div class="col-sm-8">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="form-group" style="" id="ddate">
+                        <input class="form-control" placeholder="Date Written / Created" style="" id="ddate" required/><center>
+                          <div class="col-sm-8">
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group" style="display:none;" id="rdate">
+                       <input class="form-control" placeholder="Response Deadline" style="" id="rdate" required/><center>
+                        <div class="col-sm-8">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group" style="">
+                      <textarea rows="3" class="form-control" placeholder="Remarks" style="padding-top:0.6em;resize:none" id="remarks" required></textarea><center>
                   </div>
                   <div style="display:block;font-weight:bold">Send a notification for this upload: &nbsp; <div id="theswitch" class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate bootstrap-switch-id-custom-switch-01 bootstrap-switch-off"><div class="bootstrap-switch-container"><span class="bootstrap-switch-handle-on bootstrap-switch-primary">YES</span><label class="bootstrap-switch-label">&nbsp;</label><span class="bootstrap-switch-handle-off bootstrap-switch-default">NO</span><input type="checkbox" checked="" data-toggle="switch" id="custom-switch-01"></div></div></div>
                   <div id="notificationpanel" style="margin-top:1em;display:none">
@@ -614,6 +738,7 @@ $(function () {
       <!-- Modal -->
 <script>
 $(document).ready(function() {
+  
   document.getElementById("theupload").onchange = function () {
     document.getElementById("uploadfilename").value = this.value;
   };
@@ -688,6 +813,7 @@ $("#uploadBtn").click(function(event) {
      fd.append('docsubject', $('input[name=dsubject]').val());
      fd.append('docauthor', window.selectPartner2);
      fd.append('docdate', $('input[name=ddate]').val());
+     fd.append('docdate', $('input[name=rdate]').val());
      fd.append('remarks', $('textarea[name=remarks]').val());
      fd.append('switch', switchClass);
      fd.append('emailarray', emailfinal.toString());
@@ -761,6 +887,15 @@ $("#sendfeedback").click(function(event) {
             $('#emaildate').html("dated <b style='color:red'>"+this.getMoment().format('M/D/YYYY')+"</b>");
       }
     });
+        var picker = new Pikaday({ 
+      field: $('#rdate')[0], 
+      format: 'M/D/YYYY', 
+      onSelect: function() {
+            $('#emaildate').html("dated <b style='color:red'>"+this.getMoment().format('M/D/YYYY')+"</b>");
+      }
+    });
+
+    
 </script>
 </body>
 </html>
