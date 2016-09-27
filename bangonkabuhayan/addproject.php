@@ -745,6 +745,27 @@ function Sec() {
 
 
 $("#submitpass").click(function(event) {
+
+
+if ($('input[name=projectname]').val() == "") {
+    alert("project name required!");
+    }
+else if ($('#region option:selected').val() == "") {
+  alert("region required!");
+}
+else if ($('#province option:selected').val() == "") {
+  alert("province required!");
+}
+else if ($('#municipality option:selected').val() == "") {
+  alert("municipality required!");
+}
+else if ($('input[name=projectsd]').val() == "") {
+    alert("project start date required!");
+    }
+else if ($('input[name=AveAnnIncProject]').val() == "") {
+    alert("project start date required!");
+    }
+else{    
   event.preventDefault();
   event.stopImmediatePropagation();
   $("#submitpass").html("Processing..");
@@ -814,8 +835,14 @@ $("#submitpass").click(function(event) {
                       $('#myModal').modal();
                       $('#myModal').on('hidden.bs.modal', function () {location.href = "../bangonkabuhayan/addproject_step2.php"; });
                     } else {
+                 
+                   
                      document.getElementById("submitpass").disabled = false;
+                   
                        $("#sucsubtext").html("Step 1 saved!");
+                   
+                
+         
                       $('#myModal').modal();
                       $('#myModal').on('hidden.bs.modal', function () {location.href = "../bangonkabuhayan/addproject_step2.php"; });
 
@@ -824,6 +851,8 @@ $("#submitpass").click(function(event) {
 
        }
     });//endajax
+
+}
 });
 
 
