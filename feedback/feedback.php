@@ -359,11 +359,13 @@ function parseStatus(str) {
 </script>
 <div class="container-fluid">
     <div class="row">
+      <div style="background-color:#fff;height:90%;padding:2em;padding-bottom:4em">
+      
         <div id="tableHolder" class="col-md-12" style="border:0px solid #000;margin-bottom:2em">
-          <div style="background-color:#fff;height:90%;padding:2em;padding-bottom:4em">
+        
               <h3 align="center"><img src="../imgs/slplogo_med.png" width="100" height="100">&nbsp;&nbsp;Sustainable Livelihood Program ( SLP ) Forum </h3>
               <br/>
-          
+           <p align="right">      <a href="../feedback_portal.php" class="btn btn-info btn-sm" id="create" role="button">Create new thread</a> </p>
             <script>
 function filterProvince() {
       var regionvalue = document.getElementById("provincefilter").value;
@@ -390,11 +392,30 @@ function filterProvince() {
                       </tr>
                     </thead>
                   </table>
-                 
+
+
+
           </div>
+
+
+
+                           
+                 <div class="row">
+
+                  <div class="col-md-12" >
+                  <p align="right">      <a href="../feedback_portal.php" class="btn btn-info btn-sm" id="create" role="button">Create new thread</a> </p>
+               
+                  </div>
+                 
+              </div>  
+
         </div>
+
+     
+ 
+
     </div><!--endrow-->
-</div><!--container-->
+   <!--container-->
 
 
 </body>
