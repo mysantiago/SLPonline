@@ -7188,3 +7188,9 @@ button {
 .colgreen {
   color:#5cb85c;
 }
+.finlink {
+  font-size:13px;margin-bottom:0;text-align:left;padding-left:1em;margin-top:0em
+}
+.removehover:hover {
+    background: none !important;
+}

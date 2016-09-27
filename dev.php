@@ -209,7 +209,13 @@ h3 {
               <td>Finance</td>
               <td>Financial management system to standardize data to-and-from Regional Offices and automatically generate reports.</td>
               <td>Q3</td>
-              <td>Planning Stage</td>
+              <td>In Development</td>
+            </tr>
+            <tr>
+              <td>Feedback Portal</td>
+              <td>System to collect and respond to all types of feedback for program and system development.</td>
+              <td>Q4</td>
+              <td>In Development</td>
             </tr>
             <tr>
               <td>Performance Management</td>
