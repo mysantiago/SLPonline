@@ -532,7 +532,7 @@ $.fn.DataTable.ext.pager.numbers_length = 5;
                 },
                 "mData": null,
                 "mRender": function( data, type, full) {
-                    return '<td><a href="http://slp.ph/hr/user.php?id='+data[10]+'" class="linkhover" style="text-decoration:none;line-height:0.7">'+toTitleCase(data[3])+'</a><br><span class="dtsubhead" style="line-height:0.7">'+data[6]+'</span></td>';
+                    return '<td><a href="../hr/user.php?id='+data[10]+'" class="linkhover" style="text-decoration:none;line-height:0.7">'+toTitleCase(data[3])+'</a><br><span class="dtsubhead" style="line-height:0.7">'+data[6]+'</span></td>';
                 }
             },
             { 

@@ -33,7 +33,8 @@ global $db;
 
                 try {
                     foreach($idarray as $id) {
-                      addNotificationDoc($id, $_SESSION['firstname'], "uploaded ", $_POST['doctype'].": ".$_POST['docsubject'], "http://slp.ph/vrcabinet/docview.php?id=".$refidz);
+                      $linkadd = "http://".$_SERVER[HTTP_HOST];
+                      addNotificationDoc($id, $_SESSION['firstname'], "uploaded ", $_POST['doctype'].": ".$_POST['docsubject'], $linkadd."/vrcabinet/docview.php?id=".$refidz,$refidz);
                     }
                 } catch(PDOException $e) {
                     echo "Error: " . $e->getMessage();
@@ -50,10 +51,10 @@ ob_start();
 <table cellpadding="0" cellspacing="0" style="border-radius:4px;border:1px #dceaf5 solid;border-collapse:none" border="0" align="center">
 <tr><td><table cellpadding="0" cellspacing="0" style="line-height:25px" border="0" align="center"><tr><td colspan="3" height="30"></td></tr><tr><td width="36"></td>
 <td width="454" align="center" style="color:#444444;border-collapse:collapse;font-size:9pt;font-family:proxima_nova,&#39;Open Sans&#39;,&#39;Lucida Grande&#39;,&#39;Segoe UI&#39;,Arial,Verdana,&#39;Lucida Sans Unicode&#39;,Tahoma,&#39;Sans Serif&#39;;max-width:454px" valign="top">
-<img src="http://slp.ph/docs/<?php echo $uploadname;?>" style="height:auto !important;max-width:500px !important;width: 100% !important;">
+<img src="http://www.slp.ph/docs/<?php echo $uploadname;?>" style="height:auto !important;max-width:500px !important;width: 100% !important;">
 Cant see this image? <a href="http://slp.ph/docs/<?php echo $uploadname; ?>" style="color:#4583ed">Click here</a><br>
 <td width="36"></td></tr><tr><td colspan="3" height="36"></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" align="center" border="0"><tr><td height="10"></td></tr><tr><td style="padding:0;border-collapse:collapse"><table cellpadding="0" cellspacing="0" align="center" border="0"><tr style="color:#a8b9c6;font-size:11px;font-family:proxima_nova,&#39;Open Sans&#39;,&#39;Lucida Grande&#39;,&#39;Segoe UI&#39;,Arial,Verdana,&#39;Lucida Sans Unicode&#39;,Tahoma,&#39;Sans Serif&#39;"><td width="200" align="left"></td>
-<td width="328" align="right"><span style="font-size:12px">Sent through <a href="http://slp.ph" style="text-decoration:none;color:#4583ed">SLP Online</a> by <span id="emailfrom"><?php echo $_SESSION["fullname"]; ?></span></span><br></td></td>
+<td width="328" align="right"><span style="font-size:12px">Sent through <a href="http://www.slp.ph" style="text-decoration:none;color:#4583ed">SLP Online</a> by <span id="emailfrom"><?php echo $_SESSION["fullname"]; ?></span></span><br></td></td>
 </tr></table></td></tr></table></td></tr></table></center></div></div>
 <?php
               $myvar = ob_get_clean();

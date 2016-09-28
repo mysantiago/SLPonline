@@ -832,7 +832,7 @@ $("#uploadBtn").click(function(event) {
                     if (data=="Success") {
                       $('#myModal').modal();
                       $('#myModal').on('hidden.bs.modal', function () {
-                          location.href = "http://slp.ph/vrcabinet";
+                          location.href = "index.php";
                       })
                     } else {
                       alert(data);

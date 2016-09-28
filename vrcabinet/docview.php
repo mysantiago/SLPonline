@@ -478,7 +478,8 @@ $("#delfile").click(function(event) {
                    {
                       if (data == "deleted") {
                         alert("Success!");
-                        location.href = "http://slp.ph/vrcabinet";
+                        
+                        location.href = "index.php";
                       } else {
                         alert(data);
                       }
