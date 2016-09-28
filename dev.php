@@ -218,8 +218,14 @@ h3 {
               <td>In Development</td>
             </tr>
             <tr>
-              <td>Performance Management</td>
-              <td>Standardization of feedback rating system. Planned features include online training modules and webinars.</td>
+              <td><strike>Performance Management</strike></td>
+              <td><strike>Standardization of feedback rating system. Planned features include online training modules and webinars.</strike></td>
+              <td><strike>Q4</strike></td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td>SLPIS Integration</td>
+              <td>For a new and improved SLPIS experience</td>
               <td>Q4</td>
               <td>-</td>
             </tr>
