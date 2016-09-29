@@ -1,5 +1,5 @@
 <?php
-
+require "../zxcd9.php";
 
 ?>
 
@@ -10,11 +10,11 @@
     <title>SLP Online</title>
     <meta name="description" content="SLP DSWD Livelihood"/>
     <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="shortcut icon" href="imgs/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="imgs/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/flatbootstrap.css"/>
-    <script src="js/jquery-1.10.2.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="../imgs/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../imgs/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/flatbootstrap.css"/>
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <style>
 
@@ -201,10 +201,19 @@ tr {
                   <br>Please complete the form below:<br><br>
                   <div class="form-group">
                         <select class="form-control" style="margin-bottom:0.5em" id="region" name="region">
-                            <option selected>Select Region</option>
-                            <option>Region I</option>
-                            <option>Region II</option>
-                            <option>Region III</option>
+                         <!--get this region -->
+                             <option value="" selected>Select Region</option>
+                              <?php
+                              $query = "SELECT * FROM lib_regions order by regname"; 
+                              try 
+                              { $stmt = $db->prepare($query); $result = $stmt->execute(); } 
+                              catch(PDOException $ex) 
+                              { die("Failed to run query: " . $ex->getMessage()); } 
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                 echo "<option value='".$row['regname']."'>".$row['regname']."</option>";
+                              }
+                              ?>
+                          <!-- upto this -->    
                         </select>
                   </div>
                   <div class="form-group">
@@ -214,8 +223,7 @@ tr {
                             <option value="DR">Direct Release</option>
                         </select>
                   </div>
-                  
-                  <div class="form-group">
+                   <div class="form-group">
                     <div class="row">
                       <div class="col-md-6">
                         <select class="form-control" id="subtype" name="subtype" onchange="displaySubType();">
@@ -231,23 +239,35 @@ tr {
                         <input class="form-control" style="padding-right:0;" id="saa" name="saa" placeholder="SAA Number">
                       </div>
                       <div class="col-md-6" style="display:none" id="uacsholder">
-                        <select class="form-control" id="uacs" name="uacs">
-                            <option>Select UACS</option>
+                        <select class="form-control" id="uacs1" name="uacs1">
+                            <option value="">Select UACS</option>
                             <option>Travelling Expense</option>
                             <option>Cost of Service</option>
                             <option>Rental Office</option>
                         </select>
                       </div>
                     </div>
-                  </div>
+                  </div> 
+
+
+
                   <div class="form-group">
                     <div class="row">
                       <div class="col-md-6">
                         <select class="form-control" id="fundsource" name="fundsource">
-                            <option>Select Fund Source</option>
-                            <option>SLP-MD</option>
-                            <option>SLP-EF</option>
-                            <option>PAMANA</option>
+                             <!--get this region -->
+                             <option value="" selected>Select Fund Source</option>
+                              <?php
+                              $query1 = "SELECT * FROM libhr_fundsource "; 
+                              try 
+                              { $stmt1 = $db->prepare($query1); $result = $stmt1->execute(); } 
+                              catch(PDOException $ex) 
+                              { die("Failed to run query: " . $ex->getMessage()); } 
+                              while ($row1 = $stmt1->fetch(PDO::FETCH_ASSOC)) {
+                                 echo "<option value='".$row1['hrfundsourcename']."'>".$row1['hrfundsourcename']."</option>";
+                              }
+                              ?>
+                          <!-- upto this -->  
                         </select>
                       </div>
                       <div class="col-md-6">
@@ -263,24 +283,39 @@ tr {
                   <div class="form-group">
                     <div class="row">
                       <div class="col-md-6">
-                        <input class="form-control" placeholder="Amount (PhP)"></input>
+                        <input class="form-control" name="amt" id="amt" placeholder="Amount (PhP)"></input>
                       </div>
                       <div class="col-md-6">
-                        <input class="form-control" placeholder="Date Accomplished"></input>
+                        <input class="form-control" name="d8" id="d8" placeholder="Date Accomplished"></input>
                       </div>
                     </div>
                   </div>
-                  <button class="btn-info btn pull-right">Add Fund</button>
-
-
+                  <button class="btn-info btn pull-right" id="addfundallot" >Add Fund</button>
                 </div>
               </div>
-
           </div>
         </div>
       </div>
   </div>
 </div>
+
+<!-- Modal -->
+      <div class="modal fade" id="myModal" role="dialog" style="margin-top:3em">
+        <div class="modal-dialog modal-sm">
+
+          <div class="modal-content" style="padding:1em;padding-top:0.5em;">
+                  <h3 style="color:#5cb85c;margin-bottom:6px">Success!</h3>
+                  <span style="font-size:13px" id="sucsubtext">Fund Allotments saved!</span><br><br>
+                  <button type="button" class="btn btn-primary pull-right" style="background:#5cb85c;border:0;margin-top:0;padding:5px 10px 5px 10px" id="okaybtn" data-dismiss="modal">Okay</button>
+                  <div class="clearfix"></div>
+          </div>
+          
+        </div>
+      </div>
+      <!-- Modal -->
+
+
+
 <script>
 function displaySubType() {
     var selected = $("#subtype option:selected").val();
@@ -289,6 +324,7 @@ function displaySubType() {
     if (selected == "Grant") {
         $("#saaholder").fadeIn();
         $("#uacsholder").hide();
+     
         $("#blankholder").hide();
     } else {
         $("#uacsholder").fadeIn();
@@ -296,6 +332,60 @@ function displaySubType() {
         $("#blankholder").hide();
     }
 }
+
+
+$("#addfundallot").click(function(event) {
+
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  $("#addfundallot").html("Processing..");
+  document.getElementById("addfundallot").disabled = true;
+
+  var formData = {
+       'action'           :'addfundallo', 
+       'region'           :$('#region option:selected').val(),
+       'fundtype'         :$('#fundtype option:selected').val(),
+       'subtype'          :$('#subtype option:selected').val(),
+       'saa'              :$('input[name=saa]').val(),
+       'uacs1'            :$('#uacs1 option:selected').val(), 
+       'fundsource'       :$('#fundsource option:selected').val(),
+       'fundsourceyear'   :$('#fundsourceyear option:selected').val(),
+       'amt'              :$('input[name=amt]').val(), 
+       'd8'               :$('input[name=d8]').val()
+     };
+
+  $.ajax({
+       url: "func.php",
+       type: "POST",
+       data: formData,
+       success: function(data)
+       {
+                if (data=="success") {
+                    document.getElementById("addfundallot").disabled = true;
+                    
+                       $("#sucsubtext").html("Fund Allotments saved!");
+                      $('#myModal').modal();
+                      $('#myModal').on('hidden.bs.modal', function () {location.href = "../finance/allotments_add.php"; });
+                    } else {
+                 
+             //alert(data);
+                $("#sucsubtext").html("Fund Allotments saved!");
+                $('#myModal').modal();
+                $('#myModal').on('hidden.bs.modal', function () {location.href = "../finance/allotments_add.php"; });
+                    }
+
+       }
+    });//endajax
+
+
+});
+
+
+
+
+
+
+
 $(document).ready(function () {
 
       $('[data-toggle="tooltip"]').tooltip(); 
