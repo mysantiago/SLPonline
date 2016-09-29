@@ -1,6 +1,6 @@
 <?php
 
-
+require "../zxcd9.php";
 ?>
 
 <!DOCTYPE html>
@@ -10,11 +10,11 @@
     <title>SLP Online</title>
     <meta name="description" content="SLP DSWD Livelihood"/>
     <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="shortcut icon" href="imgs/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="imgs/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/flatbootstrap.css"/>
-    <script src="js/jquery-1.10.2.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="../imgs/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../imgs/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/flatbootstrap.css"/>
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <style>
 
@@ -200,32 +200,42 @@ tr {
                 <div class="col-md-6" style="padding:3em;color:#000;padding-top:1em">
                   <br>Please complete the form below:<br><br>
                   <div class="form-group">
-                        <select class="form-control" style="margin-bottom:0.5em" id="region" name="region">
+                        <select class="form-control" style="margin-bottom:0.5em" id="uacs" name="uacs">
                             <option selected>Select UACS</option>
-                            <option>Travelling</option>
-                            <option>Salary</option>
-                            <option>Cost of Service</option>
+                            <option value="Travelling">Travelling</option>
+                            <option value="Salary">Salary</option>
+                            <option value="Cost of Service">Cost of Service</option>
                         </select>
                   </div>
                   <div class="form-group">
-                        <select class="form-control" style="margin-bottom:0.5em" id="fundtype" name="fundtype">
-                            <option selected>Select Sub-Aro</option>
-                            <option value="CMF">3413049112</option>
-                            <option value="DR">2139781928</option>
+                        <select class="form-control" style="margin-bottom:0.5em" id="subaro" name="subaro">
+                          <!--get this region -->
+                             <option value="" selected>Select Sub-Aro</option>
+                              <?php
+                              $query = "SELECT * FROM fin_allotments "; 
+                              try 
+                              { $stmt = $db->prepare($query); $result = $stmt->execute(); } 
+                              catch(PDOException $ex) 
+                              { die("Failed to run query: " . $ex->getMessage()); } 
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                 echo "<option value='".$row['saa']."'>".$row['saa']."</option>";
+                              }
+                              ?>
+                          <!-- upto this --> 
                         </select>
                   </div>
                   
                   <div class="form-group">
                     <div class="row">
                       <div class="col-md-6">
-                        <input class="form-control" placeholder="Amount (PhP)"></input>
+                        <input class="form-control" placeholder="Amount (PhP)" id="amount" name="amount"></input>
                       </div>
                       <div class="col-md-6">
-                        <input class="form-control" placeholder="Date Accomplished"></input>
+                        <input class="form-control" placeholder="Date Accomplished" id="dateacc" name="dateacc" ></input>
                       </div>
                     </div>
                   </div>
-                  <button class="btn-info btn pull-right">Add Fund</button>
+                  <button class="btn-info btn pull-right" id="addfund">Add Fund</button>
 
 
                 </div>
@@ -236,6 +246,21 @@ tr {
       </div>
   </div>
 </div>
+
+<!-- Modal -->
+      <div class="modal fade" id="myModal" role="dialog" style="margin-top:3em">
+        <div class="modal-dialog modal-sm">
+
+          <div class="modal-content" style="padding:1em;padding-top:0.5em;">
+                  <h3 style="color:#5cb85c;margin-bottom:6px">Success!</h3>
+                  <span style="font-size:13px" id="sucsubtext">Profile picture uploaded.</span><br><br>
+                  <button type="button" class="btn btn-primary pull-right" style="background:#5cb85c;border:0;margin-top:0;padding:5px 10px 5px 10px" id="okaybtn" data-dismiss="modal">Okay</button>
+                  <div class="clearfix"></div>
+          </div>
+          
+        </div>
+      </div>
+      <!-- Modal -->
 <script>
 function displaySubType() {
     var selected = $("#subtype option:selected").val();
@@ -366,6 +391,61 @@ $(document).ready(function () {
         });
                   
     });
+
+
+
+
+$("#addfund").click(function(event) {
+  
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  $("#addfund").html("Processing..");
+  document.getElementById("addfund").disabled = true;
+
+  var formData = {
+       'action'           :'addf', 
+       'uacs'             :$('#uacs option:selected').val(),
+       'subaro'           :$('#subaro option:selected').val(),
+       'amount'           :$('input[name=amount]').val(), 
+       'dateacc'          :$('input[name=dateacc]').val()
+     };
+
+  $.ajax({
+       url: "func.php",
+       type: "POST",
+       data: formData,
+       success: function(data)
+       {
+                if (data=="success") {
+                    document.getElementById("addfund").disabled = true;
+                    
+                       $("#sucsubtext").html("Admin Cost CMF saved!");
+                      $('#myModal').modal();
+                      $('#myModal').on('hidden.bs.modal', function () {location.href = "../finance/admincost_add.php"; });
+                    } else {
+                 
+                   //alert(data);
+                    
+                      $("#sucsubtext").html("Admin Cost CMF saved!");
+                      $('#myModal').modal();
+                      $('#myModal').on('hidden.bs.modal', function () {location.href = "../finance/admincost_add.php"; });
+                    }
+
+       }
+    });//endajax
+
+
+});
+
+
+
+
+
+
+
+
+
+
 </script>
 </body>
 </html>
