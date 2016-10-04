@@ -1,6 +1,14 @@
 <?php
 require "../zxcd9.php";
 byteMe($_SESSION['id'],'vc_upload',0.10);
+if (isset($_POST['editid1'])) {
+  $_SESSION['editid'] = $_POST['editid1'];
+  die("visitpage");
+}
+        $stmt = $db->prepare("SELECT * FROM DOCDB WHERE id=:id ");
+        $stmt->bindParam(':id', $_SESSION['editid']);
+        $stmt->execute();
+        $rowadmin = $stmt->fetch();
 ?>
 
 <!DOCTYPE html>
@@ -349,41 +357,52 @@ function typeChange(){
       <div class="row">
           <div class="col-md-12" id="searchblock">
                 <div class="col-md-offset-2 col-md-8" style="margin-top:0">
-                  <h2 style="font-weight:bold;margin-bottom:0">UPLOAD</h2>
+                  <h2 style="font-weight:bold;margin-bottom:0">EDIT</h2>
 
 <form id="myForm" method="POST" enctype="multipart/form-data">
 
+<script type="text/javascript">
+function typeChangeAdmin(){
+var selection = $('#doctypeselector option:selected').val();
+console.log(selection);
+    if (selection == "Administration Document") {
+             $("#admintypeholder").fadeIn(); $("#logtypeholder").fadeIn(); $("#refnumberholder").fadeIn(); $("#sourceofficeholder").fadeIn(); 
+             $("#sourcenameholder").fadeIn();$("#destofficeholder").fadeIn(); $("#destnameholder").fadeIn(); $("#resdateholder").fadeIn();        
+             $('#admintype').val('<?php echo $rowadmin['admindoctype']; ?>');
+             $('#logtype').val('<?php echo $rowadmin['logtype']; ?>');
+             $('#refnumber').val('<?php echo $rowadmin['referenceno']; ?>');
+             $('#sourceoffice').val('<?php echo $rowadmin['sourceoffice']; ?>');
+             $('#sourcename').val('<?php echo $rowadmin['sourcename']; ?>');
+             $('#destoffice').val('<?php echo $rowadmin['destoffice']; ?>');
+             $('#destname').val('<?php echo $rowadmin['destname']; ?>');
+             $('#resdate').val('<?php echo $rowadmin['resdate']; ?>');
+           
+    } else {
+             $("#admintypeholder").fadeOut(); $("#logtypeholder").fadeOut(); $("#refnumberholder").fadeOut(); $("#sourceofficeholder").fadeOut(); 
+             $("#sourcenameholder").fadeOut();$("#destofficeholder").fadeOut(); $("#destnameholder").fadeOut(); $("#resdateholder").fadeOut();         
+             $('#admintype').val('');$('#logtype').val(''); $('#refnumber').val('');$('#sourceoffice').val('');
+             $('#sourcename').val('');$('#destoffice').val(''); $('#destname').val('');$('#resdate').val('');
+    }
+}
+</script>
                   <div class="input-group" style="margin-bottom:0;margin-top:1em">
-                      <input id="uploadfilename" class="form-control" placeholder="Choose file.." disabled="disabled">
+                      <input id="uploadfilename" class="form-control" placeholder="Choose file.." disabled="disabled"  value="<?php echo $rowadmin['filename']; ?>" >
                       <div class="input-group-btn">
                         <div class="fileUpload btn btn-primary">
                             <span><span class="glyphicon glyphicon-folder-open"></span> &nbsp; Choose File</span>
-                            <input id="theupload" name="theupload" type="file" class="upload" required/>
+                            <input id="theuploadadmin" name="theuploadadmin" type="file" class="upload" required/>
                         </div>
                       </div>
                     </div><!-- /input-group -->
                     <span style="font-size:12px;margin-bottom:1em">Supported file types: PDF, DOC, XLSX, PNG, JPG, ZIP</span>
                     <span style="font-size:12px;margin-bottom:1em" class="pull-right">Maximum file size: 8MB</span><br>
 
-<script>
 
-function typeChange2(){
-var selection = $('#doctypeselector option:selected').val();
-console.log(selection);
-      if (selection == "Administration Document") {
-             $("#admintypeholder").fadeIn(); $("#logtypeholder").fadeIn(); $("#refnumberholder").fadeIn(); $("#sourceofficeholder").fadeIn(); 
-             $("#sourcenameholder").fadeIn();$("#destofficeholder").fadeIn(); $("#destnameholder").fadeIn(); $("#resdateholder").fadeIn();        
-           
-    } else {
-             $("#admintypeholder").fadeOut(); $("#logtypeholder").fadeOut(); $("#refnumberholder").fadeOut(); $("#sourceofficeholder").fadeOut(); 
-             $("#sourcenameholder").fadeOut();$("#destofficeholder").fadeOut(); $("#destnameholder").fadeOut(); $("#resdateholder").fadeOut();         
-       
-    }
-}
-</script>
                   <div class="form-group" style="margin-top:1em">
-                      <select class="form-control" onchange="typeChange2()" id="doctypeselector">
-                        <option value="">Select Document Type</option>
+                      <select class="form-control" onchange="typeChangeAdmin()" id="doctypeselector">
+                         <option><?php echo $rowadmin['doctype']; ?></option>
+                        <option>Select Document Type</option>
+                        
 
                         <!-- get this --> 
                       <?php
@@ -412,9 +431,10 @@ console.log(selection);
                       </select>
                   </div>
 
-                  <div class="form-group" style="display: none; margin-top:1em" id="admintypeholder">
-                      <select class="form-control" id="admintype" name="admintype">
-                        <option value="">Select Admin Document Type</option>
+                  <div class="form-group" margin-top:1em" id="admintypeholder">
+                      <select class="form-control" id="admintype" name="admintype" value="">
+                           <option><?php echo $rowadmin['admindoctype']; ?></option>
+                           <option >Select Admin Document Type</option>
 
                         <!-- get this --> 
                       <?php
@@ -442,9 +462,10 @@ console.log(selection);
 
                   <div class="row">
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="logtypeholder">
+                      <div class="form-group" id="logtypeholder">
                         <select class="form-control" id="logtype" name="logtype">
-                        <option value="">Select Log Type</option>
+                        <option><?php echo $rowadmin['logtype']; ?></option>
+                        <option>Select Log Type</option>
                         <option value="Incoming">Incoming</option>
                         <option value="Outgoing">Outgoing</option>
                   </select>
@@ -453,8 +474,8 @@ console.log(selection);
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="refnumberholder">
-                       <input class="form-control" placeholder="Reference Number" id="refnumber" name="refnumber" required/><center>
+                      <div class="form-group" id="refnumberholder">
+                       <input class="form-control" placeholder="Reference Number" value="<?php echo $rowadmin['referenceno']; ?>" id="refnumber" name="refnumber" required/><center>
                         <div class="col-sm-8">
                         </div>
                       </div>
@@ -462,24 +483,24 @@ console.log(selection);
                   </div>
 
                   <div class="form-group" style="" id="docsubject">
-                      <input class="form-control" placeholder="Document Title / Subject" style="" id="dsubject" name="dsubject" required/><center>
+                      <input class="form-control" placeholder="Document Title / Subject" style="" id="dsubject" name="dsubject" value="<?php echo $rowadmin['title']; ?>" required/><center>
                   </div>
                   <div class="form-group" style="" id="authorholder">
-                      <input type="text" name="autocompleteajax2" id="autocompleteajax2" class="form-control" placeholder="Author (if applicable)"/>
+                      <input type="text" name="author" id="autocompleteajax2" class="form-control" placeholder="Author (if applicable)" value="<?php echo $rowadmin['author']; ?>"/>
                       <input type="hidden" id="autocomplete-ajax-x-2" disabled="disabled"/>
                   </div>
 
                   <div class="row">
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="sourceofficeholder">
-                        <input class="form-control" placeholder="Source Office" style="" id="sourceoffice" name="sourceoffice" required/><center>
+                      <div class="form-group" id="sourceofficeholder">
+                        <input class="form-control" placeholder="Source Office" style="" id="sourceoffice" name="sourceoffice" value="<?php echo $rowadmin['sourceoffice']; ?>" required/><center>
                           <div class="col-sm-8">
                           </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="sourcenameholder">
-                       <input class="form-control" placeholder="Source Name" style="" id="sourcename" name="sourcename" required/><center>
+                      <div class="form-group" id="sourcenameholder">
+                       <input class="form-control" placeholder="Source Name" style="" id="sourcename" name="sourcename" value="<?php echo $rowadmin['sourcename']; ?>" required/><center>
                         <div class="col-sm-8">
                         </div>
                       </div>
@@ -488,15 +509,15 @@ console.log(selection);
 
                   <div class="row">
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="destofficeholder">
-                        <input class="form-control" placeholder="Destination Office" style="" id="destoffice" name="destoffice" required/><center>
+                      <div class="form-group" id="destofficeholder">
+                        <input class="form-control" placeholder="Destination Office" style="" id="destoffice" name="destoffice" value="<?php echo $rowadmin['destoffice']; ?>" required/><center>
                           <div class="col-sm-8">
                           </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="destnameholder">
-                       <input class="form-control" placeholder="Destination Name" style="" id="destname" name="destname" required/><center>
+                      <div class="form-group" id="destnameholder">
+                       <input class="form-control" placeholder="Destination Name" style="" id="destname" name="destname" value="<?php echo $rowadmin['destname']; ?>" required/><center>
                         <div class="col-sm-8">
                         </div>
                       </div>
@@ -505,15 +526,15 @@ console.log(selection);
 
                   <div class="row">
                     <div class="col-sm-6">
-                      <div class="form-group" style="" id="ddate">
-                        <input class="form-control" placeholder="Date Written / Created" style="" id="ddate" required/><center>
+                      <div class="form-group" style="" id="ddateholder">
+                        <input class="form-control" placeholder="Date Written / Created" style="" id="ddate" value="<?php echo $rowadmin['added']; ?>" required/><center>
                           <div class="col-sm-8">
                           </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="form-group" style="display:none;" id="resdateholder">
-                       <input class="form-control" placeholder="Response Deadline" style="" id="resdate" name="resdate" required/><center>
+                      <div class="form-group" id="resdateholder">
+                       <input class="form-control" placeholder="Response Deadline" style="" id="resdate" name="resdate" value="<?php echo $rowadmin['resdate']; ?>" required/><center>
                         <div class="col-sm-8">
                         </div>
                       </div>
@@ -521,7 +542,7 @@ console.log(selection);
                   </div>
 
                   <div class="form-group" style="">
-                      <textarea rows="3" class="form-control" placeholder="Remarks" style="padding-top:0.6em;resize:none" id="remarks" name="remarks" required></textarea><center>
+                      <textarea rows="3" class="form-control" placeholder="Remarks" style="padding-top:0.6em;resize:none" id="remarks" name="remarks"  required><?php echo $rowadmin['remarks']; ?></textarea><center>
                   </div>
                   <div style="display:block;font-weight:bold">Send a notification for this upload: &nbsp; <div id="theswitch" class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate bootstrap-switch-id-custom-switch-01 bootstrap-switch-off"><div class="bootstrap-switch-container"><span class="bootstrap-switch-handle-on bootstrap-switch-primary">YES</span><label class="bootstrap-switch-label">&nbsp;</label><span class="bootstrap-switch-handle-off bootstrap-switch-default">NO</span><input type="checkbox" checked="" data-toggle="switch" id="custom-switch-01"></div></div></div>
                   <div id="notificationpanel" style="margin-top:1em;display:none">
@@ -714,10 +735,10 @@ $(function () {
 
                 </div><!--end notifpanel-->
                 
-              </form>
+    </form>
           </div>
           <div class="col-md-12" style="padding-right:0">
-                  <button id="uploadBtn" class="btn btn-success pull-right" style="padding:6px 10px 6px 10px;margin-top:0.8em"><span class="glyphicon glyphicon-cloud-upload"></span> Upload</button>
+                  <button id="uploadBtnadmin" class="btn btn-success pull-right" style="padding:6px 10px 6px 10px;margin-top:0.8em"><span class="glyphicon glyphicon-cloud-upload"></span> ReUpload</button>
           </div>
       </div>
   </div>
@@ -740,7 +761,7 @@ $(function () {
 <script>
 $(document).ready(function() {
 
-  document.getElementById("theupload").onchange = function () {
+  document.getElementById("theuploadadmin").onchange = function () {
     document.getElementById("uploadfilename").value = this.value;
   };
 $("#remarks").keyup(function() {
@@ -781,18 +802,18 @@ $("#theswitch").click(function(event) {
         $("#theswitch").removeClass("bootstrap-switch-off");
         $("#theswitch").addClass("bootstrap-switch-on");
         $("#notificationpanel").slideDown();
-        $("#uploadBtn").html('<span class="glyphicon glyphicon-cloud-upload"></span> Upload and Send Notifications');
+        $("#uploadBtnadmin").html('<span class="glyphicon glyphicon-cloud-upload"></span> ReUpload and Send Notifications');
         switchClass = 1;
     } else {
         $("#theswitch").removeClass("bootstrap-switch-on");
         $("#theswitch").addClass("bootstrap-switch-off");
         $("#notificationpanel").fadeOut();
-        $("#uploadBtn").html('<span class="glyphicon glyphicon-cloud-upload"></span> Upload');
+        $("#uploadBtnadmin").html('<span class="glyphicon glyphicon-cloud-upload"></span> ReUpload');
         switchClass = 0;
     }
 });
 
-$("#uploadBtn").click(function(event) {
+$("#uploadBtnadmin").click(function(event) {
     if ($('#doctypeselector option:selected').val() == "") {
       alert("Please select Document Type");
       return false;
@@ -807,14 +828,14 @@ $("#uploadBtn").click(function(event) {
     }
      $("#loadoverlay").show();
      var fd = new FormData;                  
-
-       file1 = $('#theupload').prop('files')[0];
-       fd.append('action', 'upload');
+       file1 = $('#theuploadadmin').prop('files')[0];
+       fd.append('action', 'reuploadadmin');
        fd.append('file', file1);
        fd.append('doctype', $('#doctypeselector option:selected').val());
        fd.append('docsubject', $('input[name=dsubject]').val());
-       fd.append('author', window.selectPartner2);
+      fd.append('author', window.selectPartner2);
        fd.append('ddate', $('input[name=ddate]').val());
+      
        fd.append('remarks', $('textarea[name=remarks]').val());
        fd.append('admintype', $('#admintype option:selected').val());
        fd.append('logtype', $('#logtype option:selected').val());
@@ -824,6 +845,7 @@ $("#uploadBtn").click(function(event) {
        fd.append('destoffice', $('input[name=destoffice]').val());
        fd.append('destname', $('input[name=destname').val());
        fd.append('resdate', $('input[name=resdate]').val());
+       fd.append('switch', switchClass);
        fd.append('emailarray', emailfinal.toString());
       $.ajax({
                 url: 'functions.php',
