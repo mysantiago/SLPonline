@@ -115,13 +115,12 @@ body {
 tbody tr {
   cursor: pointer;
 }
+
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: #2c3e50;
   color: #fff;
 }
-.dataTables_filter {
-   display:none;
-}
+
 #slideout {
       z-index: 998;
       position: fixed;
@@ -207,6 +206,36 @@ tbody tr {
       -moz-user-select: none;
       -ms-user-select: none;
     }
+    #search-text-input{
+    border-top:thin solid  #e5e5e5;
+    border-right:thin solid #e5e5e5;
+    border-bottom:0;
+    border-left:thin solid  #e5e5e5;
+    box-shadow:0px 1px 1px 1px #e5e5e5;
+    float:left;
+    height:17px;
+    margin:.8em 0 0 .5em; 
+    outline:0;
+    padding:.4em 0 .4em .6em; 
+    width:500px; 
+}
+  
+#button-holder{
+    background-color:#f1f1f1;
+    border-top:thin solid #e5e5e5;
+    box-shadow:1px 1px 1px 1px #e5e5e5;
+    float:left;
+    height:38px;
+    margin:11px 0 0 0;
+    text-align:center;
+    width:50px;
+}
+  
+#button-holder img{
+    margin:4px;
+    width:30px; 
+}
+.dataTables_filter, .dataTables_info { display: none; }
 </style>
 </style>
 </head>
@@ -248,6 +277,7 @@ function parseStatus(str) {
     "aProcessing": true,
     "aServerSide": true,
     "orderCellsTop": true,
+
     "ajax": "dt_feedbackportal.php",
   
     "dom": '<"top">rtp<"bottom"f>',
@@ -355,6 +385,16 @@ function parseStatus(str) {
                     });
   });
 
+$(document).ready(function() {
+  tableshown=false;
+$("#search-text-input").keyup(function() {
+   if (tableshown==false) {
+      tableshown=true;
+   }
+   oTable.fnFilter(this.value);
+}); 
+});
+
 });
 </script>
 <div class="container-fluid">
@@ -365,8 +405,8 @@ function parseStatus(str) {
         
               <h3 align="center"><img src="../imgs/slplogo_med.png" width="100" height="100">&nbsp;&nbsp;Sustainable Livelihood Program ( SLP ) Forum </h3>
               <br/>
-           <p align="right">      <a href="../feedback_portal.php" class="btn btn-info btn-sm" id="create" role="button">Create new thread</a> </p>
-            <script>
+         
+<script>
 function filterProvince() {
       var regionvalue = document.getElementById("provincefilter").value;
       if (regionvalue == "") {
@@ -376,6 +416,25 @@ function filterProvince() {
       }
 }
             </script>
+ <div class="row">
+         
+          <div class="col-md-11" id="searchblock" style="padding:2em;">
+                <div style="margin-top:2em">
+                  <div class="form-group">
+                      <input id="search-text-input" class="form-control" placeholder="Search keywords.." style="height:38px;text-align:center;padding-left:0"/><center>
+
+                     <div id="button-holder" >
+                      <img src="../imgs/mg.png"  id="mg">
+                    </div>
+                  </div>
+                </div>
+          </div>
+          <div class="col-md-1">
+                <br/><br/><br/><br/>
+                 <a href="../feedback_portal.php" class="btn btn-info btn-sm" id="create" role="button">Create new thread</a> 
+          </div>
+                
+      </div>
 
                   <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-hover hover" id="viewdata">
                     <thead>
