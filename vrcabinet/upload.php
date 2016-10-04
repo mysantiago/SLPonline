@@ -812,10 +812,9 @@ $("#uploadBtn").click(function(event) {
      fd.append('docsubject', $('input[name=dsubject]').val());
      fd.append('docauthor', window.selectPartner2);
      fd.append('docdate', $('input[name=ddate]').val());
-<<<<<<< HEAD
-=======
+
      fd.append('docdate', $('input[name=rdate]').val());
->>>>>>> 68afac52dfe89e449de5ba94f2534202d0a32545
+
      fd.append('remarks', $('textarea[name=remarks]').val());
      fd.append('switch', switchClass);
      fd.append('emailarray', emailfinal.toString());

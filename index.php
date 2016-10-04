@@ -24,7 +24,7 @@ if (isset($_SESSION['discard_after']) && $now > $_SESSION['discard_after']) {
     session_destroy();
     session_start();
 }
-$_SESSION['discard_after'] = $now + 1800;
+$_SESSION['discard_after'] = $now + 14400;
 if(!empty($_SESSION['emailaddress'])) { 
     header("Location: main.php"); 
 }
