@@ -370,12 +370,14 @@ function typeChange(){
 function typeChange2(){
 var selection = $('#doctypeselector option:selected').val();
 console.log(selection);
-    if (selection == "Administration Document") {
-            $("#admintype").fadeIn(); $("#logtype").fadeIn(); $("#refnumber").fadeIn(); $("#sourceoffice").fadeIn(); 
-            $("#sourcename").fadeIn();$("#destoffice").fadeIn(); $("#destname").fadeIn(); $("#rdate").fadeIn();        
+      if (selection == "Administration Document") {
+             $("#admintypeholder").fadeIn(); $("#logtypeholder").fadeIn(); $("#refnumberholder").fadeIn(); $("#sourceofficeholder").fadeIn(); 
+             $("#sourcenameholder").fadeIn();$("#destofficeholder").fadeIn(); $("#destnameholder").fadeIn(); $("#resdateholder").fadeIn();        
+           
     } else {
-            $("#admintype").fadeOut(); $("#logtype").fadeOut(); $("#refnumber").fadeOut(); $("#sourceoffice").fadeOut(); 
-            $("#sourcename").fadeOut(); $("#destoffice").fadeOut(); $("#destname").fadeOut(); $("#rdate").fadeOut();
+             $("#admintypeholder").fadeOut(); $("#logtypeholder").fadeOut(); $("#refnumberholder").fadeOut(); $("#sourceofficeholder").fadeOut(); 
+             $("#sourcenameholder").fadeOut();$("#destofficeholder").fadeOut(); $("#destnameholder").fadeOut(); $("#resdateholder").fadeOut();         
+       
     }
 }
 </script>
@@ -410,8 +412,8 @@ console.log(selection);
                       </select>
                   </div>
 
-                  <div class="form-group" style="display: none; margin-top:1em" id="admintype">
-                      <select class="form-control" id="admintype">
+                  <div class="form-group" style="display: none; margin-top:1em" id="admintypeholder">
+                      <select class="form-control" id="admintype" name="admintype">
                         <option value="">Select Admin Document Type</option>
 
                         <!-- get this --> 
@@ -440,19 +442,19 @@ console.log(selection);
 
                   <div class="row">
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="logtype">
-                        <select class="form-control" id="logtype">
+                      <div class="form-group" style="display: none" id="logtypeholder">
+                        <select class="form-control" id="logtype" name="logtype">
                         <option value="">Select Log Type</option>
-                        <option value="">Incoming</option>
-                        <option value="">Outgoing</option>
+                        <option value="Incoming">Incoming</option>
+                        <option value="Outgoing">Outgoing</option>
                   </select>
                           <div class="col-sm-8">
                           </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="refnumber">
-                       <input class="form-control" placeholder="Reference Number" id="refnumber" required/><center>
+                      <div class="form-group" style="display: none" id="refnumberholder">
+                       <input class="form-control" placeholder="Reference Number" id="refnumber" name="refnumber" required/><center>
                         <div class="col-sm-8">
                         </div>
                       </div>
@@ -462,22 +464,22 @@ console.log(selection);
                   <div class="form-group" style="" id="docsubject">
                       <input class="form-control" placeholder="Document Title / Subject" style="" id="dsubject" name="dsubject" required/><center>
                   </div>
-                  <div class="form-group" style="" id="docdate">
+                  <div class="form-group" style="" id="authorholder">
                       <input type="text" name="autocompleteajax2" id="autocompleteajax2" class="form-control" placeholder="Author (if applicable)"/>
                       <input type="hidden" id="autocomplete-ajax-x-2" disabled="disabled"/>
                   </div>
 
                   <div class="row">
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="sourceoffice">
-                        <input class="form-control" placeholder="Source Office" style="" id="sourceoffice" required/><center>
+                      <div class="form-group" style="display: none" id="sourceofficeholder">
+                        <input class="form-control" placeholder="Source Office" style="" id="sourceoffice" name="sourceoffice" required/><center>
                           <div class="col-sm-8">
                           </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="sourcename">
-                       <input class="form-control" placeholder="Source Name" style="" id="sourcename" required/><center>
+                      <div class="form-group" style="display: none" id="sourcenameholder">
+                       <input class="form-control" placeholder="Source Name" style="" id="sourcename" name="sourcename" required/><center>
                         <div class="col-sm-8">
                         </div>
                       </div>
@@ -486,15 +488,15 @@ console.log(selection);
 
                   <div class="row">
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="destoffice">
-                        <input class="form-control" placeholder="Destination Office" style="" id="destoffice" required/><center>
+                      <div class="form-group" style="display: none" id="destofficeholder">
+                        <input class="form-control" placeholder="Destination Office" style="" id="destoffice" name="destoffice" required/><center>
                           <div class="col-sm-8">
                           </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="destname">
-                       <input class="form-control" placeholder="Destination Name" style="" id="destname" required/><center>
+                      <div class="form-group" style="display: none" id="destnameholder">
+                       <input class="form-control" placeholder="Destination Name" style="" id="destname" name="destname" required/><center>
                         <div class="col-sm-8">
                         </div>
                       </div>
@@ -510,8 +512,8 @@ console.log(selection);
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="form-group" style="display:none;" id="rdate">
-                       <input class="form-control" placeholder="Response Deadline" style="" id="rdate" required/><center>
+                      <div class="form-group" style="display:none;" id="resdateholder">
+                       <input class="form-control" placeholder="Response Deadline" style="" id="resdate" name="resdate" required/><center>
                         <div class="col-sm-8">
                         </div>
                       </div>
@@ -519,7 +521,7 @@ console.log(selection);
                   </div>
 
                   <div class="form-group" style="">
-                      <textarea rows="3" class="form-control" placeholder="Remarks" style="padding-top:0.6em;resize:none" id="remarks" required></textarea><center>
+                      <textarea rows="3" class="form-control" placeholder="Remarks" style="padding-top:0.6em;resize:none" id="remarks" name="remarks" required></textarea><center>
                   </div>
                   <div style="display:block;font-weight:bold">Send a notification for this upload: &nbsp; <div id="theswitch" class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate bootstrap-switch-id-custom-switch-01 bootstrap-switch-off"><div class="bootstrap-switch-container"><span class="bootstrap-switch-handle-on bootstrap-switch-primary">YES</span><label class="bootstrap-switch-label">&nbsp;</label><span class="bootstrap-switch-handle-off bootstrap-switch-default">NO</span><input type="checkbox" checked="" data-toggle="switch" id="custom-switch-01"></div></div></div>
                   <div id="notificationpanel" style="margin-top:1em;display:none">
@@ -592,8 +594,8 @@ console.log(selection);
                   </div>
 <?PhP
 $sql = "SELECT id, CONCAT(lastname, ', ', firstname) as name FROM HRDB";
-$partnerIDArray = [];
-$partnerArray = [];
+//$partnerIDArray = [];
+//$partnerArray = [];
 
 foreach ($db->query($sql) as $results)
 {
@@ -805,21 +807,25 @@ $("#uploadBtn").click(function(event) {
     }
      $("#loadoverlay").show();
      var fd = new FormData;                  
-     file1 = $('#theupload').prop('files')[0];
-     fd.append('action', 'upload');
-     fd.append('file', file1);
-     fd.append('doctype', $('#doctypeselector option:selected').val());
-     fd.append('docsubject', $('input[name=dsubject]').val());
-     fd.append('docauthor', window.selectPartner2);
-     fd.append('docdate', $('input[name=ddate]').val());
-<<<<<<< HEAD
-=======
-     fd.append('docdate', $('input[name=rdate]').val());
->>>>>>> 68afac52dfe89e449de5ba94f2534202d0a32545
-     fd.append('remarks', $('textarea[name=remarks]').val());
-     fd.append('switch', switchClass);
-     fd.append('emailarray', emailfinal.toString());
-     $.ajax({
+       file1 = $('#theupload').prop('files')[0];
+       fd.append('action', 'upload');
+       fd.append('file', file1);
+       fd.append('doctype', $('#doctypeselector option:selected').val());
+       fd.append('docsubject', $('input[name=dsubject]').val());
+      fd.append('author', window.selectPartner2);
+       fd.append('ddate', $('input[name=ddate]').val());
+      
+       fd.append('remarks', $('textarea[name=remarks]').val());
+       fd.append('admintype', $('#admintype option:selected').val());
+       fd.append('logtype', $('#logtype option:selected').val());
+       fd.append('refnumber', $('input[name=refnumber]').val());
+       fd.append('sourceoffice', $('input[name=sourceoffice]').val());
+       fd.append('sourcename', $('input[name=sourcename]').val());
+       fd.append('destoffice', $('input[name=destoffice]').val());
+       fd.append('destname', $('input[name=destname').val());
+       fd.append('resdate', $('input[name=resdate]').val());
+       fd.append('emailarray', emailfinal.toString());
+      $.ajax({
                 url: 'functions.php',
                 dataType: 'text',
                 cache: false,
