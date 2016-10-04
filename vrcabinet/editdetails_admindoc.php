@@ -368,20 +368,25 @@ console.log(selection);
     if (selection == "Administration Document") {
              $("#admintypeholder").fadeIn(); $("#logtypeholder").fadeIn(); $("#refnumberholder").fadeIn(); $("#sourceofficeholder").fadeIn(); 
              $("#sourcenameholder").fadeIn();$("#destofficeholder").fadeIn(); $("#destnameholder").fadeIn(); $("#resdateholder").fadeIn();        
+              $("#sourceposholder").fadeIn();$("#destposholder").fadeIn();
              $('#admintype').val('<?php echo $rowadmin['admindoctype']; ?>');
              $('#logtype').val('<?php echo $rowadmin['logtype']; ?>');
              $('#refnumber').val('<?php echo $rowadmin['referenceno']; ?>');
              $('#sourceoffice').val('<?php echo $rowadmin['sourceoffice']; ?>');
              $('#sourcename').val('<?php echo $rowadmin['sourcename']; ?>');
+             $('#sourcepos').val('<?php echo $rowadmin['sourcepos']; ?>');
              $('#destoffice').val('<?php echo $rowadmin['destoffice']; ?>');
              $('#destname').val('<?php echo $rowadmin['destname']; ?>');
+             $('#destpos').val('<?php echo $rowadmin['destpos']; ?>');
              $('#resdate').val('<?php echo $rowadmin['resdate']; ?>');
            
     } else {
              $("#admintypeholder").fadeOut(); $("#logtypeholder").fadeOut(); $("#refnumberholder").fadeOut(); $("#sourceofficeholder").fadeOut(); 
-             $("#sourcenameholder").fadeOut();$("#destofficeholder").fadeOut(); $("#destnameholder").fadeOut(); $("#resdateholder").fadeOut();         
+             $("#sourcenameholder").fadeOut();$("#destofficeholder").fadeOut(); $("#destnameholder").fadeOut(); $("#resdateholder").fadeOut();  
+              $("#sourceposholder").fadeOut();$("#destposholder").fadeOut();       
              $('#admintype').val('');$('#logtype').val(''); $('#refnumber').val('');$('#sourceoffice').val('');
              $('#sourcename').val('');$('#destoffice').val(''); $('#destname').val('');$('#resdate').val('');
+             $('#destpos').val('');$('#sourcepos').val('');
     }
 }
 </script>
@@ -490,43 +495,71 @@ console.log(selection);
                       <input type="hidden" id="autocomplete-ajax-x-2" disabled="disabled"/>
                   </div>
 
-                  <div class="row">
+                 <div class="row">
                     <div class="col-sm-6">
-                      <div class="form-group" id="sourceofficeholder">
-                        <input class="form-control" placeholder="Source Office" style="" id="sourceoffice" name="sourceoffice" value="<?php echo $rowadmin['sourceoffice']; ?>" required/><center>
-                          <div class="col-sm-8">
-                          </div>
+                      <div class="input-group" id="sourceofficeholder">
+                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import"></span></span>
+                       <input class="form-control" placeholder="Source Office" style="" id="sourceoffice" name="sourceoffice" value="<?php echo $rowadmin['sourceoffice']; ?>" required/><center>
+                        
+                         <div class="col-sm-8">
+                            </div>
+                        
+
                       </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div class="form-group" id="sourcenameholder">
-                       <input class="form-control" placeholder="Source Name" style="" id="sourcename" name="sourcename" value="<?php echo $rowadmin['sourcename']; ?>" required/><center>
-                        <div class="col-sm-8">
-                        </div>
+                   <div class="col-sm-6">
+                      <div class="input-group" id="destofficeholder">
+                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
+                       <input class="form-control" placeholder="Destination Office" style="" id="destoffice" name="destoffice" value="<?php echo $rowadmin['destoffice']; ?>" required/><center>
+                        
+                         <div class="col-sm-8">
+                            </div>
+                        
+
                       </div>
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="col-sm-6">
-                      <div class="form-group" id="destofficeholder">
-                        <input class="form-control" placeholder="Destination Office" style="" id="destoffice" name="destoffice" value="<?php echo $rowadmin['destoffice']; ?>" required/><center>
-                          <div class="col-sm-8">
-                          </div>
+                      <div class="input-group" id="sourcenameholder">
+                      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import"></span></span>
+                       <input class="form-control" placeholder="Source Name" style="" id="sourcename" name="sourcename" value="<?php echo $rowadmin['sourcename']; ?>" required/><center>
+                        <div class="col-sm-8">
+                        </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="form-group" id="destnameholder">
+                      <div class="input-group" id="destnameholder">
+                      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
                        <input class="form-control" placeholder="Destination Name" style="" id="destname" name="destname" value="<?php echo $rowadmin['destname']; ?>" required/><center>
                         <div class="col-sm-8">
                         </div>
                       </div>
                     </div>
                   </div>
+                 <div class="row">
+                    <div class="col-sm-6">
+                      <div class="input-group" id="sourceposholder">
+                      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import"></span></span>
+                        <input class="form-control" placeholder="Source Position" style="" id="sourcepos" name="sourcepos" value="<?php echo $rowadmin['sourcepos']; ?>" required/><center>
+                          <div class="col-sm-8">
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="input-group" id="destposholder">
+                      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
+                       <input class="form-control" placeholder="Destionation Position" style="" id="destpos" name="destpos" value="<?php echo $rowadmin['destpos']; ?>" required/><center>
+                        <div class="col-sm-8">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                   <div class="row">
                     <div class="col-sm-6">
-                      <div class="form-group" style="" id="ddateholder">
+                      <div class="form-group" style="" id="ddate">
                         <input class="form-control" placeholder="Date Written / Created" style="" id="ddate" value="<?php echo $rowadmin['added']; ?>" required/><center>
                           <div class="col-sm-8">
                           </div>
