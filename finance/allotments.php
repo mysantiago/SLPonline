@@ -1,8 +1,9 @@
 <?php
+    $host = "localhost";
     $username = "root"; 
-    $password = "root"; 
-    $host = "localhost"; 
-    $dbname = "csc613m";
+    $password = ""; 
+   
+    $dbname = "slponline";
     try 
     { 
         $db = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $username, $password, $options);
@@ -21,12 +22,13 @@
     <title>SLP Online</title>
     <meta name="description" content="SLP DSWD Livelihood"/>
     <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="shortcut icon" href="imgs/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="imgs/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/flatbootstrap.css"/>
-    <script src="js/jquery-1.10.2.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="../imgs/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../imgs/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/flatbootstrap.css"/>
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript" language="javascript" src="../js/jquery.dataTables.js"></script>
     <style>
 
 body {
@@ -187,7 +189,7 @@ tr {
   font-size:12px;
   padding-right:2px;
 }
-
+.dataTables_filter, .dataTables_info { display: none; }
 </style>
 </head>
 <body>
@@ -284,6 +286,141 @@ $(function () {
     });
 });
 </script>
+<script type="text/javascript" language="javascript" class="init">
+var oTable = "";
+$(document).ready(function() {
+
+function toTitleCase(str)
+{
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+function parselimit(strz)
+{
+    var m = new String(strz);
+    if (m.length > 32) {
+      m = m.substring(0,32);
+      m = m+"..";
+    }
+    return m;
+}
+function parseStatus(str) {
+  if (str == "0") {
+    status = "<span class='label label-primary'>Open</span>";
+  } else if (str == "1") {
+    status = "<span class='label label-primary'>Proposed</span>";
+  } else if (str == "2") {
+    status = "<span class='label label-warning'>In Progress</span>";
+  } else if (str == "3") {
+    status = "<span class='label label-info'>Completed</span>";
+  }
+  return status;
+}
+  $.fn.DataTable.ext.pager.numbers_length = 5;
+  oTable = $('#viewdata').dataTable({
+    "aProcessing": true,
+    "aServerSide": true,
+    "orderCellsTop": true,
+    "ajax": "dt_allotments.php",
+  
+    "dom": '<"top">rtp<"bottom"f>',
+    "fnRowCallback":
+      function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+        $(nRow).attr('id', aData[0]);
+        $(nRow).attr('subfeed', aData[1]);
+        
+        return nRow;
+      },
+    "aoColumnDefs": [
+      { 
+               "aTargets":[0],
+               "fnCreatedCell": function(nTd, sData, oData, iRow, iCol)
+                {
+                    $(nTd).css('width', 10);
+
+                }
+
+            },
+           
+       { 
+               "aTargets":[1],
+               "fnCreatedCell": function(nTd, sData, oData, iRow, iCol)
+                {
+                    $(nTd).css('width', 200);
+
+                 
+                },
+                "mData": null,
+                "mRender": function( data, type, full) {
+                    return '<td>'+data[1]+'</td>';
+                }
+            },
+
+            { 
+               "aTargets":[2],
+               "fnCreatedCell": function(nTd, sData, oData, iRow, iCol)
+                {
+                    $(nTd).css('width', 150);
+                    $(nTd).css( 'text-transform','capitalize')
+                   // $(nTd).css('font-weight','bold');
+                 
+                },
+                "mData": null,
+                "mRender": function( data, type, full) {
+                    return '<td>'+data[2]+'</td>';
+                }
+            },
+     { 
+               "aTargets":[4],
+               "fnCreatedCell": function(nTd, sData, oData, iRow, iCol)
+                {
+                    $(nTd).css('width', 180);
+
+                 
+                },
+                "mData": null,
+                "mRender": function( data, type, full) {
+                    return '<td>'+data[4]+'</td>';
+
+
+                }
+            },
+                  
+           
+            { "bVisible": false, "aTargets":[0] }
+                    ]
+  });
+  $('#viewdata').on( 'click', 'tbody tr', function () {
+          var redirection = $(this).attr('id');
+          var redirection2 = $(this).attr('subfeed');
+          var formData = { 'subfeed' : redirection2 };
+                  $.ajax({
+                    type: "POST",
+                    url: "feedback_portaldetails.php",
+                    data: formData,
+                    success: function(data) {
+                            if (data == "visitpage") {
+                              location.href="feedback_portaldetails.php?id="+redirection;
+                            }
+                          }
+
+                    });
+  });
+
+$(document).ready(function() {
+  tableshown=false;
+$("#searchme").keyup(function() {
+   if (tableshown==false) {
+      tableshown=true;
+   }
+   oTable.fnFilter(this.value);
+}); 
+});
+
+
+
+
+});
+</script>
 <div class="row" style="margin:0;padding:0">
   <div class="col-md-2">
     <?php require "nav_side.php"; ?>
@@ -309,7 +446,7 @@ $(function () {
     </div>
         <div class="row" style="margin-top:1em;margin-bottom:1em;display:none;" id="searchfields">
           <div class="row" style="padding:2em;padding-bottom:1em">
-              <input class="col-md-12 form-control" placeholder="Sub Aro. #">
+              <input class="col-md-12 form-control" placeholder="Search keywords ..." id="searchme">
           </div>
           <div class="col-md-4">
               <select class="form-control">
@@ -333,8 +470,12 @@ $(function () {
               </select>
           </div>
         </div>
-        <table class="table table-bordered table-hover" style="margin-top:2em;line-height:0.9;vertical-align:middle;border-top:2;padding-bottom:0;margin-bottom:0" >
+
+
+
+        <table class="table table-bordered table-hover" style="margin-top:2em;line-height:0.9;vertical-align:middle;border-top:2;padding-bottom:0;margin-bottom:0" id="viewdata">
           <thead style="background:#f6f8fa">
+            <th></th>
             <th>Area</th>
             <th>Type</th>
             <th>Sub-Type</th>
@@ -343,9 +484,9 @@ $(function () {
             <th>Fund Source</th>
             <th>Amount</th>
             <th>Date</th>
-            <th></th>
+          
           </thead>
-            <tr>
+        <!--    <tr>
               <td>Region IV-B</td>
               <td>CMF</td>
               <td>Grant</td>
@@ -354,8 +495,9 @@ $(function () {
               <td>SLP-EF</td>
               <td>468,232.00</td>
               <td>06/17/2016</td>
-              <td><span class="glyphicon glyphicon-edit"></span> <span class="glyphicon glyphicon-remove"></span></td>
-            </tr>
+              <td><span class="glyphicon glyphicon-edit"></span> <span class="glyphicon glyphicon-remove"></span></td> 
+            </tr> 
+
             <tr>
               <td>Region IV-B</td>
               <td>CMF</td>
@@ -410,7 +552,7 @@ $(function () {
               <td>868,232.00</td>
               <td>06/17/2016</td>
               <td><span class="glyphicon glyphicon-edit"></span> <span class="glyphicon glyphicon-remove"></span></td>
-            </tr>
+            </tr> -->
         </table>
 
         
