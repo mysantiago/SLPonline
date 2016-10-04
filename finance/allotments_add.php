@@ -225,20 +225,20 @@ tr {
                   </div>
                    <div class="form-group">
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-12">
                         <select class="form-control" id="subtype" name="subtype" onchange="displaySubType();">
                             <option value="'">Select Sub-Type</option>
                             <option>Grant</option>
                             <option>Admin Cost</option>
                         </select>
                       </div>
-                      <div class="col-md-6" style="" id="blankholder">
-                        <input class="form-control" style="padding-right:0;" placeholder="" disabled>
-                      </div>
-                      <div class="col-md-6" style="display:none;" id="saaholder">
+                      </div><br>
+                       <div class="row">
+                     
+                      <div class="col-md-6" id="saaholder">
                         <input class="form-control" style="padding-right:0;" id="saa" name="saa" placeholder="SAA Number">
                       </div>
-                      <div class="col-md-6" style="display:none" id="uacsholder">
+                      <div class="col-md-6" id="uacsholder">
                         <select class="form-control" id="uacs1" name="uacs1">
                             <option value="">Select UACS</option>
                             <option>Travelling Expense</option>
@@ -317,21 +317,7 @@ tr {
 
 
 <script>
-function displaySubType() {
-    var selected = $("#subtype option:selected").val();
-    console.log(selected);
 
-    if (selected == "Grant") {
-        $("#saaholder").fadeIn();
-        $("#uacsholder").hide();
-     
-        $("#blankholder").hide();
-    } else {
-        $("#uacsholder").fadeIn();
-        $("#saaholder").hide();
-        $("#blankholder").hide();
-    }
-}
 
 
 $("#addfundallot").click(function(event) {
