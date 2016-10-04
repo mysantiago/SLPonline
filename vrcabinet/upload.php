@@ -372,14 +372,20 @@ var selection = $('#doctypeselector option:selected').val();
 console.log(selection);
       if (selection == "Administration Document") {
              $("#admintypeholder").fadeIn(); $("#logtypeholder").fadeIn(); $("#refnumberholder").fadeIn(); $("#sourceofficeholder").fadeIn(); 
-             $("#sourcenameholder").fadeIn();$("#destofficeholder").fadeIn(); $("#destnameholder").fadeIn(); $("#resdateholder").fadeIn();        
+             $("#sourcenameholder").fadeIn();$("#destofficeholder").fadeIn(); $("#destnameholder").fadeIn(); $("#resdateholder").fadeIn(); 
+             $("#sourceposholder").fadeIn();$("#destposholder").fadeIn();
+                      
            
     } else {
              $("#admintypeholder").fadeOut(); $("#logtypeholder").fadeOut(); $("#refnumberholder").fadeOut(); $("#sourceofficeholder").fadeOut(); 
              $("#sourcenameholder").fadeOut();$("#destofficeholder").fadeOut(); $("#destnameholder").fadeOut(); $("#resdateholder").fadeOut();         
-       
+             $("#sourceposholder").fadeOut();$("#destposholder").fadeOut();
     }
 }
+
+
+
+
 </script>
                   <div class="form-group" style="margin-top:1em">
                       <select class="form-control" onchange="typeChange2()" id="doctypeselector">
@@ -443,11 +449,14 @@ console.log(selection);
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="form-group" style="display: none" id="logtypeholder">
-                        <select class="form-control" id="logtype" name="logtype">
+                       <select class="form-control" id="logtype" name="logtype">
                         <option value="">Select Log Type</option>
-                        <option value="Incoming">Incoming</option>
-                        <option value="Outgoing">Outgoing</option>
-                  </select>
+                        <option value="Incoming" id="in">Incoming</option>
+                        <option value="Outgoing" id="out">Outgoing</option>
+                      
+                        </select>
+                      
+                    
                           <div class="col-sm-8">
                           </div>
                       </div>
@@ -471,32 +480,60 @@ console.log(selection);
 
                   <div class="row">
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="sourceofficeholder">
-                        <input class="form-control" placeholder="Source Office" style="" id="sourceoffice" name="sourceoffice" required/><center>
-                          <div class="col-sm-8">
-                          </div>
+                      <div class="input-group" style="display: none" id="sourceofficeholder">
+                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import" ></span></span>
+                       <input class="form-control" placeholder="Source Office" style="" id="sourceoffice" name="sourceoffice" required/><center>
+                        
+                         <div class="col-sm-8">
+                            </div>
+                        
+
                       </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="sourcenameholder">
-                       <input class="form-control" placeholder="Source Name" style="" id="sourcename" name="sourcename" required/><center>
-                        <div class="col-sm-8">
-                        </div>
+                   <div class="col-sm-6">
+                      <div class="input-group" style="display: none" id="destofficeholder">
+                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
+                       <input class="form-control" placeholder="Destination Office" style="" id="destoffice" name="destoffice" required/><center>
+                        
+                         <div class="col-sm-8">
+                            </div>
+                        
+
                       </div>
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="destofficeholder">
-                        <input class="form-control" placeholder="Destination Office" style="" id="destoffice" name="destoffice" required/><center>
+                      <div class="input-group" style="display: none" id="sourcenameholder">
+                      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import"></span></span>
+                       <input class="form-control" placeholder="Source Name" style="" id="sourcename" name="sourcename" required/><center>
+                        <div class="col-sm-8">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="input-group" style="display: none" id="destnameholder">
+                      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
+                       <input class="form-control" placeholder="Destination Name" style="" id="destname" name="destname" required/><center>
+                        <div class="col-sm-8">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                 <div class="row">
+                    <div class="col-sm-6">
+                      <div class="input-group" style="display: none" id="sourceposholder">
+                      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import"></span></span>
+                        <input class="form-control" placeholder="Source Position" style="" id="sourcepos" name="sourcepos" required/><center>
                           <div class="col-sm-8">
                           </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="form-group" style="display: none" id="destnameholder">
-                       <input class="form-control" placeholder="Destination Name" style="" id="destname" name="destname" required/><center>
+                      <div class="input-group" style="display: none" id="destposholder">
+                      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
+                       <input class="form-control" placeholder="Destionation Position" style="" id="destpos" name="destpos" required/><center>
                         <div class="col-sm-8">
                         </div>
                       </div>
@@ -807,14 +844,14 @@ $("#uploadBtn").click(function(event) {
     }
      $("#loadoverlay").show();
      var fd = new FormData;                  
-
        file1 = $('#theupload').prop('files')[0];
        fd.append('action', 'upload');
        fd.append('file', file1);
        fd.append('doctype', $('#doctypeselector option:selected').val());
        fd.append('docsubject', $('input[name=dsubject]').val());
-       fd.append('author', window.selectPartner2);
+      fd.append('author', window.selectPartner2);
        fd.append('ddate', $('input[name=ddate]').val());
+      
        fd.append('remarks', $('textarea[name=remarks]').val());
        fd.append('admintype', $('#admintype option:selected').val());
        fd.append('logtype', $('#logtype option:selected').val());
@@ -824,6 +861,9 @@ $("#uploadBtn").click(function(event) {
        fd.append('destoffice', $('input[name=destoffice]').val());
        fd.append('destname', $('input[name=destname').val());
        fd.append('resdate', $('input[name=resdate]').val());
+       fd.append('destpos', $('input[name=destpos]').val());
+       fd.append('sourcepos', $('input[name=sourcepos]').val());
+       
        fd.append('emailarray', emailfinal.toString());
       $.ajax({
                 url: 'functions.php',
