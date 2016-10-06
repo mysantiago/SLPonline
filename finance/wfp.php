@@ -1,31 +1,20 @@
 <?php
-    $username = "root"; 
-    $password = "root"; 
-    $host = "localhost"; 
-    $dbname = "csc613m";
-    try 
-    { 
-        $db = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $username, $password, $options);
-    $db->exec("SET time_zone = '+0:00'");
-    } 
-    catch(PDOException $ex) 
-    { 
-        die("Failed to connect to the database: " . $ex->getMessage()); 
-    } 
-    $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); 
-?><!DOCTYPE html>
+require "../zxcd9.php";
+?>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title>SLP Online</title>
     <meta name="description" content="SLP DSWD Livelihood"/>
     <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="shortcut icon" href="imgs/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="imgs/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/flatbootstrap.css"/>
-    <script src="js/jquery-1.10.2.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="../imgs/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../imgs/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/flatbootstrap.css"/>
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
     <style>
 
 body {
@@ -190,7 +179,7 @@ tr {
 </style>
 </head>
 <body>
-<?php require "navfin.php"; ?>
+<?php require "../nav.php"; ?>
 <div class="row" style="margin:0;padding:0">
   <div class="col-md-2">
     <?php require "nav_side.php"; ?>
@@ -203,16 +192,8 @@ tr {
 
                 <div style="border:solid 1px #c5d6de;background:#fff;text-align:left;padding:2em;margin-bottom:2em">
         <div class="row">
-              <div class="col-md-4">
-                  <h2 style="font-size:50px;margin-bottom:0em;margin-top:0em">WFP 2016</h2>
-              </div>
-              <div class="col-md-2 pull-right">
-                  <div class="form-group">
-                    <select class="form-control" onchange="changefundsource()" id="fundselector">
-                      <option>SLP Regular</option>
-                      <option>PAMANA</option>
-                    </select>
-                  </div>
+              <div class="col-md-6">
+                  <h2 style="font-size:40px;margin-bottom:0em;margin-top:0em">Work and Financial Plan</h2>
               </div>
               <div class="col-md-2 pull-right">
                   <div class="form-group">
@@ -265,15 +246,53 @@ function getAdminRegion(type2) {
       'region'    : $('#'+type2+'selector option:selected').val()
     };
   $.ajax({
-                   url: "finance_functions.php",
+                   url: "finance_functions2.php",
                    type: "POST",
                    data: formData,
                    success: function(data)
                    {
                           if (data != "" && type2 == "cmf") {
-                            $('#cmftable').html(data);
+                            //alert(data);
+                            cmfdata = data.split(",");
+                            var cmfdata2 = data.split(',').map(function(n) {
+                                return Number(n);
+                            });
+                            chart3.series[0].setData(cmfdata2,true);
                           } else {
-                            $('#drtable').html(data);
+                            drdata = data.split(",");
+                            var drdata2 = data.split(',').map(function(n) {
+                                return Number(n);
+                            });
+                            chart2.series[0].setData(drdata2,true);
+                          }
+                   }
+                });
+}
+function getAdminRegion2(type2) {
+  var formData = {
+      'action'    : "pamana_admin",
+      'type'      : type2,
+      'region'    : $('#'+type2+'selector option:selected').val()
+    };
+  $.ajax({
+                   url: "finance_functions2.php",
+                   type: "POST",
+                   data: formData,
+                   success: function(data)
+                   {
+                          if (data != "" && type2 == "cmf") {
+                            //alert(data);
+                            cmfdata = data.split(",");
+                            var cmfdata2 = data.split(',').map(function(n) {
+                                return Number(n);
+                            });
+                            chart3.series[0].setData(cmfdata2,true);
+                          } else {
+                            drdata = data.split(",");
+                            var drdata2 = data.split(',').map(function(n) {
+                                return Number(n);
+                            });
+                            chart2.series[0].setData(drdata2,true);
                           }
                    }
                 });
@@ -302,7 +321,7 @@ $(function () {
                 spacingRight: 5,
             },
             title: {
-                   text: '9.7B',
+                   text: '9.67B',
                    verticalAlign: 'middle',
                    y: 0,
                    x: 0,
@@ -388,85 +407,267 @@ $(function () {
                 }]
             }]
         });
+
     });
 });
             </script>
-            <table class="table table-bordered" style="margin-top:2em;line-height:0.9;vertical-align:middle;border-top:2;padding-bottom:0;margin-bottom:0" >
-              <thead style="background:#f6f8fa">
-                <th></th>
-                <th>Q1</th>
-                <th>Q2</th>
-                <th>Q3</th>
-                <th>Q4</th>
-              </thead>
-              <tr>
-                <td style="background:#f6f8fa">GRANTS</td>
-                <td><script>document.write(com(grants[0]));</script></td>
-                <td><script>document.write(com(grants[1]));</script></td>
-                <td><script>document.write(com(grants[2]));</script></td>
-                <td><script>document.write(com(grants[3]));</script></td>
-              </tr>
-              <tr>
-                <td style="background:#f6f8fa">ADMIN COSTS</td>
-                <td><script>document.write(com(admincosts[0]));</script></td>
-                <td><script>document.write(com(admincosts[1]));</script></td>
-                <td><script>document.write(com(admincosts[2]));</script></td>
-                <td><script>document.write(com(admincosts[3]));</script></td>
-              </tr>
-              <tr>
-                <td style="background:#f6f8fa">PS</td>
-                <td><script>document.write(com(ps[0]));</script></td>
-                <td><script>document.write(com(ps[1]));</script></td>
-                <td><script>document.write(com(ps[2]));</script></td>
-                <td><script>document.write(com(ps[3]));</script></td>
-              </tr>
-            </table>
+                      <div id="cont6" style="height:180px;padding-top:2em;border:0px solid #000;margin-top:1em"></div>
           </div>
-          <div class="col-md-4" style="padding:2em">
+          <div class="col-md-4" style="padding:2em;padding-bottom:1em">
               <div style="border:solid 0px #c5d6de;background:#fff;text-align:left;padding:0.2em;margin-bottom:0;height:160px" id="cont1">
                 Pie Chart 1: Summary
               </div>    
           </div>
         </div>
-        <hr>
-        <center><h3>GRANTS</h3></center>
-        <table class="table table-bordered" style="margin-top:2em;line-height:0.9;vertical-align:middle;border-top:2;padding-bottom:0;margin-bottom:0" >
-          <thead style="background:#f6f8fa">
-            <th rowspan="3" style="vertical-align:middle">Region</th>
-              <th>MD</th>
-              <th>EF</th>
-              <th>Total w/o BUB</th>
-              <th>BUB</th>
-              <th>Total w/ BUB</th>
-          </thead>
-        <?php
+<?php
               //$filter = $_SESSION['filter'];
               $stmt = $db->prepare("SELECT region, md, ef, bub FROM fin_wfp_grants"); 
               $stmt->execute();
-
+              $reg = [];
+              $md = [];
+              $ef = [];
+              $bub = [];
               while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-                    echo '<tr><td>'.$row[0].'</td><td>'.number_format($row[1]).'</td><td>'.number_format($row[2]).'</td><td><b>'.number_format($row[1]+$row[2]).'</b></td><td>'.number_format($row[3]).'</td><td><b>'.number_format($row[1]+$row[2]+$row[3]).'</b></td></tr>';
+                    $reg[] = $row[0];
+                    $md[] = intval($row[1]);
+                    $ef[] = intval($row[2]);
+                    $bub[] = intval($row[3]);
               }
-              
-        ?>
-        </table>
 
+?>
+
+<script>
+$(function () {
+var colors = Highcharts.getOptions().colors;
+Highcharts.setOptions({
+    lang: {
+        thousandsSep: ','
+    }
+});
+    chart6 = new Highcharts.Chart({
+
+        chart: {
+            renderTo: 'cont6',
+            type: 'column',
+            inverted: true,
+        },
+
+        title: {
+            text: ''
+        },
+
+        xAxis: {
+            categories: ['Q1', 'Q2', 'Q3', 'Q4']
+        },
+
+        yAxis: {
+            allowDecimals: false,
+            min: 0,
+            title: {
+                text: ''
+            }
+        },
+        
+        legend: {
+            align: 'right',
+            x: -10,
+            verticalAlign: 'top',
+            y: -10,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+            borderColor: '#CCC',
+            borderWidth: 1,
+            shadow: false,
+            itemStyle: {
+                 fontSize: '10px'
+            },
+        },
+
+        tooltip: {
+            formatter: function () {
+                return '<b>' + this.x + '</b><br/>' +
+                    this.series.name + ': ' + com(this.y) + '<br/>' +
+                    'Total: ' + com(this.point.stackTotal);
+            }
+        },
+
+        plotOptions: {
+            column: {
+                stacking: 'normal'
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        exporting: {
+            enabled: false
+        },
+        series: [{
+            name: 'Grants',
+            data: [1712661841, 390018373, 3846533228, 2783154608],
+            stack: 'male',
+            color: colors[2]
+        }, {
+            name: 'Admin (MOOE)',
+            data: [173801468, 173801468, 173801468, 173801468],
+            stack: 'female',
+            color: colors[0]
+        }, {
+            name: 'Admin (PS)',
+            data: [45457250, 45457250, 45457250, 45457250],
+            stack: 'female',
+            color: colors[3]
+        }]
+    });
+chart6.renderer.label('Total WFP', 520, 80, 'callout')
+            .css({
+                color: '#FFFFFF'
+            })
+            .attr({
+                fill: 'rgba(0, 0, 0, 0.75)',
+                padding: 8,
+                r: 5,
+                zIndex: 6,
+                id: 'targetlabel'
+            })
+    .add();
+});
+$(function () {
+  var colors = Highcharts.getOptions().colors;
+  Highcharts.setOptions({
+    lang: {
+        thousandsSep: ','
+    }
+});
+  
+    chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'cont3',
+            type: 'column'
+        },
+        title: {
+            text: ''
+       },
+        xAxis: {
+            categories: ['<?php echo $reg[0]; ?>','<?php echo $reg[1]; ?>','<?php echo $reg[2]; ?>','<?php echo $reg[3]; ?>','<?php echo $reg[4]; ?>','<?php echo $reg[5]; ?>','<?php echo $reg[6]; ?>','<?php echo $reg[7]; ?>','<?php echo $reg[8]; ?>','<?php echo $reg[9]; ?>','<?php echo $reg[10]; ?>','<?php echo $reg[11]; ?>','<?php echo $reg[12]; ?>','<?php echo $reg[13]; ?>','<?php echo $reg[14]; ?>','<?php echo $reg[15]; ?>','<?php echo $reg[16]; ?>','<?php echo $reg[17]; ?>'],
+            minorGridLineWidth: 0,
+            minorTickWidth: 0,
+            tickWidth: 0,
+            labels: {
+              enabled: true,
+                style: {
+                    fontSize:'8px'
+                }
+            },
+        },
+        yAxis: {
+            min: 0,
+            gridLineWidth: 0,
+            title: {
+                text: ''
+            },
+            stackLabels: {
+                enabled: false,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            },
+
+        },
+        legend: {
+            align: 'right',
+            x: -30,
+            verticalAlign: 'top',
+            y: 0,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+            borderColor: '#CCC',
+            borderWidth: 1,
+            shadow: false
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal:,.0f}'
+        },
+        credits: {
+          enabled:false
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                pointPadding: 0,
+                borderWidth: 0,
+                groupPadding: 0.1,
+                dataLabels: {
+                    enabled: false,
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    style: {
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'MD',
+            data: [<?php echo $md[0].",".$md[1].",".$md[2].",".$md[3].",".$md[4].",".$md[5].",".$md[6].",".$md[7].",".$md[8].",".$md[9].",".$md[10].",".$md[11].",".$md[12].",".$md[13].",".$md[14].",".$md[15].",".$md[16].",".$md[17]; ?>],
+            color: colors[7]
+        }, {
+            name: 'EF',
+            data: [<?php echo $ef[0].",".$ef[1].",".$ef[2].",".$ef[3].",".$ef[4].",".$ef[5].",".$ef[6].",".$ef[7].",".$ef[8].",".$ef[9].",".$bub[10].",".$bub[11].",".$bub[12].",".$bub[13].",".$bub[14].",".$bub[15].",".$bub[16].",".$bub[17]; ?>],
+            color: colors[9]
+        }, {
+            name: 'BUB',
+            data: [<?php echo $bub[0].",".$bub[1].",".$bub[2].",".$bub[3].",".$bub[4].",".$bub[5].",".$bub[6].",".$bub[7].",".$bub[8].",".$bub[9].",".$bub[10].",".$bub[11].",".$bub[12].",".$bub[13].",".$bub[14].",".$bub[15].",".$bub[16].",".$bub[17]; ?>],
+            color: colors[8]
+        }, {
+            name: 'PAMANA',
+            data: [2600000,0,500000,0,0,0,0,0,25050000,0,0,0,1000000,3000000,0,89460000,54200000],
+            color: colors[6]
+        }],
+        credits: {
+          enabled: false
+        }
+    });
+    chart.renderer.label('Grants', 80, 5, 'callout')
+            .css({
+                color: '#FFFFFF'
+            })
+            .attr({
+                fill: 'rgba(0, 0, 0, 0.75)',
+                padding: 8,
+                r: 5,
+                zIndex: 6,
+                id: 'targetlabel'
+            })
+    .add();
+});
+</script>        
+        <hr>
+        <div id="cont3">
+        </div>        
+        
         <div class="row">
           <hr>
-          <center><h3 style="margin-bottom:1em">ADMINISTRATIVE COSTS</h3></center>
+          
           <div class="col-md-6">
+            <div id="cont4" style="margin-top:1.5em">
+            </div>
             <select class="form-control" onchange="getAdminRegion('dr')" id="drselector">
-              <option>DR - View All</option>
+              <option value="drviewall">DR - View All</option>
         <?php 
               $query = "SELECT regname FROM lib_regions ORDER BY regname"; 
               $stmt = $db->prepare($query); $result = $stmt->execute();  
 
                   while ($row5 = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        echo "<option>".$row5['regname']."</option>";
+                        if ($row5['regname']!="NPMO") {
+                            echo "<option>".$row5['regname']."</option>";
+                        }
                   }
             ?>
             </select>
-            <table class="table table-bordered" style="margin-top:1em;line-height:0.9;vertical-align:middle;border-top:2;padding-bottom:0;margin-bottom:0" id="drtable">
+        
+            <!--<table class="table table-bordered" style="margin-top:1em;line-height:0.9;vertical-align:middle;border-top:2;padding-bottom:0;margin-bottom:0" id="drtable">
               <thead style="background:#f6f8fa">
                 <th colspan="2">Direct Release</th>
               </thead>
@@ -475,19 +676,52 @@ $(function () {
               $stmt = $db->prepare("SELECT uacs, amount FROM fin_wfp_admin WHERE type='DR' GROUP BY uacs ORDER BY amount DESC"); 
               $stmt->execute();
 
+              $dr[][] = "";
               $totaldr = 0;
+              $a = 0;
               while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
                     $totaldr = ($totaldr+$row[1]);
+                    $dr[$a][0] = $row[0];
+                    $dr[$a][1] = $row[1];
+                    $a++;
+                    echo '<tr><td>'.$row[0].'</td><td>'.number_format($row[1]).'</td></tr>';
+              }
+              $stmt = $db->prepare("SELECT uacs, amount FROM fin_wfp_pamanaadmin WHERE type='CMF' GROUP BY uacs ORDER BY amount DESC"); 
+              $stmt->execute();
+
+              $pamanaadmin[][] = "";
+              $totalpamanaadmin = 0;
+              $a = 0;
+              while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
+                    $totalpamanaadmin = ($totalpamanaadmin+$row[1]);
+                    $pamanaadmin[$a][0] = $row[0];
+                    $pamanaadmin[$a][1] = $row[1];
+                    $a++;
                     echo '<tr><td>'.$row[0].'</td><td>'.number_format($row[1]).'</td></tr>';
               }
               
+              function adminRegions($dr,$getname) {
+                if ($getname==false) {
+                  foreach ($dr as $region) { 
+                      echo "'".$region[0]."',";
+                  }
+                } else {
+                  foreach ($dr as $region) { 
+                      echo $region[1].",";
+                  }
+                }
+              }
         ?>
             <tr style="background:#f6f8fa"><th style="text-align:right">Total</th><th style="text-align:center"><b><?php echo number_format($totaldr); ?></b></th></tr>
-            </table>
+            </table>-->
+            
+            
           </div>
           <div class="col-md-6">
+            <div id="cont5" style="margin-top:1.5em">
+            </div>
               <select class="form-control" onchange="getAdminRegion('cmf')" id="cmfselector">
-                <option>CMF - View All</option>
+                <option value="cmfviewall">CMF - View All</option>
             <?php 
               $query = "SELECT regname FROM lib_regions ORDER BY regname"; 
               $stmt = $db->prepare($query); $result = $stmt->execute();  
@@ -496,21 +730,45 @@ $(function () {
                         echo "<option>".$row5['regname']."</option>";
                   }
             ?>
+        <?php
+              $stmt = $db->prepare("SELECT uacs, SUM(amount) FROM fin_wfp_admin WHERE type='CMF' GROUP BY uacs ORDER BY amount DESC"); 
+              $stmt->execute();
+
+              $cmf[][] = "";
+              $a = 0;
+              $totalcmf = 0;
+              while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
+                    $totalcmf = ($totalcmf+$row[1]);
+                    $cmf[$a][0] = $row[0];
+                    $cmf[$a][1] = $row[1];
+                    $a++;
+                    //echo "<tr><td>".$row[0]."</td><td>".number_format($row[1])."</td></tr>";
+              }
+              
+        ?>
               </select>
-              <table class="table table-bordered" style="margin-top:1em;line-height:0.9;vertical-align:middle;border-top:2;padding-bottom:0;margin-bottom:0" id="cmftable">
+              <!--<table class="table table-bordered" style="margin-top:1em;line-height:0.9;vertical-align:middle;border-top:2;padding-bottom:0;margin-bottom:0" id="cmftable">
               <thead style="background:#f6f8fa"><th colspan="2">Centrally Managed Funds</th></thead>
         <?php
               $stmt = $db->prepare("SELECT uacs, SUM(amount) FROM fin_wfp_admin WHERE type='CMF' GROUP BY uacs ORDER BY amount DESC"); 
               $stmt->execute();
 
+              $cmf[][] = "";
+              $a = 0;
               $totalcmf = 0;
               while ($row = $stmt->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
                     $totalcmf = ($totalcmf+$row[1]);
+                    $cmf[$a][0] = $row[0];
+                    $cmf[$a][1] = $row[1];
+                    $a++;
                     echo "<tr><td>".$row[0]."</td><td>".number_format($row[1])."</td></tr>";
               }
+              
         ?>
               <tr style="background:#f6f8fa"><th style="text-align:right">Total</th><th style="text-align:center"><b><?php echo number_format($totalcmf); ?></b></th></tr>
-            </table>
+            </table>-->
+            
+
           </div>
           </div>
       </div><!--div end regularslp-->
@@ -650,7 +908,152 @@ $(function () {
         });
                   
     });
+
 });
+
+$(function () {
+var colors = Highcharts.getOptions().colors;
+    chart2 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'cont4',
+            polar: true,
+            type: 'area'
+        },
+
+        title: {
+            text: '',
+            x: -80
+        },
+
+        pane: {
+            size: '80%'
+        },
+
+        xAxis: {
+            categories: [<?php adminRegions($dr,false); ?>],
+            tickmarkPlacement: 'on',
+            lineWidth: 0
+        },
+
+        yAxis: {
+            gridLineInterpolation: 'polygon',
+            lineWidth: 0,
+            min: 0
+        },
+
+        tooltip: {
+            shared: true,
+            pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+        },
+
+        legend: {
+            align: 'right',
+            verticalAlign: 'top',
+            y: 70,
+            layout: 'vertical',
+            enabled: false
+        },
+        credits: {
+          enabled: false
+        },
+        series: [{
+            name: 'Allocatd Budget',
+            data: [<?php adminRegions($dr,true); ?>],
+            pointPlacement: 'on',
+            colors: colors[1]
+        }]
+
+    });
+chart2.renderer.label('Admin Cost: DR', 30, 0, 'callout')
+            .css({
+                color: '#FFFFFF'
+            })
+            .attr({
+                fill: 'rgba(0, 0, 0, 0.75)',
+                padding: 8,
+                r: 5,
+                zIndex: 6,
+                id: 'targetlabel'
+            })
+    .add();
+});
+
+
+$(function () {
+var colors = Highcharts.getOptions().colors;
+    chartOptions = {
+        chart: {
+            renderTo: 'cont5',
+            polar: true,
+            type: 'area'
+        },
+
+        title: {
+            text: '',
+            x: -80
+        },
+
+        pane: {
+            size: '80%'
+        },
+
+        xAxis: {
+            categories: [<?php adminRegions($cmf,false); ?>],
+            tickmarkPlacement: 'on',
+            lineWidth: 0
+        },
+
+        yAxis: {
+            gridLineInterpolation: 'polygon',
+            lineWidth: 0,
+            min: 0,
+        },
+
+        tooltip: {
+            shared: true,
+            snap: 0,
+            pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+        },
+        plotOptions: {
+            series: {
+                stickyTracking: false
+            }
+        },
+        legend: {
+            align: 'right',
+            verticalAlign: 'top',
+            y: 70,
+            layout: 'vertical',
+            enabled: false
+        },
+        credits: {
+          enabled: false
+        },
+        series: [{
+            name: 'Allocated Budget',
+            data: [<?php adminRegions($cmf,true); ?>],
+            pointPlacement: 'on',
+            color: colors[0]
+        }]
+
+    };
+
+    chart3 = new Highcharts.Chart(chartOptions);
+
+chart3.renderer.label('Admin Cost: CMF', 30, 0, 'callout')
+            .css({
+                color: '#FFFFFF'
+            })
+            .attr({
+                fill: 'rgba(0, 0, 0, 0.75)',
+                padding: 8,
+                r: 5,
+                zIndex: 6,
+                id: 'targetlabel'
+            })
+    .add();
+});
+
             </script>
             <table class="table table-bordered" style="margin-top:2em;line-height:0.9;vertical-align:middle;border-top:2;padding-bottom:0;margin-bottom:0" >
               <thead style="background:#f6f8fa">
