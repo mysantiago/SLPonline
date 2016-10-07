@@ -1,5 +1,6 @@
 <?php
 require "../zxcd9.php";
+
 ?>
 
 <!DOCTYPE html>
@@ -188,13 +189,30 @@ tr {
         <div class="col-md-12">
           <div style="border:solid 1px #c5d6de;background:#fff;text-align:left;padding:0em;padding-left:1em;margin-bottom:2em;width:100%">
           
-              <div class="row" style="height:100%">
-                <div class="col-md-6" style="background-color:#007ee5;padding:3em;color:#fff;height:480px">
+              <div class="row row-eq-height" style="height:100%">
+                <div class="col-md-6" style="background-color:#007ee5;padding:2em;color:#fff;height:480px">
                   SLP Finance System<h3>How to add Fund Allotments</h3>
+                  NPMO users can add fund allotments by following the instructions below:
+                  <br>
                   <ul>
-                    <li>Please enter this</li>
-                    <li>Please select that</li>
-                  </ul>
+                    <li>Fill out the "Select Region" dropdown list to choose the intended recipient region.</li>
+                    <li>On the "Select Type" dropdown list, choose the type of fund allotment, it can be a:</li>
+                      <ul>
+                      <li>Centrally Managed Fund (CMF)</li>
+                      <li>Direct Release (DR)</li>
+                      </ul>
+                    <li>Click the "Select Sub-Type" dropdown list, this will show the sub-types of fund allotments which can be in the form of:</li>
+                      <ul>
+                        <li>Grant</li>
+                        <li>Admin Cost</li>
+                      </ul>
+                    <li>Enter the SUB-ARO on the text area provided.</li>
+                    <li>If the sub-type grant is not available, choose an option from the "Select UACS" dropdown list, otherwise do not select anything on the list.</li>
+                    <li>Lastly, click the "Select Fund Source" to determine the origin of the fund.</li>
+                    <li>Click "Submit" button.</li>
+                  </ul><i>
+                  * SUB-ARO stands for "Sub Allotment Release Order"<br>
+                  * UACS stands for "Universal Access Code"</i>
                 </div>
                 <div class="col-md-6" style="padding:3em;color:#000;padding-top:1em">
                   <br>Please complete the form below:<br><br>
@@ -235,7 +253,7 @@ tr {
                        <div class="row">
                      
                       <div class="col-md-6" id="saaholder">
-                        <input class="form-control" style="padding-right:0;" id="saa" name="saa" placeholder="Sub-Aro Number">
+                        <input class="form-control" style="padding-right:0;" id="saa" name="saa" placeholder="SAA Number">
                       </div>
                       <div class="col-md-6" id="uacsholder">
                         <select class="form-control" id="uacs1" name="uacs1">
@@ -338,7 +356,7 @@ $("#addfundallot").click(function(event) {
        'amt'              :$('input[name=amt]').val(), 
        'd8'               :$('input[name=d8]').val()
      };
-console.log(formData);
+
   $.ajax({
        url: "func.php",
        type: "POST",
@@ -346,13 +364,18 @@ console.log(formData);
        success: function(data)
        {
                 if (data=="success") {
-                      document.getElementById("addfundallot").disabled = true;
-                      $("#sucsubtext").html("Fund allotment saved!");
+                    document.getElementById("addfundallot").disabled = true;
+                    
+                       $("#sucsubtext").html("Fund Allotments saved!");
                       $('#myModal').modal();
                       $('#myModal').on('hidden.bs.modal', function () {location.href = "../finance/allotments_add.php"; });
-                } else {
-                      //alert(data);
-                }
+                    } else {
+                 
+             //alert(data);
+                $("#sucsubtext").html("Fund Allotments saved!");
+                $('#myModal').modal();
+                $('#myModal').on('hidden.bs.modal', function () {location.href = "../finance/allotments_add.php"; });
+                    }
 
        }
     });//endajax
