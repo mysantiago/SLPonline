@@ -194,6 +194,7 @@ tr {
         <div class="row">
               <div class="col-md-6">
                   <h2 style="font-size:40px;margin-bottom:0em;margin-top:0em">Work and Financial Plan</h2>
+                  <a href="wfp2016final.xlsx" download><button class="btn btn-primary btn-xs" style="margin-top:0.5em;margin-left:3px">Export to Excel</button></a>
               </div>
               <div class="col-md-2 pull-right">
                   <div class="form-group">
@@ -519,7 +520,7 @@ Highcharts.setOptions({
             color: colors[3]
         }]
     });
-chart6.renderer.label('Total WFP', 520, 80, 'callout')
+chart6.renderer.label('Total WFP', 530, 80, 'callout')
             .css({
                 color: '#FFFFFF'
             })

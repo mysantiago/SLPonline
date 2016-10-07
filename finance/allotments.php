@@ -1,19 +1,5 @@
 <?php
-    $host = "localhost";
-    $username = "root"; 
-    $password = ""; 
-   
-    $dbname = "slponline";
-    try 
-    { 
-        $db = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $username, $password, $options);
-    $db->exec("SET time_zone = '+0:00'");
-    } 
-    catch(PDOException $ex) 
-    { 
-        die("Failed to connect to the database: " . $ex->getMessage()); 
-    } 
-    $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); 
+require "../zxcd9.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -321,8 +307,7 @@ function parseStatus(str) {
     "aServerSide": true,
     "orderCellsTop": true,
     "ajax": "dt_allotments.php",
-  
-    "dom": '<"top">rtp<"bottom"f>',
+    "dom": '<"top">rt<"bottom"f>',
     "fnRowCallback":
       function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
         $(nRow).attr('id', aData[0]);
@@ -331,61 +316,13 @@ function parseStatus(str) {
         return nRow;
       },
     "aoColumnDefs": [
-      { 
-               "aTargets":[0],
-               "fnCreatedCell": function(nTd, sData, oData, iRow, iCol)
-                {
-                    $(nTd).css('width', 10);
-
-                }
-
-            },
-           
-       { 
-               "aTargets":[1],
-               "fnCreatedCell": function(nTd, sData, oData, iRow, iCol)
-                {
-                    $(nTd).css('width', 200);
-
-                 
-                },
-                "mData": null,
-                "mRender": function( data, type, full) {
-                    return '<td>'+data[1]+'</td>';
-                }
-            },
-
             { 
-               "aTargets":[2],
-               "fnCreatedCell": function(nTd, sData, oData, iRow, iCol)
-                {
-                    $(nTd).css('width', 150);
-                    $(nTd).css( 'text-transform','capitalize')
-                   // $(nTd).css('font-weight','bold');
-                 
-                },
+               "aTargets":[9],
                 "mData": null,
                 "mRender": function( data, type, full) {
-                    return '<td>'+data[2]+'</td>';
+                    return '<td><span class="glyphicon glyphicon-edit"></span> &nbsp;<span class="glyphicon glyphicon-remove"></span></td>';
                 }
             },
-     { 
-               "aTargets":[4],
-               "fnCreatedCell": function(nTd, sData, oData, iRow, iCol)
-                {
-                    $(nTd).css('width', 180);
-
-                 
-                },
-                "mData": null,
-                "mRender": function( data, type, full) {
-                    return '<td>'+data[4]+'</td>';
-
-
-                }
-            },
-                  
-           
             { "bVisible": false, "aTargets":[0] }
                     ]
   });
@@ -476,7 +413,7 @@ $("#searchme").keyup(function() {
         <table class="table table-bordered table-hover" style="margin-top:2em;line-height:0.9;vertical-align:middle;border-top:2;padding-bottom:0;margin-bottom:0" id="viewdata">
           <thead style="background:#f6f8fa">
             <th></th>
-            <th>Area</th>
+            <th>Region</th>
             <th>Type</th>
             <th>Sub-Type</th>
             <th>SAA</th>
@@ -484,7 +421,7 @@ $("#searchme").keyup(function() {
             <th>Fund Source</th>
             <th>Amount</th>
             <th>Date</th>
-          
+            <th></th>
           </thead>
         <!--    <tr>
               <td>Region IV-B</td>
@@ -554,8 +491,8 @@ $("#searchme").keyup(function() {
               <td><span class="glyphicon glyphicon-edit"></span> <span class="glyphicon glyphicon-remove"></span></td>
             </tr> -->
         </table>
-
-        
+              <button class="btn btn-primary btn-xs" style="margin-top:0.5em;margin-left:3px">Export to Excel</button>
+              <div class="clearfix"></div>
           </div>
         </div>
   </div>

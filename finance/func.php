@@ -59,21 +59,27 @@ if(!empty($_POST))
 
 
 
-if($_POST['action'] == "addfundallo") 
-    {
-      
+if($_POST['action'] == "addfundallo") {
               try   
                   { 
                   
                    
                      $stmt1 = $db->prepare("INSERT INTO fin_allotments
-                     (
-                     region,type,subtype,saa,uacs,fundsource,fundsourceyear,amount,d8,hrdbid,dateadded
-                     )
+                      (region,
+                        type,
+                        subtype,
+                        saa,
+                        uacs,
+                        fundsource,
+                        fundsourceyear,
+                        amount,
+                        d8,
+                        hrdbid,
+                        dateadded)
                       VALUES
                       ( 
-                        :region,
-                         :fundtype,
+                         :region,
+                         :type,
                          :subtype,
                          :saa,
                          :uacs1,
@@ -87,7 +93,7 @@ if($_POST['action'] == "addfundallo")
 
                        ");
                       $stmt1->bindParam(':region',$_POST['region']);
-                      $stmt1->bindParam(':fundtype',$_POST['fundtype']);
+                      $stmt1->bindParam(':type',$_POST['fundtype']);
                       $stmt1->bindParam(':subtype', $_POST['subtype']);
                       $stmt1->bindParam(':saa', $_POST['saa']);
                       $stmt1->bindParam(':uacs1', $_POST['uacs1']);
@@ -103,6 +109,7 @@ if($_POST['action'] == "addfundallo")
                   {
                       echo "Error: " . $e->getMessage();
                   }
+                  echo "success";
     }
 
 

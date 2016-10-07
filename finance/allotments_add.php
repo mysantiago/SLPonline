@@ -1,6 +1,5 @@
 <?php
 require "../zxcd9.php";
-
 ?>
 
 <!DOCTYPE html>
@@ -236,7 +235,7 @@ tr {
                        <div class="row">
                      
                       <div class="col-md-6" id="saaholder">
-                        <input class="form-control" style="padding-right:0;" id="saa" name="saa" placeholder="SAA Number">
+                        <input class="form-control" style="padding-right:0;" id="saa" name="saa" placeholder="Sub-Aro Number">
                       </div>
                       <div class="col-md-6" id="uacsholder">
                         <select class="form-control" id="uacs1" name="uacs1">
@@ -339,7 +338,7 @@ $("#addfundallot").click(function(event) {
        'amt'              :$('input[name=amt]').val(), 
        'd8'               :$('input[name=d8]').val()
      };
-
+console.log(formData);
   $.ajax({
        url: "func.php",
        type: "POST",
@@ -347,18 +346,13 @@ $("#addfundallot").click(function(event) {
        success: function(data)
        {
                 if (data=="success") {
-                    document.getElementById("addfundallot").disabled = true;
-                    
-                       $("#sucsubtext").html("Fund Allotments saved!");
+                      document.getElementById("addfundallot").disabled = true;
+                      $("#sucsubtext").html("Fund allotment saved!");
                       $('#myModal').modal();
                       $('#myModal').on('hidden.bs.modal', function () {location.href = "../finance/allotments_add.php"; });
-                    } else {
-                 
-             //alert(data);
-                $("#sucsubtext").html("Fund Allotments saved!");
-                $('#myModal').modal();
-                $('#myModal').on('hidden.bs.modal', function () {location.href = "../finance/allotments_add.php"; });
-                    }
+                } else {
+                      //alert(data);
+                }
 
        }
     });//endajax
