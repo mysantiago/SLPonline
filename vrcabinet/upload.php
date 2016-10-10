@@ -169,6 +169,14 @@ body {
   -webkit-justify-content : center;
           justify-content : center;
 }
+
+.row-eq-height {
+ display: -webkit-box;
+ display: -webkit-flex;
+ display: -ms-flexbox;
+ display:         flex;
+}
+
 table {
   border-collapse: inherit;
 }
@@ -345,15 +353,35 @@ function typeChange(){
 </script>
 <div class="container-fluid">
   <div class="col-md-12" style="">
-      <div style="background:#fff;margin-bottom:1em;padding:1.2em;" class="col-md-12">
+      <div style="background:#fff;margin-bottom:1em;padding:3em" class="col-md-12">
       <div class="row">
           <div class="col-md-12" id="searchblock">
-                <div class="col-md-offset-2 col-md-8" style="margin-top:0">
+                <div class="col-md-12" style="margin-top:0">
                   <h2 style="font-weight:bold;margin-bottom:0">UPLOAD</h2>
 
 <form id="myForm" method="POST" enctype="multipart/form-data">
-
-                  <div class="input-group" style="margin-bottom:0;margin-top:1em">
+ <div class="row row-eq-height" style="height:100%;border:solid 1px #c5d6de">
+                <div class="col-md-5" style="background-color:#007ee5;padding:2em;color:#fff">
+                  SLP Document Tracking System<h3>How to upload files</h3>
+                  Uploading regular files:
+                  <ul>
+                    <li>Choose the file from your computer or storage device.</li>
+                    <li>Click "Select Document Type" to choose the file category.</li>
+                    <li>Fill out the required fields and click "Upload" to submit to E-Library.</li>
+                  </ul>
+                  Uploading admin document files:
+                  <ul>
+                    <li>Choose the file from your computer or storage device.</li>
+                    <li>Select "Administration Document" category from the "Select Document Type" dropdown list to see the additional fields.</li>
+                    <li>Fill out the required areas and click "Upload" to submit to E-Library.</li>
+                  </ul>
+                  E-mail blast notification:
+                  <ul>
+                    <li>Click the notification button and choose the respective offices or type the names of individuals. Submit to E-Library by clicking the "Submit and Send Notification" button.</li>
+                  </ul>
+                </div>
+                <div class="col-md-7" style="padding:3em;color:#000;padding-top:2em">
+                  <div class="input-group" style="margin-bottom:0;margin-top:0">
                       <input id="uploadfilename" class="form-control" placeholder="Choose file.." disabled="disabled">
                       <div class="input-group-btn">
                         <div class="fileUpload btn btn-primary">
@@ -361,7 +389,8 @@ function typeChange(){
                             <input id="theupload" name="theupload" type="file" class="upload" required/>
                         </div>
                       </div>
-                    </div><!-- /input-group -->
+                    </div>
+                    <!-- /input-group -->
                     <span style="font-size:12px;margin-bottom:1em">Supported file types: PDF, DOC, XLSX, PNG, JPG, ZIP</span>
                     <span style="font-size:12px;margin-bottom:1em" class="pull-right">Maximum file size: 8MB</span><br>
 
@@ -772,7 +801,7 @@ $(function () {
           </div>
           
         </div>
-      </div>
+      </div></div>
       <!-- Modal -->
 <script>
 $(document).ready(function() {
