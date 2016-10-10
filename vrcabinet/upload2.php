@@ -1,5 +1,6 @@
 <?php
 require "../zxcd9.php";
+byteMe($_SESSION['id'],'vc_upload',0.10);
 ?>
 
 <!DOCTYPE html>
@@ -168,9 +169,18 @@ body {
   -webkit-justify-content : center;
           justify-content : center;
 }
+
+.row-eq-height {
+ display: -webkit-box;
+ display: -webkit-flex;
+ display: -ms-flexbox;
+ display:         flex;
+}
+
 table {
   border-collapse: inherit;
 }
+
 </style>
 </head>
 <body>
@@ -304,44 +314,69 @@ function getEmail(str,str2) {
              dataType:"json"
           });//endajax
 }
+
 function typeChange(){
       var option=$("#doctypeselector option:selected").html();
-      if (option == "Internal Memorandum (within CO)" || option == "External Memorandum (to regions)") {
-        $("#emaildoctype").html("memorandum");
-      } else {
-        $("#emaildoctype").html(option);
-      }
+
+      var eblast = '<div class="bodycontainer" style="margin-top:1em;margin-bottom:1em">\
+      <div style="padding:0;width:100%!important;margin:0" marginheight="0" marginwidth="0"><center><table cellpadding="8" cellspacing="0" style="padding:0;width:100%!important;background:#ffffff;margin:0;background-color:#ffffff" border="0"><tr><td valign="top">\
+      <table cellpadding="0" cellspacing="0" style="border-radius:4px;border:1px #dceaf5 solid;border-collapse:none" border="0" align="center">\
+      <tr><td><table cellpadding="0" cellspacing="0" style="line-height:25px" border="0" align="center"><tr><td colspan="3" height="30"></td></tr><tr><td width="36"></td>\
+      <td width="454" align="center" style="color:#444444;border-collapse:collapse;font-size:9pt;font-family:proxima_nova,&#39;Open Sans&#39;,&#39;Lucida Grande&#39;,&#39;Segoe UI&#39;,Arial,Verdana,&#39;Lucida Sans Unicode&#39;,Tahoma,&#39;Sans Serif&#39;;max-width:454px" valign="top">\
+      <div style="border:1px solid #ccc;background:#e1e1e1;height:130px;width:90%;vertical-align:middle;font-size:12px;line-height:1.1"><h3>Your image here</h3><br>Recommended file size: 500kb<br>Larger file sizes may not load on mobile devices</div>\
+      Cant see this image? <a href="#" style="color:#4583ed">Click here</a>\
+      <td width="36"></td></tr><tr><td colspan="3" height="36"></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" align="center" border="0"><tr><td height="10"></td></tr><tr><td style="padding:0;border-collapse:collapse"><table cellpadding="0" cellspacing="0" align="center" border="0"><tr style="color:#a8b9c6;font-size:11px;font-family:proxima_nova,&#39;Open Sans&#39;,&#39;Lucida Grande&#39;,&#39;Segoe UI&#39;,Arial,Verdana,&#39;Lucida Sans Unicode&#39;,Tahoma,&#39;Sans Serif&#39;"><td width="200" align="left"></td>\
+      <td width="328" align="right"><span style="font-size:12px">Sent through <a href="http://slp.ph" style="text-decoration:none;color:#4583ed">SLP Online</a> by <span id="emailfrom"><?php echo $_SESSION["fullname"]; ?></span></span><br></td></td>\
+      </tr></table></td></tr></table></td></tr></table></center></div></div>\
+      <hr style="margin-bottom:0">';
+      var edefault = '<div class="bodycontainer" style="margin-top:1em;margin-bottom:1em"><div style="padding:0;width:100%!important;margin:0" marginheight="0" marginwidth="0"><center><table cellpadding="8" cellspacing="0" style="padding:0;width:100%!important;background:#ffffff;margin:0;background-color:#ffffff" border="0"><tr><td valign="top"><table cellpadding="0" cellspacing="0" style="border-radius:4px;border:1px #dceaf5 solid;border-collapse:none" border="0" align="center"><tr><td colspan="3" height="6"></td></tr><tr style="line-height:0px"><td width="100%" style="font-size:0px" align="center" height="1"><img width="40px" style="max-height:104px;width:55px;margin-top:15px" alt="" src="http://slp.ph/imgs/emailslplogo.png"></td></tr><tr><td><table cellpadding="0" cellspacing="0" style="line-height:25px" border="0" align="center"><tr><td colspan="3" height="30"></td></tr><tr><td width="36"></td>\
+      <td width="454" align="left" style="color:#444444;border-collapse:collapse;font-size:11pt;font-family:proxima_nova,&#39;Open Sans&#39;,&#39;Lucida Grande&#39;,&#39;Segoe UI&#39;,Arial,Verdana,&#39;Lucida Sans Unicode&#39;,Tahoma,&#39;Sans Serif&#39;;max-width:454px" valign="top">\
+      Dear Sir/Madam,<br><br>This is to provide you with a copy of the <b id="emaildoctype" style="color:red">Doc Type</b> with subject <b id="emailsubject" style="color:red">Document Title / Subject</b> <span id="emaildate"></span>.<br><br><i id="emailsummary" style="color:red">Remarks / Summary</i><br><br>\
+      <table border="0" cellpadding="0" cellspacing="0" style="background-color:#18bc9c; border:0px solid #4285f4; border-radius:5px;"><tr><td align="center" valign="middle" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:15px; font-weight:bold; line-height:140%; padding-top:9px; padding-right:26px; padding-bottom:8px; padding-left:26px;"><a href="" target="_blank" style="color:#FFFFFF; text-decoration:none;">View Details</a>\
+      </td><td align="center" valign="middle" style="background-color:#4285f4; color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:15px; font-weight:bold; line-height:140%; padding-top:9px; padding-right:26px; padding-bottom:8px; padding-left:26px; border-radius:5px;border-top-left-radius: 0px;border-bottom-left-radius: 0px">\
+      <a href="" target="_blank" style="color:#FFFFFF; text-decoration:none;">Download</a></td></tr></table><br>Thank you for your usual support and cooperation. Happy working!<br></td><td width="36"></td>\
+      </tr><tr><td colspan="3" height="36"></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" align="center" border="0"><tr><td height="10"></td></tr><tr><td style="padding:0;border-collapse:collapse"><table cellpadding="0" cellspacing="0" align="center" border="0"><tr style="color:#a8b9c6;font-size:11px;font-family:proxima_nova,&#39;Open Sans&#39;,&#39;Lucida Grande&#39;,&#39;Segoe UI&#39;,Arial,Verdana,&#39;Lucida Sans Unicode&#39;,Tahoma,&#39;Sans Serif&#39;"><td width="200" align="left"></td>\
+      <td width="328" align="right"><span style="font-size:12px">Sent through <a href="http://slp.ph" style="text-decoration:none;color:#4583ed">SLP Online</a> by <span id="emailfrom"><?php echo $_SESSION["fullname"]; ?></span></span></td>\
+      </tr></table></td></tr></table></td></tr></table></center></div></div><hr style="margin-bottom:0">';
 
       if (option=="Blast") {
-
-var code = '<div class="bodycontainer" style="margin-top:1em;margin-bottom:1em">\
-<div style="padding:0;width:100%!important;margin:0" marginheight="0" marginwidth="0"><center><table cellpadding="8" cellspacing="0" style="padding:0;width:100%!important;background:#ffffff;margin:0;background-color:#ffffff" border="0"><tr><td valign="top">\
-<table cellpadding="0" cellspacing="0" style="border-radius:4px;border:1px #dceaf5 solid;border-collapse:none" border="0" align="center">\
-<tr><td><table cellpadding="0" cellspacing="0" style="line-height:25px" border="0" align="center"><tr><td colspan="3" height="30"></td></tr><tr><td width="36"></td>\
-<td width="454" align="center" style="color:#444444;border-collapse:collapse;font-size:9pt;font-family:proxima_nova,&#39;Open Sans&#39;,&#39;Lucida Grande&#39;,&#39;Segoe UI&#39;,Arial,Verdana,&#39;Lucida Sans Unicode&#39;,Tahoma,&#39;Sans Serif&#39;;max-width:454px" valign="top">\
-Cant see this image? <a href="#" style="color:#4583ed">Click here</a>\
-<div style="border:1px solid #ccc;background:#e1e1e1;height:130px;width:90%;vertical-align:middle;font-size:12px;line-height:1.1"><h3>Your image here</h3><br>Recommended file size: 500kb<br>Larger file size may not load on mobile devices</div>\
-<td width="36"></td></tr><tr><td colspan="3" height="36"></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" align="center" border="0"><tr><td height="10"></td></tr><tr><td style="padding:0;border-collapse:collapse"><table cellpadding="0" cellspacing="0" align="center" border="0"><tr style="color:#a8b9c6;font-size:11px;font-family:proxima_nova,&#39;Open Sans&#39;,&#39;Lucida Grande&#39;,&#39;Segoe UI&#39;,Arial,Verdana,&#39;Lucida Sans Unicode&#39;,Tahoma,&#39;Sans Serif&#39;"><td width="200" align="left"></td>\
-<td width="328" align="right"><span style="font-size:12px">Sent through <a href="http://slp.ph" style="text-decoration:none;color:#4583ed">SLP Online</a> by <span id="emailfrom"><?php echo $_SESSION["fullname"]; ?></span></span><br></td></td>\
-</tr></table></td></tr></table></td></tr></table></center></div></div>\
-<hr style="margin-bottom:0">';
-
-          $("#emailpreview").html(code);
-
+          $("#emailpreview").html(eblast);
+      } else {
+          $("#emailpreview").html(edefault);
+          if (option == "Internal Memorandum (within CO)" || option == "External Memorandum (to regions)") {
+            $("#emaildoctype").html("memorandum");
+          } else {
+            $("#emaildoctype").html(option);
+          }
       }
 }
 </script>
 <div class="container-fluid">
-  <div class="col-md-12" style="">
-      <div style="background:#fff;margin-bottom:1em;padding:1.2em;" class="col-md-12">
-      <div class="row">
-          <div class="col-md-12" id="searchblock">
-                <div class="col-md-offset-2 col-md-8" style="margin-top:0">
-                  <h2 style="font-weight:bold;margin-bottom:0">UPLOAD</h2>
+  <div class="col-md-12" style="padding-left:3em;padding-right:3em">
 
 <form id="myForm" method="POST" enctype="multipart/form-data">
-
-                  <div class="input-group" style="margin-bottom:0;margin-top:1em">
+ <div class="row row-eq-height" style="height:100%;border:solid 1px #c5d6de;margin-bottom:3em">
+                <div class="col-md-5" style="background-color:#007ee5;padding:2em;color:#fff">
+                  SLP E-Library<h3>FILE UPLOADS</h3>
+                  Uploading regular files:
+                  <ul>
+                    <li>Choose the file from your computer or storage device.</li>
+                    <li>Click "Select Document Type" to choose the file category.</li>
+                    <li>Fill out the required fields and click "Upload" to submit to E-Library.</li>
+                  </ul>
+                  Uploading admin document files:
+                  <ul>
+                    <li>Choose the file from your computer or storage device.</li>
+                    <li>Select "Admin Document" category from the "Select Document Type" dropdown list to see the additional fields.</li>
+                    <li>Fill out the required areas and click "Upload" to submit to E-Library.</li>
+                  </ul>
+                  Sending e-mail notifications:
+                  <ul>
+                    <li>Click the notification button and choose the respective offices or type the names of individuals. Submit to E-Library by clicking the "Submit and Send Notification" button.</li>
+                  </ul>
+                </div>
+                <div class="col-md-7" style="padding:3em;color:#000;padding-top:2em">
+                  <div class="input-group" style="margin-bottom:0;margin-top:0">
                       <input id="uploadfilename" class="form-control" placeholder="Choose file.." disabled="disabled">
                       <div class="input-group-btn">
                         <div class="fileUpload btn btn-primary">
@@ -349,38 +384,185 @@ Cant see this image? <a href="#" style="color:#4583ed">Click here</a>\
                             <input id="theupload" name="theupload" type="file" class="upload" required/>
                         </div>
                       </div>
-                    </div><!-- /input-group -->
-                    <span style="font-size:12px;margin-bottom:1em">Supported file types: PDF, DOC, XLSX, PNG, JPG</span>
+                    </div>
+                    <!-- /input-group -->
+                    <span style="font-size:12px;margin-bottom:1em">Supported file types: PDF, DOC, XLSX, PNG, JPG, ZIP, PPT</span>
                     <span style="font-size:12px;margin-bottom:1em" class="pull-right">Maximum file size: 8MB</span><br>
+
+<script>
+
+function typeChange2(){
+var selection = $('#doctypeselector option:selected').val();
+console.log(selection);
+      if (selection == "Admin Doc") {
+             $("#admintypeholder").fadeIn(); $("#logtypeholder").fadeIn(); $("#refnumberholder").fadeIn(); $("#sourceofficeholder").fadeIn(); 
+             $("#sourcenameholder").fadeIn();$("#destofficeholder").fadeIn(); $("#destnameholder").fadeIn(); $("#resdateholder").fadeIn(); 
+             $("#sourceposholder").fadeIn();$("#destposholder").fadeIn();
+                      
+           
+    } else {
+             $("#admintypeholder").fadeOut(); $("#logtypeholder").fadeOut(); $("#refnumberholder").fadeOut(); $("#sourceofficeholder").fadeOut(); 
+             $("#sourcenameholder").fadeOut();$("#destofficeholder").fadeOut(); $("#destnameholder").fadeOut(); $("#resdateholder").fadeOut();         
+             $("#sourceposholder").fadeOut();$("#destposholder").fadeOut();
+    }
+}
+
+
+
+
+</script>
                   <div class="form-group" style="margin-top:1em">
-                      <select class="form-control" onchange="typeChange()" id="doctypeselector">
+                      <select class="form-control" onchange="typeChange2()" id="doctypeselector">
                         <option value="">Select Document Type</option>
-                        <option value="Internal Memorandum">Internal Memorandum (within CO)</option>
-                        <option value="External Memorandum">External Memorandum (to regions)</option>
-                        <option>Project Proposal</option>
-                        <option>Template / Guide</option>
-                        <option>Accomplishment Report</option>
-                        <option>Financial Report</option>
-                        <option>Feedback Report</option>
-                        <option>Program Flow</option>
-                        <option>Supporting Documents</option>
-                        <option>IEC materials</option>
-                        <option>Notes</option>
+
+                        <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM libhr_doctype order by hrdocname");
+                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
+                              $sql->execute();
+                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
+                        
+                        while($hreventname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value="<?php echo $hreventname['hrdocname']; ?>"><?php echo $hreventname['hrdocname']; ?> </option>
+                    
+                      <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                   
+                        ?>
+                    <!-- upto this -->
+                        <?php if ($_SESSION['permlvl']>0) {?>
                         <option>Blast</option>
+                        <?php } ?>
                       </select>
                   </div>
-                  <div class="form-group" style="margin-top:1em;" id="docsubject">
-                      <input class="form-control" placeholder="Title / Subject" style="" id="dsubject" name="dsubject" required/><center>
+
+                  <div class="form-group" style="display: none; margin-top:1em" id="admintypeholder">
+                      <select class="form-control" id="admintype" name="admintype">
+                        <option value="">Select Admin Document Type</option>
+
+                        <!-- get this --> 
+                      <?php
+                      try {
+                              $sql = $db->prepare("SELECT * FROM libhr_subdoctype order by hrsubdocname");
+                              $sql->execute();
+                        
+                        while($hreventname=$sql->fetch(PDO::FETCH_ASSOC))
+                        {
+                      ?>
+                        <option value=" <?php echo $hreventname['hrsubdocname']; ?>"> <?php echo $hreventname['hrsubdocname']; ?> </option>
+                    
+                      <?php
+                        }
+                              } catch(PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                            }//en
+                   
+                        ?>
+                    <!-- upto this -->
+                    </select>
                   </div>
-                  <div class="form-group" style="margin-top:1em;" id="docdate">
-                      <input type="text" name="autocompleteajax2" id="autocompleteajax2" class="form-control" placeholder="Author (if not you)"/>
+
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="form-group" style="display: none" id="logtypeholder">
+                       <select class="form-control" id="logtype" name="logtype">
+                        <option value="">Select Log Type</option>
+                        <option value="Incoming" id="in">Incoming</option>
+                        <option value="Outgoing" id="out">Outgoing</option>
+                      
+                        </select>
+                      
+                    
+                          <div class="col-sm-8">
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group" style="display: none" id="refnumberholder">
+                       <input class="form-control" placeholder="Reference Number" id="refnumber" name="refnumber" required/><center>
+                        <div class="col-sm-8">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group" style="" id="docsubject">
+                      <input class="form-control" placeholder="Document Title / Subject" style="" id="dsubject" name="dsubject" required/><center>
+                  </div>
+                  <div class="form-group" style="" id="authorholder">
+                      <input type="text" name="autocompleteajax2" id="autocompleteajax2" class="form-control" placeholder="Author (if applicable)"/>
                       <input type="hidden" id="autocomplete-ajax-x-2" disabled="disabled"/>
                   </div>
-                  <div class="form-group" style="margin-top:1em;" id="docdate">
-                      <input class="form-control" placeholder="Date Written / Created" style="" id="ddate" name="ddate" required/><center>
+
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="input-group" style="display: none" id="sourceofficeholder">
+                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import" ></span></span>
+                       <input class="form-control" placeholder="Source Office" style="" id="sourceoffice" name="sourceoffice" required/><center>
+
+                      </div>
+                    </div>
+                   <div class="col-sm-6">
+                      <div class="input-group" style="display: none" id="destofficeholder">
+                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
+                       <input class="form-control" placeholder="Destination Office" style="" id="destoffice" name="destoffice" required/><center>
+                      </div>
+                    </div>
                   </div>
-                  <div class="form-group" style="margin-top:1em">
-                      <textarea rows="3" class="form-control" placeholder="Remarks / Summary" style="padding-top:0.6em;resize:none" id="remarks" name="remarks" required></textarea><center>
+
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="input-group" style="display: none" id="sourcenameholder">
+                      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import"></span></span>
+                       <input class="form-control" placeholder="Source Name" style="" id="sourcename" name="sourcename" required/><center>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="input-group" style="display: none" id="destnameholder">
+                      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
+                       <input class="form-control" placeholder="Destination Name" style="" id="destname" name="destname" required/><center>
+                      </div>
+                    </div>
+                  </div>
+                 <div class="row">
+                    <div class="col-sm-6">
+                      <div class="input-group" style="display: none" id="sourceposholder">
+                      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import"></span></span>
+                        <input class="form-control" placeholder="Source Position" style="" id="sourcepos" name="sourcepos" required/><center>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="input-group" style="display: none" id="destposholder">
+                      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
+                       <input class="form-control" placeholder="Destionation Position" style="" id="destpos" name="destpos" required/><center>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" style="margin-top:1em">
+                    <div class="col-sm-6">
+                      <div class="form-group" style="" id="ddateholder">
+                        <input class="form-control" placeholder="Date Written / Created" style="" id="ddate" required/><center>
+                        <div class="col-sm-8"></div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group" style="display:none;" id="resdateholder">
+                       <input class="form-control" placeholder="Response Deadline" style="" id="resdate" name="resdate" required/><center>
+                        <div class="col-sm-8">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group" style="">
+                      <textarea rows="3" class="form-control" placeholder="Remarks" style="padding-top:0.6em;resize:none" id="remarks" name="remarks" required></textarea><center>
                   </div>
                   <div style="display:block;font-weight:bold">Send a notification for this upload: &nbsp; <div id="theswitch" class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate bootstrap-switch-id-custom-switch-01 bootstrap-switch-off"><div class="bootstrap-switch-container"><span class="bootstrap-switch-handle-on bootstrap-switch-primary">YES</span><label class="bootstrap-switch-label">&nbsp;</label><span class="bootstrap-switch-handle-off bootstrap-switch-default">NO</span><input type="checkbox" checked="" data-toggle="switch" id="custom-switch-01"></div></div></div>
                   <div id="notificationpanel" style="margin-top:1em;display:none">
@@ -398,6 +580,7 @@ Cant see this image? <a href="#" style="color:#4583ed">Click here</a>\
                             <option>DPM - OPS</option>
                             <option value="Management Committee">Man. Comm.</option>
                             <option value="Administrative Support Unit">Admin</option>
+                            <option value="Capacity Building Unit">Capacity Building Unit</option>
                             <option value="Finance Unit">Finance</option>
                             <option value="Information Technology Unit">IT</option>
                             <option value="Operations Unit">Operations</option>
@@ -452,8 +635,8 @@ Cant see this image? <a href="#" style="color:#4583ed">Click here</a>\
                   </div>
 <?PhP
 $sql = "SELECT id, CONCAT(lastname, ', ', firstname) as name FROM HRDB";
-$partnerIDArray = [];
-$partnerArray = [];
+//$partnerIDArray = [];
+//$partnerArray = [];
 
 foreach ($db->query($sql) as $results)
 {
@@ -535,6 +718,40 @@ $(function () {
                   <div class="form-group" style="border:1px solid #000;" id="emailpreview">
 
 
+                    <!--EMAIL-->
+                      <div class="bodycontainer" style="margin-top:1em;margin-bottom:1em">
+<div style="padding:0;width:100%!important;margin:0" marginheight="0" marginwidth="0"><center><table cellpadding="8" cellspacing="0" style="padding:0;width:100%!important;background:#ffffff;margin:0;background-color:#ffffff" border="0"><tr><td valign="top">
+<table cellpadding="0" cellspacing="0" style="border-radius:4px;border:1px #dceaf5 solid;border-collapse:none" border="0" align="center"><tr><td colspan="3" height="6"></td></tr><tr style="line-height:0px"><td width="100%" style="font-size:0px" align="center" height="1">
+  <img width="40px" style="max-height:104px;width:55px;margin-top:15px" alt="" src="http://slp.ph/imgs/emailslplogo.png"></td></tr><tr><td><table cellpadding="0" cellspacing="0" style="line-height:25px" border="0" align="center"><tr><td colspan="3" height="30"></td></tr><tr><td width="36"></td>
+<td width="454" align="left" style="color:#444444;border-collapse:collapse;font-size:11pt;font-family:proxima_nova,&#39;Open Sans&#39;,&#39;Lucida Grande&#39;,&#39;Segoe UI&#39;,Arial,Verdana,&#39;Lucida Sans Unicode&#39;,Tahoma,&#39;Sans Serif&#39;;max-width:454px" valign="top">
+  Dear Sir/Madam,<br><br>
+  This is to provide you with a copy of the <b id="emaildoctype" style="color:red">Doc Type</b> with subject <b id="emailsubject" style="color:red">Document Title / Subject</b> <span id="emaildate"></span>.
+  <br><br>
+  <i id="emailsummary" style="color:red">Remarks / Summary</i>
+  <br><br>
+  <table border="0" cellpadding="0" cellspacing="0" style="background-color:#18bc9c; border:0px solid #4285f4; border-radius:5px;">
+            <tr>
+                <td align="center" valign="middle" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:15px; font-weight:bold; line-height:140%; padding-top:9px; padding-right:26px; padding-bottom:8px; padding-left:26px;">
+                    <a href="" target="_blank" style="color:#FFFFFF; text-decoration:none;">View Details</a>
+                </td>
+                <td align="center" valign="middle" style="background-color:#4285f4; color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:15px; font-weight:bold; line-height:140%; padding-top:9px; padding-right:26px; padding-bottom:8px; padding-left:26px; border-radius:5px;border-top-left-radius: 0px;border-bottom-left-radius: 0px">
+                    <a href="" target="_blank" style="color:#FFFFFF; text-decoration:none;">Download</a>
+                </td>
+            </tr>
+  </table>
+  <br>
+  Thank you for your usual support and cooperation. Happy working!
+  <br>
+    </td>
+<td width="36"></td>
+</tr><tr><td colspan="3" height="36"></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" align="center" border="0"><tr><td height="10"></td></tr><tr><td style="padding:0;border-collapse:collapse"><table cellpadding="0" cellspacing="0" align="center" border="0"><tr style="color:#a8b9c6;font-size:11px;font-family:proxima_nova,&#39;Open Sans&#39;,&#39;Lucida Grande&#39;,&#39;Segoe UI&#39;,Arial,Verdana,&#39;Lucida Sans Unicode&#39;,Tahoma,&#39;Sans Serif&#39;"><td width="200" align="left"></td>
+<td width="328" align="right"><span style="font-size:12px">Sent through <a href="http://slp.ph" style="text-decoration:none;color:#4583ed">SLP Online</a> by <span id="emailfrom"><?php echo $_SESSION['fullname']; ?></span></span></td>
+</tr></table></td></tr></table></td></tr></table></center></div>
+
+                  </div>
+                  <hr style="margin-bottom:0">
+                  <!--EMAIL-->
+
 
                 </div><!--end notifpanel-->
                 
@@ -545,7 +762,6 @@ $(function () {
           </div>
       </div>
   </div>
-</div>
 </div>
 <!-- Modal -->
       <div class="modal fade" id="myModal" role="dialog" style="margin-top:3em">
@@ -559,10 +775,11 @@ $(function () {
           </div>
           
         </div>
-      </div>
+      </div></div>
       <!-- Modal -->
 <script>
 $(document).ready(function() {
+
   document.getElementById("theupload").onchange = function () {
     document.getElementById("uploadfilename").value = this.value;
   };
@@ -630,17 +847,28 @@ $("#uploadBtn").click(function(event) {
     }
      $("#loadoverlay").show();
      var fd = new FormData;                  
-     file1 = $('#theupload').prop('files')[0];
-     fd.append('action', 'upload');
-     fd.append('file', file1);
-     fd.append('doctype', $('#doctypeselector option:selected').val());
-     fd.append('docsubject', $('input[name=dsubject]').val());
-     fd.append('docauthor', window.selectPartner2);
-     fd.append('docdate', $('input[name=ddate]').val());
-     fd.append('remarks', $('textarea[name=remarks]').val());
-     fd.append('switch', switchClass);
-     fd.append('emailarray', emailfinal.toString());
-     $.ajax({
+       file1 = $('#theupload').prop('files')[0];
+       fd.append('action', 'upload');
+       fd.append('file', file1);
+       fd.append('doctype', $('#doctypeselector option:selected').val());
+       fd.append('docsubject', $('input[name=dsubject]').val());
+      fd.append('author', window.selectPartner2);
+       fd.append('ddate', $('input[name=ddate]').val());
+      
+       fd.append('remarks', $('textarea[name=remarks]').val());
+       fd.append('admintype', $('#admintype option:selected').val());
+       fd.append('logtype', $('#logtype option:selected').val());
+       fd.append('refnumber', $('input[name=refnumber]').val());
+       fd.append('sourceoffice', $('input[name=sourceoffice]').val());
+       fd.append('sourcename', $('input[name=sourcename]').val());
+       fd.append('destoffice', $('input[name=destoffice]').val());
+       fd.append('destname', $('input[name=destname').val());
+       fd.append('resdate', $('input[name=resdate]').val());
+       fd.append('destpos', $('input[name=destpos]').val());
+       fd.append('sourcepos', $('input[name=sourcepos]').val());
+       
+       fd.append('emailarray', emailfinal.toString());
+      $.ajax({
                 url: 'functions.php',
                 dataType: 'text',
                 cache: false,
@@ -653,7 +881,7 @@ $("#uploadBtn").click(function(event) {
                     if (data=="Success") {
                       $('#myModal').modal();
                       $('#myModal').on('hidden.bs.modal', function () {
-                          location.href = "http://slp.ph/vrcabinet";
+                          location.href = "index.php";
                       })
                     } else {
                       alert(data);
@@ -710,6 +938,17 @@ $("#sendfeedback").click(function(event) {
             $('#emaildate').html("dated <b style='color:red'>"+this.getMoment().format('M/D/YYYY')+"</b>");
       }
     });
+
+        var picker = new Pikaday({ 
+      field: $('#resdate')[0], 
+      format: 'M/D/YYYY', 
+      onSelect: function() {
+            $('#emaildate').html("dated <b style='color:red'>"+this.getMoment().format('M/D/YYYY')+"</b>");
+      }
+    });
+
+    
+
 </script>
 </body>
 </html>

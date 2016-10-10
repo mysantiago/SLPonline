@@ -292,9 +292,7 @@ h3 {
         <div class="col-sm-3">
           <b>Type:</b><br><?php echo $rowdv['doctype']; ?><br>
         </div>
-        <div class="col-sm-9">
-          <b>Author:</b><br><?php echo $rowdv['author']; ?><br>
-        </div>
+        
       </div>
       <div class="row" style="padding-top:1em;text-align:left;padding-left:3em;margin-top:0.5em">
             <div class="col-sm-9">

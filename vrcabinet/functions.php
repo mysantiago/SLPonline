@@ -314,7 +314,7 @@ if(!empty($_POST))
       if($_POST['action'] == "upload") {
             $ext=date("mdY");
             $maxsize=9000000;
-            $FILE_EXTS = array('pdf','jpg','jpeg','png','xls','xlsx','doc','docx','zip');
+            $FILE_EXTS = array('pdf','jpg','jpeg','png','xls','xlsx','doc','docx','zip', 'ppt','pptx');
 
             $file_name = $_FILES['file']['name'];
             $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);

@@ -495,6 +495,10 @@ $.fn.DataTable.ext.pager.numbers_length = 5;
                       return '<td><div class="file-icon file-icon-sm" data-type="jpg"></div></td>';
                     } else if (file_ext == "zip") {
                       return '<td><div class="file-icon file-icon-sm" data-type="zip"></div></td>';
+                    } else if (file_ext == "pptx") {
+                      return '<td><div class="file-icon file-icon-sm" data-type="pptx"></div></td>';
+                    } else if (file_ext == "ppt") {
+                      return '<td><div class="file-icon file-icon-sm" data-type="ppt"></div></td>';
                     } else {
                       return false;
                     }
