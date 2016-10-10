@@ -1,6 +1,5 @@
 <?php
 require "../zxcd9.php";
-
 ?>
 
 <!DOCTYPE html>
@@ -13,6 +12,7 @@ require "../zxcd9.php";
     <link rel="shortcut icon" href="../imgs/favicon.ico" type="image/x-icon">
     <link rel="icon" href="../imgs/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/flatbootstrap.css"/>
+    <link rel="stylesheet" href="../css/pikaday.css"/>
     <script src="../js/jquery-1.10.2.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -176,10 +176,16 @@ tr {
   font-size:12px;
   padding-right:2px;
 }
+.row-eq-height {
+ display: -webkit-box;
+ display: -webkit-flex;
+ display: -ms-flexbox;
+ display:         flex;
+}
 </style>
 </head>
 <body>
-<?php require "navfin.php"; ?>
+<?php require "../nav.php"; ?>
 <div class="row" style="margin:0;padding:0">
   <div class="col-md-2">
     <?php require "nav_side.php"; ?>
@@ -189,30 +195,22 @@ tr {
         <div class="col-md-12">
           <div style="border:solid 1px #c5d6de;background:#fff;text-align:left;padding:0em;padding-left:1em;margin-bottom:2em;width:100%">
           
-              <div class="row row-eq-height" style="height:100%">
-                <div class="col-md-6" style="background-color:#007ee5;padding:2em;color:#fff;height:480px">
-                  SLP Finance System<h3>How to add Fund Allotments</h3>
-                  NPMO users can add fund allotments by following the instructions below:
-                  <br>
+              <div class="row row-eq-height" >
+                 <div class="col-md-6" style="background-color:#007ee5;padding:2em;color:#fff;">
+                  SLP Finance System
+                  <h3 style="margin-bottom:0">How to add Fund Allotments</h3>
+                   Primary user: SLP-NPMO
+                  <br><br>
                   <ul>
-                    <li>Fill out the "Select Region" dropdown list to choose the intended recipient region.</li>
-                    <li>On the "Select Type" dropdown list, choose the type of fund allotment, it can be a:</li>
+                    <li>For the "Select Type" dropdown list please choose the type of fund allotment:</li>
                       <ul>
                       <li>Centrally Managed Fund (CMF)</li>
                       <li>Direct Release (DR)</li>
                       </ul>
-                    <li>Click the "Select Sub-Type" dropdown list, this will show the sub-types of fund allotments which can be in the form of:</li>
-                      <ul>
-                        <li>Grant</li>
-                        <li>Admin Cost</li>
-                      </ul>
-                    <li>Enter the SUB-ARO on the text area provided.</li>
-                    <li>If the sub-type grant is not available, choose an option from the "Select UACS" dropdown list, otherwise do not select anything on the list.</li>
-                    <li>Lastly, click the "Select Fund Source" to determine the origin of the fund.</li>
-                    <li>Click "Submit" button.</li>
+                    <li>Once the form is completely filled out, click on the "Add Fund" button.</li>
                   </ul><i>
                   * SUB-ARO stands for "Sub Allotment Release Order"<br>
-                  * UACS stands for "Universal Access Code"</i>
+                  * UACS stands for "Unified Accounts Code Structure"</i>
                 </div>
                 <div class="col-md-6" style="padding:3em;color:#000;padding-top:1em">
                   <br>Please complete the form below:<br><br>
@@ -253,14 +251,32 @@ tr {
                        <div class="row">
                      
                       <div class="col-md-6" id="saaholder">
-                        <input class="form-control" style="padding-right:0;" id="saa" name="saa" placeholder="SAA Number">
+                        <input class="form-control" style="padding-right:0;" id="saa" name="saa" placeholder="Sub-Aro Number">
                       </div>
                       <div class="col-md-6" id="uacsholder">
                         <select class="form-control" id="uacs1" name="uacs1">
                             <option value="">Select UACS</option>
-                            <option>Travelling Expense</option>
-                            <option>Cost of Service</option>
+                            <option>Advocacy</option>
+                            <option>Consultancy</option>
+                            <option>Electricity</option>
+                            <option>Fuel/Oil</option>
+                            <option>Internet</option>
+                            <option>Janitorial</option>
+                            <option>Meeting</option>
+                            <option>MOA Cost of Service</option>
+                            <option>Mobile Expense</option>
+                            <option>Personnel Service</option>
+                            <option>Postage</option>
                             <option>Rental Office</option>
+                            <option>Rental Vehicle</option>
+                            <option>Repair IT</option>
+                            <option>Repair Office Equipt</option>
+                            <option>Security</option>
+                            <option>Supplies</option>
+                            <option>Telephone</option>
+                            <option>Trainings/Seminars/Workshops</option>
+                            <option>Travelling Expense</option>
+                            <option>Water</option>
                         </select>
                       </div>
                     </div>
@@ -343,7 +359,7 @@ $("#addfundallot").click(function(event) {
   event.stopImmediatePropagation();
   $("#addfundallot").html("Processing..");
   document.getElementById("addfundallot").disabled = true;
-
+  alert($('input[name=d8]').val());
   var formData = {
        'action'           :'addfundallo', 
        'region'           :$('#region option:selected').val(),
@@ -355,8 +371,8 @@ $("#addfundallot").click(function(event) {
        'fundsourceyear'   :$('#fundsourceyear option:selected').val(),
        'amt'              :$('input[name=amt]').val(), 
        'd8'               :$('input[name=d8]').val()
-     };
 
+     };
   $.ajax({
        url: "func.php",
        type: "POST",
@@ -364,18 +380,13 @@ $("#addfundallot").click(function(event) {
        success: function(data)
        {
                 if (data=="success") {
-                    document.getElementById("addfundallot").disabled = true;
-                    
-                       $("#sucsubtext").html("Fund Allotments saved!");
+                      document.getElementById("addfundallot").disabled = true;
+                      $("#sucsubtext").html("Fund allotment saved!");
                       $('#myModal').modal();
                       $('#myModal').on('hidden.bs.modal', function () {location.href = "../finance/allotments_add.php"; });
-                    } else {
-                 
-             //alert(data);
-                $("#sucsubtext").html("Fund Allotments saved!");
-                $('#myModal').modal();
-                $('#myModal').on('hidden.bs.modal', function () {location.href = "../finance/allotments_add.php"; });
-                    }
+                } else {
+                      //alert(data);
+                }
 
        }
     });//endajax
@@ -503,6 +514,17 @@ $(document).ready(function () {
             }]
         });
                   
+    });
+</script>
+<script type="text/javascript" src="http://momentjs.com/downloads/moment.min.js"></script>
+<script src="../js/pikaday.min.js"></script>
+<script>
+    var picker = new Pikaday({ 
+      field: $('#d8')[0], 
+      format: 'M/D/YYYY', 
+      onSelect: function() {
+            $('#emaildate').html("dated <b style='color:red'>"+this.getMoment().format('M/D/YYYY')+"</b>");
+      }
     });
 </script>
 </body>
