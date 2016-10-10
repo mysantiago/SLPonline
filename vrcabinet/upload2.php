@@ -395,15 +395,15 @@ function typeChange2(){
 var selection = $('#doctypeselector option:selected').val();
 console.log(selection);
       if (selection == "Admin Doc") {
-             $("#admintypeholder").fadeIn(); $("#logtypeholder").fadeIn(); $("#refnumberholder").fadeIn(); $("#sourceofficeholder").fadeIn(); 
-             $("#sourcenameholder").fadeIn();$("#destofficeholder").fadeIn(); $("#destnameholder").fadeIn(); $("#resdateholder").fadeIn(); 
-             $("#sourceposholder").fadeIn();$("#destposholder").fadeIn();
+             $("#admintypeholder").fadeIn(); $("#logtypeholder").fadeIn(); $("#refnumberholder").fadeIn(); $("#officeholder").fadeIn(); 
+             $("#nameholder").fadeIn();$("#resdateholder").fadeIn(); 
+             $("#posholder").fadeIn();
                       
            
     } else {
-             $("#admintypeholder").fadeOut(); $("#logtypeholder").fadeOut(); $("#refnumberholder").fadeOut(); $("#sourceofficeholder").fadeOut(); 
-             $("#sourcenameholder").fadeOut();$("#destofficeholder").fadeOut(); $("#destnameholder").fadeOut(); $("#resdateholder").fadeOut();         
-             $("#sourceposholder").fadeOut();$("#destposholder").fadeOut();
+             $("#admintypeholder").fadeOut(); $("#logtypeholder").fadeOut(); $("#refnumberholder").fadeOut(); $("#officeholder").fadeOut(); 
+             $("#nameholder").fadeOut();$("#resdateholder").fadeOut(); 
+             $("#posholder").fadeOut();
     }
 }
 
@@ -500,61 +500,61 @@ console.log(selection);
                       <input type="hidden" id="autocomplete-ajax-x-2" disabled="disabled"/>
                   </div>
 
-                  <div class="row">
+                  <div class="row" id="officeholder" style="display:none">
                     <div class="col-sm-6">
-                      <div class="input-group" style="display: none" id="sourceofficeholder">
+                      <div class="input-group">
                        <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import" ></span></span>
                        <input class="form-control" placeholder="Source Office" style="" id="sourceoffice" name="sourceoffice" required/><center>
 
                       </div>
                     </div>
                    <div class="col-sm-6">
-                      <div class="input-group" style="display: none" id="destofficeholder">
+                      <div class="input-group">
                        <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
                        <input class="form-control" placeholder="Destination Office" style="" id="destoffice" name="destoffice" required/><center>
                       </div>
                     </div>
                   </div>
 
-                  <div class="row">
+                  <div class="row" id="nameholder" style="display:none">
                     <div class="col-sm-6">
-                      <div class="input-group" style="display: none" id="sourcenameholder">
+                      <div class="input-group">
                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import"></span></span>
                        <input class="form-control" placeholder="Source Name" style="" id="sourcename" name="sourcename" required/><center>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="input-group" style="display: none" id="destnameholder">
+                      <div class="input-group">
                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
                        <input class="form-control" placeholder="Destination Name" style="" id="destname" name="destname" required/><center>
                       </div>
                     </div>
                   </div>
-                 <div class="row">
+                 <div class="row" id="posholder" style="margin-bottom:1em;display:none">
                     <div class="col-sm-6">
-                      <div class="input-group" style="display: none" id="sourceposholder">
+                      <div class="input-group">
                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import"></span></span>
                         <input class="form-control" placeholder="Source Position" style="" id="sourcepos" name="sourcepos" required/><center>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="input-group" style="display: none" id="destposholder">
+                      <div class="input-group">
                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
                        <input class="form-control" placeholder="Destionation Position" style="" id="destpos" name="destpos" required/><center>
                       </div>
                     </div>
                   </div>
 
-                  <div class="row" style="margin-top:1em">
+                  <div class="row">
                     <div class="col-sm-6">
                       <div class="form-group" style="" id="ddateholder">
-                        <input class="form-control" placeholder="Date Written / Created" style="" id="ddate" required/><center>
+                        <input class="form-control" placeholder="Date on Document" style="" id="ddate" name="ddate" required/><center>
                         <div class="col-sm-8"></div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group" style="display:none;" id="resdateholder">
-                       <input class="form-control" placeholder="Response Deadline" style="" id="resdate" name="resdate" required/><center>
+                       <input class="form-control" placeholder="Date Received" style="" id="resdate" name="resdate" required/><center>
                         <div class="col-sm-8">
                         </div>
                       </div>
@@ -852,9 +852,8 @@ $("#uploadBtn").click(function(event) {
        fd.append('file', file1);
        fd.append('doctype', $('#doctypeselector option:selected').val());
        fd.append('docsubject', $('input[name=dsubject]').val());
-      fd.append('author', window.selectPartner2);
+       fd.append('author', $('#autocompleteajax2').val());
        fd.append('ddate', $('input[name=ddate]').val());
-      
        fd.append('remarks', $('textarea[name=remarks]').val());
        fd.append('admintype', $('#admintype option:selected').val());
        fd.append('logtype', $('#logtype option:selected').val());
@@ -939,12 +938,9 @@ $("#sendfeedback").click(function(event) {
       }
     });
 
-        var picker = new Pikaday({ 
+      var picker = new Pikaday({ 
       field: $('#resdate')[0], 
-      format: 'M/D/YYYY', 
-      onSelect: function() {
-            $('#emaildate').html("dated <b style='color:red'>"+this.getMoment().format('M/D/YYYY')+"</b>");
-      }
+      format: 'M/D/YYYY'
     });
 
     

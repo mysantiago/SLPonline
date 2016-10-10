@@ -875,8 +875,10 @@ $("#uploadBtnadmin").click(function(event) {
        fd.append('refnumber', $('input[name=refnumber]').val());
        fd.append('sourceoffice', $('input[name=sourceoffice]').val());
        fd.append('sourcename', $('input[name=sourcename]').val());
+       fd.append('sourcepos', $('input[name=sourcepos]').val());
        fd.append('destoffice', $('input[name=destoffice]').val());
        fd.append('destname', $('input[name=destname').val());
+       fd.append('destpos', $('input[name=destpos]').val());
        fd.append('resdate', $('input[name=resdate]').val());
        fd.append('switch', switchClass);
        fd.append('emailarray', emailfinal.toString());

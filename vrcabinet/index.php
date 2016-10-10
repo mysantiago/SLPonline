@@ -129,8 +129,8 @@ table tr {
 
 <?php include "../nav.php"; ?>
 
-      <div class="row">
-          <div class="col-md-3" id="maincontent" style="margin-top:2.5em;margin-bottom:0em;text-align:center;padding-left:3em">
+      <div class="row" style="padding-top:-1em">
+          <div class="col-md-3" id="maincontent" style="margin-top:2em;margin-bottom:0em;text-align:center;padding-left:3em">
                 
 
               <div style="border:solid 0px #c5d6de;background:none;text-align:left;padding:0;margin-bottom:0;height:160px;padding-left:1em" id="cont1">
@@ -142,6 +142,7 @@ table tr {
                 <div style="margin-top:2em">
                   <div class="form-group">
                       <input id="searchme" class="form-control" placeholder="Search keywords..." style="height:50px;text-align:center;padding-left:0"/><center>
+                      <button class="btn btn-danger" id="categoryback" style="display:none;margin-top:0.8em;padding:6px 10px 6px 10px;"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp; Show All Categories</button>
                       <button id="advancedbtn" class="btn btn-info" style="padding:6px 10px 6px 10px;margin-top:0.8em"><span class="glyphicon glyphicon-search"></span> Advanced Search</button> 
                       <a href="upload.php"><button class="btn btn-success" style="padding:6px 10px 6px 10px;margin-top:0.8em"><span class="glyphicon glyphicon-cloud-upload"></span> Upload</button></a>
                   </div>
@@ -260,15 +261,16 @@ table tr {
       <div class="row" id="dttablerow2" style="display:none">
         <div class="col-md-12" style="padding: 2em 3em 2em 3em">
 
-            <button class="btn btn-danger" id="categoryback" style="margin-bottom:1em;padding:6px 10px 6px 10px;"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp; Show All Categories</button><br>
             <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-hover hover" id="docdata" style="background-color:#fff;width:100%;line-height:0.5;">
             <thead>
               <tr>
               <th style="background:none"></th>
               <th>Title / Subject</th>
-              <th><center>Category</th>
-              <th class="sorting2"><center>Uploader</th>
-              <th><center>Date Uploaded</th>
+              <th><center>Category</center></th>
+              <th><center>Doc. Type</th>
+              <th><center>Reference No.</th>
+              <th><center>Office</th>
+              <th><center>Uploader</th>
               <th>filetype</th>
               <th>region</th>
               <th>fileext</th>
@@ -433,7 +435,19 @@ function gotofiles(filetype) {
       tableshown=true;
       $("#dttablerow").css( "display", "none" );
       $("#dttablerow2").css( "display", "block" );
+      $("#categoryback").css( "display", "inline-block" );
       oTable.fnFilter("^"+filetype+"$", 2, true, false, true);
+      if (filetype=="Admin Doc") {
+        oTable.fnSetColumnVis( 2, false,false );
+        oTable.fnSetColumnVis( 3, true,true );
+        oTable.fnSetColumnVis( 4, true,true );
+        oTable.fnSetColumnVis( 5, true,true );
+      } else {
+        oTable.fnSetColumnVis( 2, true,true );
+        oTable.fnSetColumnVis( 3, false,false );
+        oTable.fnSetColumnVis( 4, false,false );
+        oTable.fnSetColumnVis( 5, false,false );
+      }
    }
 }
 function filterCategory() {
@@ -458,12 +472,13 @@ $.fn.DataTable.ext.pager.numbers_length = 5;
     "aProcessing": true,
     "aServerSide": true,
     "orderCellsTop": true,
-    "ajax": "dt_docdb.php",
+    "ajax": "dt_docdb222.php",
     "dom": '<"top">rt<"bottom"p><"clear">',
     "aaSorting": [9,'desc'],
     "fnRowCallback":
       function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
         $(nRow).attr('id', aData[0]);
+        $(nRow).attr('type', aData[2]);
         return nRow;
       },
     "aoColumnDefs": [
@@ -492,6 +507,10 @@ $.fn.DataTable.ext.pager.numbers_length = 5;
                       return '<td><div class="file-icon file-icon-sm" data-type="jpg"></div></td>';
                     } else if (file_ext == "zip") {
                       return '<td><div class="file-icon file-icon-sm" data-type="zip"></div></td>';
+                    } else if (file_ext == "pptx") {
+                      return '<td><div class="file-icon file-icon-sm" data-type="pptx"></div></td>';
+                    } else if (file_ext == "ppt") {
+                      return '<td><div class="file-icon file-icon-sm" data-type="ppt"></div></td>';
                     } else {
                       return false;
                     }
@@ -504,10 +523,11 @@ $.fn.DataTable.ext.pager.numbers_length = 5;
                 {
                     $(nTd).css('text-align', 'left');
                     $(nTd).css('line-height', '1.1');
+                    $(nTd).css('vertical-align', 'middle');
                 },
                 "mData": null,
                 "mRender": function( data, type, full) {
-                    return '<td>'+data[1]+'<br> <a href="http://slp.ph/docs/'+data[8]+'" class="dtsubhead" style="text-decoration:none;">http://slp.ph/docs/'+data[8]+'</a></td>';
+                    return '<td>'+data[1]+'</td>';
                 }
             },
             { 
@@ -528,11 +548,16 @@ $.fn.DataTable.ext.pager.numbers_length = 5;
                 {
                     $(nTd).css('text-align', 'center');
                     $(nTd).css('width', '16%');
-                    $(nTd).css('line-height', '1.1');
                 },
                 "mData": null,
                 "mRender": function( data, type, full) {
-                    return '<td><a href="../hr/user.php?id='+data[10]+'" class="linkhover" style="text-decoration:none;line-height:0.7">'+toTitleCase(data[3])+'</a><br><span class="dtsubhead" style="line-height:0.7">'+data[6]+'</span></td>';
+                    if (data[12]=="Outgoing") {
+                      return '<td><span class="glyphicon glyphicon-export" style="color:#e74c3c"></span> '+data[11]+'</td>';
+                    } else if (data[12]=="Incoming") {
+                      return '<td><span class="glyphicon glyphicon-import colgreen"></span> '+data[11]+'</td>';
+                    } else {
+                      return '<td>'+data[11]+'</td>';
+                    }
                 }
             },
             { 
@@ -540,34 +565,67 @@ $.fn.DataTable.ext.pager.numbers_length = 5;
                "fnCreatedCell": function(nTd, sData, oData, iRow, iCol)
                 {
                     $(nTd).css('text-align', 'center');
+                    $(nTd).css('width', '16%');
+                },
+                "mData": null,
+                "mRender": function( data, type, full) {
+                    return '<td>'+data[13]+'</td>';
+                }
+            },
+            { 
+               "aTargets":[5],
+               "fnCreatedCell": function(nTd, sData, oData, iRow, iCol)
+                {
+                    $(nTd).css('text-align', 'center');
                     $(nTd).css('width', '14%');
                 },
                 "mData": null,
                 "mRender": function( data, type, full) {
-                    return '<td>'+data[4]+'</td>';
+                    return '<td>'+data[14]+' <span class="glyphicon glyphicon-arrow-right" style="font-size:12px"></span> '+data[16]+'</td>';
                 }
             },
-            { "bVisible": false, "aTargets":[5,6,7,8,9,10] }
+            { 
+               "aTargets":[6],
+               "fnCreatedCell": function(nTd, sData, oData, iRow, iCol)
+                {
+                    $(nTd).css('text-align', 'center');
+                    $(nTd).css('width', '16%');
+                    $(nTd).css('line-height', '1.1');
+                },
+                "mData": null,
+                "mRender": function( data, type, full) {
+                    return '<td><span class="dtsubhead">By:</span> <a href="../hr/user.php?id='+data[10]+'" class="linkhover" style="text-decoration:none;line-height:0.7;font-size:12px">'+toTitleCase(data[3])+'</a> <span class="dtsubhead" style="line-height:0.7">('+data[6]+')</span><br><span class="dtsubhead">on <font color="black">'+data[4]+'</font></span></td>';
+                }
+            },
+            { "bVisible": false, "aTargets":[7,8,9,10,11,12] }
                     ]
   });
       //oTable.fnFilter('<?php echo $filter;?>',6);
         $('#docdata').on( 'click', 'tbody tr', function () {
           var redirection = $(this).attr('id');
-          window.location.href = "docview.php?id="+redirection;
+          var type = $(this).attr('type');
+          if (type == "Admin Doc") {
+              window.location.href = "docview2.php?id="+redirection;
+          } else {
+              window.location.href = "docview3.php?id="+redirection;
+          }
         });
 
 $(document).ready(function() {
   tableshown=false;
+  $("#categoryback").css( "display", "none" );
 $("#searchme").keyup(function() {
    if (tableshown==false) {
       tableshown=true;
       $("#dttablerow").css( "display", "none" );
       $("#dttablerow2").css( "display", "block" );
+      $("#categoryback").css( "display", "inline-block" );
    } else {
       if (document.getElementById('searchme').value == "") {
         tableshown=false;
         $("#dttablerow").css( "display", "block" );
         $("#dttablerow2").css( "display", "none" );
+        $("#categoryback").css( "display", "none" );
       }
    }
    oTable.fnFilter(this.value);
@@ -590,6 +648,7 @@ $("#advancedbtn").click(function(event) {
 
 $("#categoryback").click(function(event) {
     tableshown=false;
+    $("#categoryback").css( "display", "none" );
     $("#dttablerow").css( "display", "block" );
     $("#dttablerow2").css( "display", "none" );
     $("#searchme").val() = "";

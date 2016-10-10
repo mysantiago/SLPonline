@@ -437,6 +437,17 @@ function gotofiles(filetype) {
       $("#dttablerow2").css( "display", "block" );
       $("#categoryback").css( "display", "inline-block" );
       oTable.fnFilter("^"+filetype+"$", 2, true, false, true);
+      if (filetype=="Admin Doc") {
+        oTable.fnSetColumnVis( 2, false,false );
+        oTable.fnSetColumnVis( 3, true,true );
+        oTable.fnSetColumnVis( 4, true,true );
+        oTable.fnSetColumnVis( 5, true,true );
+      } else {
+        oTable.fnSetColumnVis( 2, true,true );
+        oTable.fnSetColumnVis( 3, false,false );
+        oTable.fnSetColumnVis( 4, false,false );
+        oTable.fnSetColumnVis( 5, false,false );
+      }
    }
 }
 function filterCategory() {
@@ -467,6 +478,7 @@ $.fn.DataTable.ext.pager.numbers_length = 5;
     "fnRowCallback":
       function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
         $(nRow).attr('id', aData[0]);
+        $(nRow).attr('type', aData[2]);
         return nRow;
       },
     "aoColumnDefs": [
@@ -511,6 +523,7 @@ $.fn.DataTable.ext.pager.numbers_length = 5;
                 {
                     $(nTd).css('text-align', 'left');
                     $(nTd).css('line-height', '1.1');
+                    $(nTd).css('vertical-align', 'middle');
                 },
                 "mData": null,
                 "mRender": function( data, type, full) {
@@ -538,9 +551,9 @@ $.fn.DataTable.ext.pager.numbers_length = 5;
                 },
                 "mData": null,
                 "mRender": function( data, type, full) {
-                    if (data[12]=="Incoming") {
+                    if (data[12]=="Outgoing") {
                       return '<td><span class="glyphicon glyphicon-export" style="color:#e74c3c"></span> '+data[11]+'</td>';
-                    } else if (data[12]=="Outgoing") {
+                    } else if (data[12]=="Incoming") {
                       return '<td><span class="glyphicon glyphicon-import colgreen"></span> '+data[11]+'</td>';
                     } else {
                       return '<td>'+data[11]+'</td>';
@@ -584,13 +597,18 @@ $.fn.DataTable.ext.pager.numbers_length = 5;
                     return '<td><span class="dtsubhead">By:</span> <a href="../hr/user.php?id='+data[10]+'" class="linkhover" style="text-decoration:none;line-height:0.7;font-size:12px">'+toTitleCase(data[3])+'</a> <span class="dtsubhead" style="line-height:0.7">('+data[6]+')</span><br><span class="dtsubhead">on <font color="black">'+data[4]+'</font></span></td>';
                 }
             },
-            { "bVisible": false, "aTargets":[2,7,8,9,10,11,12] }
+            { "bVisible": false, "aTargets":[7,8,9,10,11,12] }
                     ]
   });
       //oTable.fnFilter('<?php echo $filter;?>',6);
         $('#docdata').on( 'click', 'tbody tr', function () {
           var redirection = $(this).attr('id');
-          window.location.href = "docview.php?id="+redirection;
+          var type = $(this).attr('type');
+          if (type == "Admin Doc") {
+              window.location.href = "docview2.php?id="+redirection;
+          } else {
+              window.location.href = "docview3.php?id="+redirection;
+          }
         });
 
 $(document).ready(function() {
