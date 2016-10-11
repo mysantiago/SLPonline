@@ -330,102 +330,177 @@ if(!empty($_POST))
             echo "counted";
     }
 
-      if($_POST['action'] == "upload") {
-            $ext=date("mdY");
-            $maxsize=9000000;
-            $FILE_EXTS = array('pdf','jpg','jpeg','png','xls','xlsx','doc','docx','zip', 'ppt','pptx');
+ 
+    if($_POST['action'] == "upload") {           
+                if ($_POST['doctype']=="Administration Document")
+                {//if admin not required to insert a file
+                            
+                            $ext=date("mdY");
+                            $maxsize=9000000;
+                            $FILE_EXTS = array('pdf','jpg','jpeg','png','xls','xlsx','doc','docx','zip');
+                            $file_name = $_FILES['file']['name'];
+                            $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
+                            $file_size = $_FILES['file']['size'];      
+                            $uploaddir = upload_dir();
+                            $uploadname = $ext.'_'.$_FILES['file']['name'];
+                            $uploadfile = $uploaddir.$uploadname;
+                            $doctype = $_POST['doctype'];
 
-            $file_name = $_FILES['file']['name'];
-            $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
-            $file_size = $_FILES['file']['size'];
+                     if ($file_name=="") { // filename is empty 
+                            try{
+                         $stmt1 = $db->prepare("INSERT INTO DOCDB (doctype,title,author,remarks,added,hrdbid,admindoctype,logtype,referenceno,sourceoffice,sourcename,sourcepos,destoffice,destname,destpos,resdate) VALUES (:doctype,:title,:author,:remarks,:added,:hrdbid,:admintype,:logtype,:refnumber,:sourceoffice,:sourcename,:sourcepos,:destoffice,:destname,:destpos,:resdate)");
+                                    $stmt1->bindParam(':doctype', $doctype);
+                                    $stmt1->bindParam(':title', $_POST['docsubject']);
+                                    $stmt1->bindParam(':author', $_POST['author']);                                 
+                                    $stmt1->bindParam(':remarks', $_POST['remarks']);
+                                    $stmt1->bindParam(':added', date("Y-m-d"));
+                                    $stmt1->bindParam(':hrdbid', $_SESSION['id']);
+                                    $stmt1->bindParam(':admintype', $_POST['admintype']);
+                                    $stmt1->bindParam(':logtype', $_POST['logtype']);
+                                    $stmt1->bindParam(':refnumber', $_POST['refnumber']);
+                                    $stmt1->bindParam(':sourceoffice', $_POST['sourceoffice']);
+                                    $stmt1->bindParam(':sourcename', $_POST['sourcename']);
+                                    $stmt1->bindParam(':sourcepos', $_POST['sourcepos']);
+                                    $stmt1->bindParam(':destoffice', $_POST['destoffice']);
+                                    $stmt1->bindParam(':destname', $_POST['destname']);
+                                    $stmt1->bindParam(':destpos', $_POST['destpos']);                                    
+                                    $stmt1->bindParam(':resdate', $_POST['resdate']);                                
+                                    $stmt1->execute();
+                                } catch(PDOException $e) {
+                                    echo "Error: " . $e->getMessage();
+                                }
 
-            if($file_name=="") {
-              die("No file selected");
-            }
-            if (!in_array($file_ext, $FILE_EXTS)){
-              die("Selected file is invalid.");
-            }
-            if($_FILES['file']['size']>$maxsize) {
-                die("Filesize exceeded");
-            }
+                        }//end if empty
+                        else//not empty
+                        {                        
+                            if (file_exists($uploadfile)) {
+                                die("Duplicate found. This file already exists.");
+                            }
+                            if (empty($_POST["docsubject"])) {
+                                 die("Missing Subject");
+                            } else {
+                                 $subject = test_input($_POST["docsubject"]);
+                            }                     
+                            if ($_POST['docauthor']=="") {
+                              $author = $_SESSION['id'];
+                            } else {
+                              $author = test_input($_POST["docauthor"]);  
+                            }
+                               $doctype = $_POST['doctype'];                      
+                            if(move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {                                
+                                try {
+                                    $stmt1 = $db->prepare("INSERT INTO DOCDB (doctype,title,author,filename,filesize,remarks,added,hrdbid,admindoctype,logtype,referenceno,sourceoffice,sourcename,sourcepos,destoffice,destname,destpos,resdate) VALUES (:doctype,:title,:author,:filename,:filesize,:remarks,:added,:hrdbid,:admintype,:logtype,:refnumber,:sourceoffice,:sourcename,:sourcepos,:destoffice,:destname,:destpos,:resdate)");
+                                    $stmt1->bindParam(':doctype', $doctype);
+                                    $stmt1->bindParam(':title', $_POST['docsubject']);
+                                    $stmt1->bindParam(':author', $_POST['author']);
+                                    $stmt1->bindParam(':filename', $uploadname);
+                                    $stmt1->bindParam(':filesize', $file_size);
+                                    $stmt1->bindParam(':remarks', $_POST['remarks']);
+                                    $stmt1->bindParam(':added', date("Y-m-d"));
+                                    $stmt1->bindParam(':hrdbid', $_SESSION['id']);
+                                    $stmt1->bindParam(':admintype', $_POST['admintype']);
+                                    $stmt1->bindParam(':logtype', $_POST['logtype']);
+                                    $stmt1->bindParam(':refnumber', $_POST['refnumber']);
+                                    $stmt1->bindParam(':sourceoffice', $_POST['sourceoffice']);
+                                    $stmt1->bindParam(':sourcename', $_POST['sourcename']);
+                                    $stmt1->bindParam(':sourcepos', $_POST['sourcepos']);
+                                    $stmt1->bindParam(':destoffice', $_POST['destoffice']);
+                                    $stmt1->bindParam(':destname', $_POST['destname']);
+                                    $stmt1->bindParam(':destpos', $_POST['destpos']);                                    
+                                    $stmt1->bindParam(':resdate', $_POST['resdate']);                           
+                                    $stmt1->execute();
+                                } catch(PDOException $e) {
+                                    echo "Error: " . $e->getMessage();
+                                }
+                            }
+                        }
+                              if ($_POST['switch']>0) {
+                                    $refid = $db->lastInsertId();
+                                    sendEmail($refid,$uploadname1,$doctype1);
+                                    byteMe($_SESSION['id'],'upload',3);
+                                    echo "Success";
+                              } else {
+                                echo "Success";
+                              }
+                } //end if admindoc
+               else //if not admin they required to insert a file 
+              {
+                            $ext=date("mdY");
+                            $maxsize=9000000;
+                            $FILE_EXTS = array('pdf','jpg','jpeg','png','xls','xlsx','doc','docx','zip');
 
-            $uploaddir = upload_dir();
-            $uploadname = $ext.'_'.$_FILES['file']['name'];
-            $uploadfile = $uploaddir.$uploadname;
+                            $file_name = $_FILES['file']['name'];
+                            $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
+                            $file_size = $_FILES['file']['size'];
 
-            if (file_exists($uploadfile)) {
-                die("Duplicate found. This file already exists.");
-            }
-
-            if (empty($_POST["docsubject"])) {
-                 die("Missing Subject");
-            } else {
-                 $subject = test_input($_POST["docsubject"]);
-            }
-     
-            if ($_POST['docauthor']=="") {
-              $author = $_SESSION['id'];
-            } else {
-              $author = test_input($_POST["docauthor"]);  
-            }
-
-            $doctype = $_POST['doctype'];
-
-            $parts = explode('/', $_POST['resdate']);
-            $resdate  = "$parts[2]-$parts[0]-$parts[1]";
-
-            $parts = explode('/', $_POST['ddate']);
-            $dateondoc  = "$parts[2]-$parts[0]-$parts[1]";
-
-            if(move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
-                
-                try {
-                    $stmt = $db->prepare("INSERT IGNORE INTO DOCDB (doctype,title,author,filename,filesize,remarks,added,hrdbid,admindoctype,logtype,referenceno,sourceoffice,sourcename,sourcepos,destoffice,destname,destpos,datereceived,docdate) VALUES (:doctype,:title,:author,:filename,:filesize,:remarks,:added,:hrdbid,:admintype,:logtype,:refnumber,:sourceoffice,:sourcename,:sourcepos,:destoffice,:destname,:destpos,:resdate,:docdate)");
-                    $stmt->bindParam(':doctype', $doctype);
-                    $stmt->bindParam(':title', $_POST['docsubject']);
-                    $stmt->bindParam(':author', $_POST['author']);
-                    $stmt->bindParam(':filename', $uploadname);
-                    $stmt->bindParam(':filesize', $file_size);
-                    $stmt->bindParam(':remarks', $_POST['remarks']);
-                    $stmt->bindParam(':added', date("Y-m-d",time() + 86400));
-                    $stmt->bindParam(':hrdbid', $_SESSION['id']);
-                    $stmt->bindParam(':admintype', $_POST['admintype']);
-                    $stmt->bindParam(':logtype', $_POST['logtype']);
-                    $stmt->bindParam(':refnumber', $_POST['refnumber']);
-                    $stmt->bindParam(':sourceoffice', $_POST['sourceoffice']);
-                    $stmt->bindParam(':sourcename', $_POST['sourcename']);
-                    $stmt->bindParam(':sourcepos', $_POST['sourcepos']);
-                    $stmt->bindParam(':destoffice', $_POST['destoffice']);
-                    $stmt->bindParam(':destname', $_POST['destname']);
-                    $stmt->bindParam(':destpos', $_POST['destpos']);
-                    
-                    $stmt->bindParam(':resdate', $resdate);
-                    $stmt->bindParam(':docdate', $dateondoc);
-
+                            if($file_name=="") {
+                              die("No file selected");
+                            }
+                            if (!in_array($file_ext, $FILE_EXTS)){
+                              die("Selected file is invalid.");
+                            }
+                            if($_FILES['file']['size']>$maxsize) {
+                                die("Filesize exceeded");
+                            }
+                            $uploaddir = upload_dir();
+                            $uploadname = $ext.'_'.$_FILES['file']['name'];
+                            $uploadfile = $uploaddir.$uploadname;
+                            if (file_exists($uploadfile)) {
+                                die("Duplicate found. This file already exists.");
+                            }
+                            if (empty($_POST["docsubject"])) {
+                                 die("Missing Subject");
+                            } else {
+                                 $subject = test_input($_POST["docsubject"]);
+                            }
                      
-                     
-                    $stmt->execute();
-                } catch(PDOException $e) {
-                    echo "Error: " . $e->getMessage();
-                }
+                            if ($_POST['docauthor']=="") {
+                              $author = $_SESSION['id'];
+                            } else {
+                              $author = test_input($_POST["docauthor"]);  
+                            }
+                               $doctype = $_POST['doctype'];
+                            if(move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
+                                
+                                try {
+                                    $stmt = $db->prepare("INSERT IGNORE INTO DOCDB (doctype,title,author,filename,filesize,remarks,added,hrdbid,admindoctype,logtype,referenceno,sourceoffice,sourcename,sourcepos,destoffice,destname,destpos,resdate) VALUES (:doctype,:title,:author,:filename,:filesize,:remarks,:added,:hrdbid,:admintype,:logtype,:refnumber,:sourceoffice,:sourcename,:sourcepos,:destoffice,:destname,:destpos,:resdate)");
+                                    $stmt->bindParam(':doctype', $doctype);
+                                    $stmt->bindParam(':title', $_POST['docsubject']);
+                                    $stmt->bindParam(':author', $_POST['author']);
+                                    $stmt->bindParam(':filename', $uploadname);
+                                    $stmt->bindParam(':filesize', $file_size);
+                                    $stmt->bindParam(':remarks', $_POST['remarks']);
+                                    $stmt->bindParam(':added', date("Y-m-d"));
+                                    $stmt->bindParam(':hrdbid', $_SESSION['id']);
+                                    $stmt->bindParam(':admintype', $_POST['admintype']);
+                                    $stmt->bindParam(':logtype', $_POST['logtype']);
+                                    $stmt->bindParam(':refnumber', $_POST['refnumber']);
+                                    $stmt->bindParam(':sourceoffice', $_POST['sourceoffice']);
+                                    $stmt->bindParam(':sourcename', $_POST['sourcename']);
+                                    $stmt->bindParam(':sourcepos', $_POST['sourcepos']);
+                                    $stmt->bindParam(':destoffice', $_POST['destoffice']);
+                                    $stmt->bindParam(':destname', $_POST['destname']);
+                                    $stmt->bindParam(':destpos', $_POST['destpos']);
+                                    $stmt->bindParam(':resdate', $_POST['resdate']);                      
+                                    $stmt->execute();
+                                } catch(PDOException $e) {
+                                    echo "Error: " . $e->getMessage();
+                                }
+                            }
+ 
+                     if ($_POST['switch']>0) {
+                                    $refid = $db->lastInsertId();
+                                    sendEmail($refid,$uploadname,$doctype);
+                                    byteMe($_SESSION['id'],'upload',3);
+                                    echo "Success";
+                              } else {
+                                echo "Success";
+                              }
 
-                
-
-          if ($_POST['switch']>0) {
-                $refid = $db->lastInsertId();
-                sendEmail($refid,$uploadname,$doctype);
-                byteMe($_SESSION['id'],'upload',3);
-                echo "Success";
-          } else {
-            echo "Success";
-          }
-
-
-            }
-
-
-
+             }//end of else
     }
+
+
 
     if($_POST['action'] == "reuploadadmin") {
             $ext=date("mdY");
