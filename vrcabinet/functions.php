@@ -331,8 +331,15 @@ if(!empty($_POST))
     }
 
  
-    if($_POST['action'] == "upload") {           
-                if ($_POST['doctype']=="Administration Document")
+    if($_POST['action'] == "upload") {
+
+    $parts = explode('/', $_POST['resdate']);
+    $resdate  = "$parts[2]-$parts[0]-$parts[1]";
+
+    $parts = explode('/', $_POST['ddate']);
+    $dateondoc  = "$parts[2]-$parts[0]-$parts[1]";
+
+                if ($_POST['doctype']=="Admin Doc")
                 {//if admin not required to insert a file
                             
                             $ext=date("mdY");
@@ -348,24 +355,26 @@ if(!empty($_POST))
 
                      if ($file_name=="") { // filename is empty 
                             try{
-                         $stmt1 = $db->prepare("INSERT INTO DOCDB (doctype,title,author,remarks,added,hrdbid,admindoctype,logtype,referenceno,sourceoffice,sourcename,sourcepos,destoffice,destname,destpos,resdate) VALUES (:doctype,:title,:author,:remarks,:added,:hrdbid,:admintype,:logtype,:refnumber,:sourceoffice,:sourcename,:sourcepos,:destoffice,:destname,:destpos,:resdate)");
-                                    $stmt1->bindParam(':doctype', $doctype);
-                                    $stmt1->bindParam(':title', $_POST['docsubject']);
-                                    $stmt1->bindParam(':author', $_POST['author']);                                 
-                                    $stmt1->bindParam(':remarks', $_POST['remarks']);
-                                    $stmt1->bindParam(':added', date("Y-m-d"));
-                                    $stmt1->bindParam(':hrdbid', $_SESSION['id']);
-                                    $stmt1->bindParam(':admintype', $_POST['admintype']);
-                                    $stmt1->bindParam(':logtype', $_POST['logtype']);
-                                    $stmt1->bindParam(':refnumber', $_POST['refnumber']);
-                                    $stmt1->bindParam(':sourceoffice', $_POST['sourceoffice']);
-                                    $stmt1->bindParam(':sourcename', $_POST['sourcename']);
-                                    $stmt1->bindParam(':sourcepos', $_POST['sourcepos']);
-                                    $stmt1->bindParam(':destoffice', $_POST['destoffice']);
-                                    $stmt1->bindParam(':destname', $_POST['destname']);
-                                    $stmt1->bindParam(':destpos', $_POST['destpos']);                                    
-                                    $stmt1->bindParam(':resdate', $_POST['resdate']);                                
-                                    $stmt1->execute();
+                         $stmt = $db->prepare("INSERT IGNORE INTO DOCDB (doctype,title,author,remarks,added,hrdbid,admindoctype,logtype,referenceno,sourceoffice,sourcename,sourcepos,destoffice,destname,destpos,datereceived,docdate) VALUES (:doctype,:title,:author,:remarks,:added,:hrdbid,:admintype,:logtype,:refnumber,:sourceoffice,:sourcename,:sourcepos,:destoffice,:destname,:destpos,:resdate,:docdate)");
+                                    $stmt->bindParam(':doctype', $doctype);
+                                    $stmt->bindParam(':title', $_POST['docsubject']);
+                                    $stmt->bindParam(':author', $_POST['author']);
+                                    $stmt->bindParam(':remarks', $_POST['remarks']);
+                                    $stmt->bindParam(':added', date("Y-m-d",time() + 86400));
+                                    $stmt->bindParam(':hrdbid', $_SESSION['id']);
+                                    $stmt->bindParam(':admintype', $_POST['admintype']);
+                                    $stmt->bindParam(':logtype', $_POST['logtype']);
+                                    $stmt->bindParam(':refnumber', $_POST['refnumber']);
+                                    $stmt->bindParam(':sourceoffice', $_POST['sourceoffice']);
+                                    $stmt->bindParam(':sourcename', $_POST['sourcename']);
+                                    $stmt->bindParam(':sourcepos', $_POST['sourcepos']);
+                                    $stmt->bindParam(':destoffice', $_POST['destoffice']);
+                                    $stmt->bindParam(':destname', $_POST['destname']);
+                                    $stmt->bindParam(':destpos', $_POST['destpos']);
+                                    
+                                    $stmt->bindParam(':resdate', $resdate);
+                                    $stmt->bindParam(':docdate', $dateondoc);                              
+                                    $stmt->execute();
                                 } catch(PDOException $e) {
                                     echo "Error: " . $e->getMessage();
                                 }
@@ -389,26 +398,28 @@ if(!empty($_POST))
                                $doctype = $_POST['doctype'];                      
                             if(move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {                                
                                 try {
-                                    $stmt1 = $db->prepare("INSERT INTO DOCDB (doctype,title,author,filename,filesize,remarks,added,hrdbid,admindoctype,logtype,referenceno,sourceoffice,sourcename,sourcepos,destoffice,destname,destpos,resdate) VALUES (:doctype,:title,:author,:filename,:filesize,:remarks,:added,:hrdbid,:admintype,:logtype,:refnumber,:sourceoffice,:sourcename,:sourcepos,:destoffice,:destname,:destpos,:resdate)");
-                                    $stmt1->bindParam(':doctype', $doctype);
-                                    $stmt1->bindParam(':title', $_POST['docsubject']);
-                                    $stmt1->bindParam(':author', $_POST['author']);
-                                    $stmt1->bindParam(':filename', $uploadname);
-                                    $stmt1->bindParam(':filesize', $file_size);
-                                    $stmt1->bindParam(':remarks', $_POST['remarks']);
-                                    $stmt1->bindParam(':added', date("Y-m-d"));
-                                    $stmt1->bindParam(':hrdbid', $_SESSION['id']);
-                                    $stmt1->bindParam(':admintype', $_POST['admintype']);
-                                    $stmt1->bindParam(':logtype', $_POST['logtype']);
-                                    $stmt1->bindParam(':refnumber', $_POST['refnumber']);
-                                    $stmt1->bindParam(':sourceoffice', $_POST['sourceoffice']);
-                                    $stmt1->bindParam(':sourcename', $_POST['sourcename']);
-                                    $stmt1->bindParam(':sourcepos', $_POST['sourcepos']);
-                                    $stmt1->bindParam(':destoffice', $_POST['destoffice']);
-                                    $stmt1->bindParam(':destname', $_POST['destname']);
-                                    $stmt1->bindParam(':destpos', $_POST['destpos']);                                    
-                                    $stmt1->bindParam(':resdate', $_POST['resdate']);                           
-                                    $stmt1->execute();
+                                    $stmt = $db->prepare("INSERT IGNORE INTO DOCDB (doctype,title,author,filename,filesize,remarks,added,hrdbid,admindoctype,logtype,referenceno,sourceoffice,sourcename,sourcepos,destoffice,destname,destpos,datereceived,docdate) VALUES (:doctype,:title,:author,:filename,:filesize,:remarks,:added,:hrdbid,:admintype,:logtype,:refnumber,:sourceoffice,:sourcename,:sourcepos,:destoffice,:destname,:destpos,:resdate,:docdate)");
+                                    $stmt->bindParam(':doctype', $doctype);
+                                    $stmt->bindParam(':title', $_POST['docsubject']);
+                                    $stmt->bindParam(':author', $_POST['author']);
+                                    $stmt->bindParam(':filename', $uploadname);
+                                    $stmt->bindParam(':filesize', $file_size);
+                                    $stmt->bindParam(':remarks', $_POST['remarks']);
+                                    $stmt->bindParam(':added', date("Y-m-d",time() + 86400));
+                                    $stmt->bindParam(':hrdbid', $_SESSION['id']);
+                                    $stmt->bindParam(':admintype', $_POST['admintype']);
+                                    $stmt->bindParam(':logtype', $_POST['logtype']);
+                                    $stmt->bindParam(':refnumber', $_POST['refnumber']);
+                                    $stmt->bindParam(':sourceoffice', $_POST['sourceoffice']);
+                                    $stmt->bindParam(':sourcename', $_POST['sourcename']);
+                                    $stmt->bindParam(':sourcepos', $_POST['sourcepos']);
+                                    $stmt->bindParam(':destoffice', $_POST['destoffice']);
+                                    $stmt->bindParam(':destname', $_POST['destname']);
+                                    $stmt->bindParam(':destpos', $_POST['destpos']);
+                                    
+                                    $stmt->bindParam(':resdate', $resdate);
+                                    $stmt->bindParam(':docdate', $dateondoc);                         
+                                    $stmt->execute();
                                 } catch(PDOException $e) {
                                     echo "Error: " . $e->getMessage();
                                 }
@@ -463,25 +474,27 @@ if(!empty($_POST))
                             if(move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
                                 
                                 try {
-                                    $stmt = $db->prepare("INSERT IGNORE INTO DOCDB (doctype,title,author,filename,filesize,remarks,added,hrdbid,admindoctype,logtype,referenceno,sourceoffice,sourcename,sourcepos,destoffice,destname,destpos,resdate) VALUES (:doctype,:title,:author,:filename,:filesize,:remarks,:added,:hrdbid,:admintype,:logtype,:refnumber,:sourceoffice,:sourcename,:sourcepos,:destoffice,:destname,:destpos,:resdate)");
-                                    $stmt->bindParam(':doctype', $doctype);
-                                    $stmt->bindParam(':title', $_POST['docsubject']);
-                                    $stmt->bindParam(':author', $_POST['author']);
-                                    $stmt->bindParam(':filename', $uploadname);
-                                    $stmt->bindParam(':filesize', $file_size);
-                                    $stmt->bindParam(':remarks', $_POST['remarks']);
-                                    $stmt->bindParam(':added', date("Y-m-d"));
-                                    $stmt->bindParam(':hrdbid', $_SESSION['id']);
-                                    $stmt->bindParam(':admintype', $_POST['admintype']);
-                                    $stmt->bindParam(':logtype', $_POST['logtype']);
-                                    $stmt->bindParam(':refnumber', $_POST['refnumber']);
-                                    $stmt->bindParam(':sourceoffice', $_POST['sourceoffice']);
-                                    $stmt->bindParam(':sourcename', $_POST['sourcename']);
-                                    $stmt->bindParam(':sourcepos', $_POST['sourcepos']);
-                                    $stmt->bindParam(':destoffice', $_POST['destoffice']);
-                                    $stmt->bindParam(':destname', $_POST['destname']);
-                                    $stmt->bindParam(':destpos', $_POST['destpos']);
-                                    $stmt->bindParam(':resdate', $_POST['resdate']);                      
+                                    $stmt = $db->prepare("INSERT IGNORE INTO DOCDB (doctype,title,author,filename,filesize,remarks,added,hrdbid,admindoctype,logtype,referenceno,sourceoffice,sourcename,sourcepos,destoffice,destname,destpos,datereceived,docdate) VALUES (:doctype,:title,:author,:filename,:filesize,:remarks,:added,:hrdbid,:admintype,:logtype,:refnumber,:sourceoffice,:sourcename,:sourcepos,:destoffice,:destname,:destpos,:resdate,:docdate)");
+                    $stmt->bindParam(':doctype', $doctype);
+                    $stmt->bindParam(':title', $_POST['docsubject']);
+                    $stmt->bindParam(':author', $_POST['author']);
+                    $stmt->bindParam(':filename', $uploadname);
+                    $stmt->bindParam(':filesize', $file_size);
+                    $stmt->bindParam(':remarks', $_POST['remarks']);
+                    $stmt->bindParam(':added', date("Y-m-d",time() + 86400));
+                    $stmt->bindParam(':hrdbid', $_SESSION['id']);
+                    $stmt->bindParam(':admintype', $_POST['admintype']);
+                    $stmt->bindParam(':logtype', $_POST['logtype']);
+                    $stmt->bindParam(':refnumber', $_POST['refnumber']);
+                    $stmt->bindParam(':sourceoffice', $_POST['sourceoffice']);
+                    $stmt->bindParam(':sourcename', $_POST['sourcename']);
+                    $stmt->bindParam(':sourcepos', $_POST['sourcepos']);
+                    $stmt->bindParam(':destoffice', $_POST['destoffice']);
+                    $stmt->bindParam(':destname', $_POST['destname']);
+                    $stmt->bindParam(':destpos', $_POST['destpos']);
+                    
+                    $stmt->bindParam(':resdate', $resdate);
+                    $stmt->bindParam(':docdate', $dateondoc);                      
                                     $stmt->execute();
                                 } catch(PDOException $e) {
                                     echo "Error: " . $e->getMessage();
@@ -503,6 +516,13 @@ if(!empty($_POST))
 
 
     if($_POST['action'] == "reuploadadmin") {
+
+    $parts = explode('/', $_POST['resdate']);
+    $resdate  = "$parts[2]-$parts[0]-$parts[1]";
+
+    $parts = explode('/', $_POST['ddate']);
+    $dateondoc  = "$parts[2]-$parts[0]-$parts[1]";
+    
             $ext=date("mdY");
             $maxsize=9000000;
             $FILE_EXTS = array('pdf','jpg','jpeg','png','xls','xlsx','doc','docx','zip');
@@ -576,7 +596,7 @@ if(!empty($_POST))
                 }
             }
          //  $direc = $_SERVER['DOCUMENT_ROOT']."/SLP.22/docs/".$uploadname;
-          //  unlink($direc);
+         //  unlink($direc);
             echo "Success";
     }
 

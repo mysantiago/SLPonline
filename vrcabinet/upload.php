@@ -1,6 +1,7 @@
 <?php
 require "../zxcd9.php";
 byteMe($_SESSION['id'],'vc_upload',0.10);
+
         $stmt = $db->prepare("SELECT MAX(id) as id FROM DOCDB");
         $stmt->execute();
         $rowz = $stmt->fetch();
@@ -355,17 +356,12 @@ function typeChange(){
 }
 </script>
 <div class="container-fluid">
-  <div class="col-md-12" style="">
-      <div style="background:#fff;margin-bottom:1em;padding:3em" class="col-md-12">
-      <div class="row">
-          <div class="col-md-12" id="searchblock">
-                <div class="col-md-12" style="margin-top:0">
-                  <h2 style="font-weight:bold;margin-bottom:0">UPLOAD</h2>
+  <div class="col-md-12" style="padding-left:3em;padding-right:3em">
 
 <form id="myForm" method="POST" enctype="multipart/form-data">
- <div class="row row-eq-height" style="height:100%;border:solid 1px #c5d6de">
+ <div class="row row-eq-height" style="height:100%;border:solid 1px #c5d6de;margin-bottom:3em">
                 <div class="col-md-5" style="background-color:#007ee5;padding:2em;color:#fff">
-                  SLP Document Tracking System<h3>How to upload files</h3>
+                  SLP E-Library<h3>FILE UPLOADS</h3>
                   Uploading regular files:
                   <ul>
                     <li>Choose the file from your computer or storage device.</li>
@@ -375,10 +371,10 @@ function typeChange(){
                   Uploading admin document files:
                   <ul>
                     <li>Choose the file from your computer or storage device.</li>
-                    <li>Select "Administration Document" category from the "Select Document Type" dropdown list to see the additional fields.</li>
+                    <li>Select "Admin Document" category from the "Select Document Type" dropdown list to see the additional fields.</li>
                     <li>Fill out the required areas and click "Upload" to submit to E-Library.</li>
                   </ul>
-                  E-mail blast notification:
+                  Sending e-mail notifications:
                   <ul>
                     <li>Click the notification button and choose the respective offices or type the names of individuals. Submit to E-Library by clicking the "Submit and Send Notification" button.</li>
                   </ul>
@@ -394,7 +390,7 @@ function typeChange(){
                       </div>
                     </div>
                     <!-- /input-group -->
-                    <span style="font-size:12px;margin-bottom:1em">Supported file types: PDF, DOC, XLSX, PNG, JPG, ZIP</span>
+                    <span style="font-size:12px;margin-bottom:1em">Supported file types: PDF, DOC, XLSX, PNG, JPG, ZIP, PPT</span>
                     <span style="font-size:12px;margin-bottom:1em" class="pull-right">Maximum file size: 8MB</span><br>
 
 <script>
@@ -402,22 +398,24 @@ function typeChange(){
 function typeChange2(){
 var selection = $('#doctypeselector option:selected').val();
 console.log(selection);
-      if (selection == "Administration Document") {
-             $("#admintypeholder").fadeIn(); $("#logtypeholder").fadeIn(); $("#refnumberholder").fadeIn(); $("#sourceofficeholder").fadeIn(); 
-             $("#sourcenameholder").fadeIn();$("#destofficeholder").fadeIn(); $("#destnameholder").fadeIn(); $("#resdateholder").fadeIn(); 
-             $("#sourceposholder").fadeIn();$("#destposholder").fadeIn();
+      if (selection == "Admin Doc") {
+             $("#admintypeholder").fadeIn(); $("#logtypeholder").fadeIn(); $("#refnumberholder").fadeIn(); $("#officeholder").fadeIn(); 
+             $("#nameholder").fadeIn();$("#resdateholder").fadeIn(); 
+             $("#posholder").fadeIn();
                       
            
     } else {
-             $("#admintypeholder").fadeOut(); $("#logtypeholder").fadeOut(); $("#refnumberholder").fadeOut(); $("#sourceofficeholder").fadeOut(); 
-             $("#sourcenameholder").fadeOut();$("#destofficeholder").fadeOut(); $("#destnameholder").fadeOut(); $("#resdateholder").fadeOut();         
-             $("#sourceposholder").fadeOut();$("#destposholder").fadeOut();
-             $('#refnumber').val(''); $('#admintype').val(''); 
+             $("#admintypeholder").fadeOut(); $("#logtypeholder").fadeOut(); $("#refnumberholder").fadeOut(); $("#officeholder").fadeOut(); 
+             $("#nameholder").fadeOut();$("#resdateholder").fadeOut(); 
+             $("#posholder").fadeOut();
     }
 }
+
 function typeChange3(){
-$('#refnumber').val($('#admintype option:selected').val()+'<?php echo '-'.date('dYm').'-'.($rowz['id'] + 1) ?> ');
+$('#refnumber').val($('#admintype option:selected').val()+'<?php echo '-'.date('dYm').'-'.($rowz['id'] + 1) ?>');
 }
+
+
 </script>
                   <div class="form-group" style="margin-top:1em">
                       <select class="form-control" onchange="typeChange2()" id="doctypeselector">
@@ -434,7 +432,7 @@ $('#refnumber').val($('#admintype option:selected').val()+'<?php echo '-'.date('
                         while($hreventname=$sql->fetch(PDO::FETCH_ASSOC))
                         {
                       ?>
-                        <option value="<?php echo $hreventname['hrdocname']; ?>"><?php echo $hreventname['hrdocname']; ?> </option>
+                        <option value="<?php echo $hreventname['hrdocname']; ?>"><?php echo $hreventname['hrdocname']; ?></option>
                     
                       <?php
                         }
@@ -451,7 +449,7 @@ $('#refnumber').val($('#admintype option:selected').val()+'<?php echo '-'.date('
                   </div>
 
                   <div class="form-group" style="display: none; margin-top:1em" id="admintypeholder">
-                      <select class="form-control" id="admintype" name="admintype">
+                      <select class="form-control" id="admintype" name="admintype" onchange="typeChange3()">
                         <option value="">Select Admin Document Type</option>
 
                         <!-- get this --> 
@@ -459,19 +457,18 @@ $('#refnumber').val($('#admintype option:selected').val()+'<?php echo '-'.date('
                       try {
                               $sql = $db->prepare("SELECT * FROM libhr_subdoctype order by hrsubdocname");
                               $sql->execute();
-                              while($hreventname1=$sql->fetch(PDO::FETCH_ASSOC))
-                              {
+                                    while($hreventname1=$sql->fetch(PDO::FETCH_ASSOC))
+                                    {
                        ?>
-                              <option value="<?php echo $hreventname1['hrsubdoccode']; ?>"><?php echo $hreventname1['hrsubdocname']; ?> </option>
+                              <option value="<?php echo $hreventname1['hrsubdoccode']; ?>"><?php echo $hreventname1['hrsubdocname']; ?></option>
                         <?php
-                               } 
-                        ?>
-                       <?php
+                                    } 
                               } catch(PDOException $e) {
-                            echo "Error: " . $e->getMessage();
-                            }//en
+                                    echo "Error: " . $e->getMessage();
+                              }
                    
                         ?>
+
                     <!-- upto this -->
                     </select>
                   </div>
@@ -493,7 +490,7 @@ $('#refnumber').val($('#admintype option:selected').val()+'<?php echo '-'.date('
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group" style="display: none" id="refnumberholder">
-                       <input class="form-control" placeholder="Reference Number" id="refnumber" name="refnumber" required/><center>
+                       <input class="form-control" placeholder="Reference Number" id="refnumber" name="refnumber" disabled/><center>
                         <div class="col-sm-8">
                         </div>
                       </div>
@@ -508,79 +505,61 @@ $('#refnumber').val($('#admintype option:selected').val()+'<?php echo '-'.date('
                       <input type="hidden" id="autocomplete-ajax-x-2" disabled="disabled"/>
                   </div>
 
-                  <div class="row">
+                  <div class="row" id="officeholder" style="display:none">
                     <div class="col-sm-6">
-                      <div class="input-group" style="display: none" id="sourceofficeholder">
+                      <div class="input-group">
                        <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import" ></span></span>
                        <input class="form-control" placeholder="Source Office" style="" id="sourceoffice" name="sourceoffice" required/><center>
-                        
-                         <div class="col-sm-8">
-                            </div>
-                        
 
                       </div>
                     </div>
                    <div class="col-sm-6">
-                      <div class="input-group" style="display: none" id="destofficeholder">
+                      <div class="input-group">
                        <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
                        <input class="form-control" placeholder="Destination Office" style="" id="destoffice" name="destoffice" required/><center>
-                        
-                         <div class="col-sm-8">
-                            </div>
-                        
-
                       </div>
                     </div>
                   </div>
 
-                  <div class="row">
+                  <div class="row" id="nameholder" style="display:none">
                     <div class="col-sm-6">
-                      <div class="input-group" style="display: none" id="sourcenameholder">
+                      <div class="input-group">
                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import"></span></span>
                        <input class="form-control" placeholder="Source Name" style="" id="sourcename" name="sourcename" required/><center>
-                        <div class="col-sm-8">
-                        </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="input-group" style="display: none" id="destnameholder">
+                      <div class="input-group">
                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
                        <input class="form-control" placeholder="Destination Name" style="" id="destname" name="destname" required/><center>
-                        <div class="col-sm-8">
-                        </div>
                       </div>
                     </div>
                   </div>
-                 <div class="row">
+                 <div class="row" id="posholder" style="margin-bottom:1em;display:none">
                     <div class="col-sm-6">
-                      <div class="input-group" style="display: none" id="sourceposholder">
+                      <div class="input-group">
                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-import"></span></span>
                         <input class="form-control" placeholder="Source Position" style="" id="sourcepos" name="sourcepos" required/><center>
-                          <div class="col-sm-8">
-                          </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
-                      <div class="input-group" style="display: none" id="destposholder">
+                      <div class="input-group">
                       <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-export"></span></span>
-                       <input class="form-control" placeholder="Destionation Position" style="" id="destpos" name="destpos" required/><center>
-                        <div class="col-sm-8">
-                        </div>
+                       <input class="form-control" placeholder="Destination Position" style="" id="destpos" name="destpos" required/><center>
                       </div>
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="col-sm-6">
-                      <div class="form-group" style="" id="ddate">
-                        <input class="form-control" placeholder="Date Written / Created" style="" id="ddate" required/><center>
-                          <div class="col-sm-8">
-                          </div>
+                      <div class="form-group" style="" id="ddateholder">
+                        <input class="form-control" placeholder="Date on Document" style="" id="ddate" name="ddate" required/><center>
+                        <div class="col-sm-8"></div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group" style="display:none;" id="resdateholder">
-                       <input class="form-control" placeholder="Response Deadline" style="" id="resdate" name="resdate" required/><center>
+                       <input class="form-control" placeholder="Date Received" style="" id="resdate" name="resdate" required/><center>
                         <div class="col-sm-8">
                         </div>
                       </div>
@@ -588,7 +567,7 @@ $('#refnumber').val($('#admintype option:selected').val()+'<?php echo '-'.date('
                   </div>
 
                   <div class="form-group" style="">
-                      <textarea rows="3" class="form-control" placeholder="Remarks" style="padding-top:0.6em;resize:none" id="remarks" name="remarks" required></textarea><center>
+                      <textarea rows="3" class="form-control" placeholder="Description" style="padding-top:0.6em;resize:none" id="remarks" name="remarks" required></textarea><center>
                   </div>
                   <div style="display:block;font-weight:bold">Send a notification for this upload: &nbsp; <div id="theswitch" class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate bootstrap-switch-id-custom-switch-01 bootstrap-switch-off"><div class="bootstrap-switch-container"><span class="bootstrap-switch-handle-on bootstrap-switch-primary">YES</span><label class="bootstrap-switch-label">&nbsp;</label><span class="bootstrap-switch-handle-off bootstrap-switch-default">NO</span><input type="checkbox" checked="" data-toggle="switch" id="custom-switch-01"></div></div></div>
                   <div id="notificationpanel" style="margin-top:1em;display:none">
@@ -789,14 +768,13 @@ $(function () {
       </div>
   </div>
 </div>
-</div>
 <!-- Modal -->
       <div class="modal fade" id="myModal" role="dialog" style="margin-top:3em">
         <div class="modal-dialog modal-sm">
 
           <div class="modal-content" style="padding:1em;padding-top:0.5em">
                   <h3 style="color:#5cb85c;margin-bottom:6px">Success!</h3>
-                  <span style="font-size:13px">Note: Emails sent may take 30mins to arrive</span><br><br>
+                  <span style="font-size:13px">Note: If you sent email notifications, emails may take 30mins to arrive in inbox</span><br><br>
                   <button type="button" class="btn btn-primary pull-right" style="background:#5cb85c;border:0;margin-top:0;padding:5px 10px 5px 10px" id="okaybtn" data-dismiss="modal">Okay</button>
                   <div class="clearfix"></div>
           </div>
@@ -879,11 +857,10 @@ $("#uploadBtn").click(function(event) {
        fd.append('file', file1);
        fd.append('doctype', $('#doctypeselector option:selected').val());
        fd.append('docsubject', $('input[name=dsubject]').val());
-      fd.append('author', window.selectPartner2);
+       fd.append('author', $('#autocompleteajax2').val());
        fd.append('ddate', $('input[name=ddate]').val());
-      
        fd.append('remarks', $('textarea[name=remarks]').val());
-       fd.append('admintype', $('#admintype option:selected').val());
+       fd.append('admintype', $('#admintype option:selected').text());
        fd.append('logtype', $('#logtype option:selected').val());
        fd.append('refnumber', $('input[name=refnumber]').val());
        fd.append('sourceoffice', $('input[name=sourceoffice]').val());
@@ -909,7 +886,7 @@ $("#uploadBtn").click(function(event) {
                       $('#myModal').modal();
                       $('#myModal').on('hidden.bs.modal', function () {
                           location.href = "index.php";
-                      })
+                      });
                     } else {
                       alert(data);
                     }
@@ -966,12 +943,9 @@ $("#sendfeedback").click(function(event) {
       }
     });
 
-        var picker = new Pikaday({ 
-      field: $('#rdate')[0], 
-      format: 'M/D/YYYY', 
-      onSelect: function() {
-            $('#emaildate').html("dated <b style='color:red'>"+this.getMoment().format('M/D/YYYY')+"</b>");
-      }
+      var picker = new Pikaday({ 
+      field: $('#resdate')[0], 
+      format: 'M/D/YYYY'
     });
 
     

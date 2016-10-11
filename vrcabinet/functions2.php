@@ -435,10 +435,6 @@ if(!empty($_POST))
             $maxsize=9000000;
             $FILE_EXTS = array('pdf','jpg','jpeg','png','xls','xlsx','doc','docx','zip');
 
-$_FILES['file'] = ""
-
-$_FILES['file'] != ""
-
 
             $file_name = $_FILES['file']['name'];
             $file_name = preg_replace("/ /", "-", $file_name);
