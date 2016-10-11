@@ -1,6 +1,9 @@
 <?php
 require "../zxcd9.php";
 byteMe($_SESSION['id'],'vc_upload',0.10);
+        $stmt = $db->prepare("SELECT MAX(id) as id FROM DOCDB");
+        $stmt->execute();
+        $rowz = $stmt->fetch();
 ?>
 
 <!DOCTYPE html>
@@ -409,12 +412,12 @@ console.log(selection);
              $("#admintypeholder").fadeOut(); $("#logtypeholder").fadeOut(); $("#refnumberholder").fadeOut(); $("#sourceofficeholder").fadeOut(); 
              $("#sourcenameholder").fadeOut();$("#destofficeholder").fadeOut(); $("#destnameholder").fadeOut(); $("#resdateholder").fadeOut();         
              $("#sourceposholder").fadeOut();$("#destposholder").fadeOut();
+             $('#refnumber').val(''); $('#admintype').val(''); 
     }
 }
-
-
-
-
+function typeChange3(){
+$('#refnumber').val($('#admintype option:selected').val()+'<?php echo '-'.date('dYm').'-'.($rowz['id'] + 1) ?> ');
+}
 </script>
                   <div class="form-group" style="margin-top:1em">
                       <select class="form-control" onchange="typeChange2()" id="doctypeselector">
@@ -455,17 +458,15 @@ console.log(selection);
                       <?php
                       try {
                               $sql = $db->prepare("SELECT * FROM libhr_subdoctype order by hrsubdocname");
-                              //$prof->bindParam(':hrdbida', $_SESSION['pageid']);
                               $sql->execute();
-                         //     $p=$prof->fetch(PDO::FETCH_ASSOC);
-                        
-                        while($hreventname=$sql->fetch(PDO::FETCH_ASSOC))
-                        {
-                      ?>
-                        <option value=" <?php echo $hreventname['hrsubdocname']; ?>"> <?php echo $hreventname['hrsubdocname']; ?> </option>
-                    
-                      <?php
-                        }
+                              while($hreventname1=$sql->fetch(PDO::FETCH_ASSOC))
+                              {
+                       ?>
+                              <option value="<?php echo $hreventname1['hrsubdoccode']; ?>"><?php echo $hreventname1['hrsubdocname']; ?> </option>
+                        <?php
+                               } 
+                        ?>
+                       <?php
                               } catch(PDOException $e) {
                             echo "Error: " . $e->getMessage();
                             }//en
