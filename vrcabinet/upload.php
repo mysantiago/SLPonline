@@ -250,6 +250,8 @@ function changeValue2(str){
             'action'    : "getemails_rpmo", 
             'filter'    : option
           }
+             if(option=="All Livelihood")
+             {  aData = { 'action'    : "getemails_liv"}  }
           $.ajax({
              url: "functions.php",
              type: "POST",
@@ -501,7 +503,7 @@ $('#refnumber').val($('#admintype option:selected').val()+'<?php echo '-'.date('
                       <input class="form-control" placeholder="Document Title / Subject" style="" id="dsubject" name="dsubject" required/><center>
                   </div>
                   <div class="form-group" style="" id="authorholder">
-                      <input type="text" name="autocompleteajax2" id="autocompleteajax2" class="form-control" placeholder="Author (if applicable)"/>
+                      <input type="text" name="author" id="autocompleteajax2" class="form-control" placeholder="Author (if applicable)"/>
                       <input type="hidden" id="autocomplete-ajax-x-2" disabled="disabled"/>
                   </div>
 
@@ -756,7 +758,7 @@ $(function () {
                   </div>
                   <hr style="margin-bottom:0">
                   <!--EMAIL-->
-
+ 
 
                 </div><!--end notifpanel-->
                 
